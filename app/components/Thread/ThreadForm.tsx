@@ -22,7 +22,6 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
   const [showSuccessLink, setShowSuccessLink] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [notification, setNotification] = useState<string>('');
-
   const clearNotification = () => setNotification('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,6 +69,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           className="border p-2 rounded w-full text-black"
           required
           autoComplete="off"
+          maxLength={300}
         />
       </div>
       <div className="mb-4">
@@ -80,6 +80,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           className="border p-2 rounded w-full text-black"
           required
           autoComplete="off"
+          maxLength={40000}
         ></textarea>
       </div>
       <div className="mb-4">
@@ -138,6 +139,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           onChange={(e) => setImageUrl(e.target.value)}
           className="border p-2 rounded w-full text-black"
           autoComplete="off"
+          maxLength={2000}
         />
       </div>
       <div className="mb-4 flex items-center">
