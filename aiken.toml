@@ -1,0 +1,19 @@
+name = "logicalmechanism/cogno_v2"
+version = "0.1.0"
+license = "Apache-2.0"
+description = "Aiken contracts for project 'logicalmechanism/cogno_v2'"
+
+[repository]
+user = "logicalmechanism"
+project = "cogno_v2"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "1.9.0"
+source = "github"
+
+[[dependencies]]
+name = "logicalmechanism/assist"
+version = "v0.4.9"
+source = "github"

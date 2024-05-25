@@ -16,22 +16,14 @@ Used instead of the actual name of the person or thing
 
 A smart contract ecosystem for UTxO-based cognomens and on-chain threads. Each cogno acts as a wallet identifier and user profile. Each thread is an on-chain message. Together they are a fully decentralized, completly public, social media platform. Ran entirely on the Cardano blockchain.
 
-## Happy Path Testing
+## Building
 
-Use the complete_build.sh script to build the contracts using the config.
+Use the `complete_build.sh` script to build the contracts using the `config.json` file with Aiken.
 
-Required wallets for testing.
+## Headless Interaction
 
-```bash
-./create_wallet.sh wallets/reference-wallet # holds script references
-./create_wallet.sh wallets/collat-wallet    # holds the collateral for sc interactions
-./create_wallet.sh wallets/starter-wallet   # the genesis starter wallet
-./create_wallet.sh wallets/user-1-wallet    # a unique user wallet
-./create_wallet.sh wallets/user-2-wallet    # a unique user wallet
-```
+Use the `scripts` folder to interact with the dapp in a headless fashion.
 
-Enter the script folder and update the path to cli and socket files inside the data sub folder. The .env file will use these values to run the happy path.
+## Frontend Interaction
 
-Create the script references and mint the genesis token.
-
-- TODO
+Use the `app` folder to interact with the dapp using a cip30 web wallet.
