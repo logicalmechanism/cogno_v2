@@ -109,7 +109,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             disabled={!editMode && cogno !== null}
             autoComplete="off"
           />
-          {cogno &&
+          {cogno && image !== '' &&
             (
               <div>
                 <p className="block text-gray-700 text-sm font-bold mb-2">Image Preview</p>

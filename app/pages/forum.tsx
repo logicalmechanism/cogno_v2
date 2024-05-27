@@ -24,27 +24,10 @@ const Forum = () => {
   const [notification, setNotification] = useState<string>('');
   const [cogno, setCogno] = useState<null | UTxO>(null);
   const [threads, setThreads] = useState<UTxO[]>([]);
-  const [myThreads, setMyThreads] = useState<UTxO[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
 
   // Function to clear notification
   const clearNotification = () => setNotification('');
-
-  const findMyThreads = (utxos: UTxO[]): UTxO[] => {
-    // get the token name if it exists
-    const tokenName = sessionStorage.getItem('tokenName');
-    const threads: UTxO[] = [];
-    // loop all the thread utxos and find all the utxos referencing the token name
-    utxos.forEach((utxo: UTxO) => {
-      const datum = parseDatumCbor(utxo.output.plutusData!);
-      console.log(datum);
-      if (datum.fields[5].bytes === tokenName) {
-        threads.push(utxo);
-      }
-    });
-    return threads;
-  }
 
   const findThreads = useCallback(async (): Promise<UTxO[]> => {
     if (network !== null) {
@@ -133,8 +116,6 @@ const Forum = () => {
     setCogno(_cogno);
     const _threads = await findThreads();
     setThreads(_threads);
-    const _myThreads = findMyThreads(_threads);
-    setMyThreads(_myThreads);
     setIsLoading(false);
   };
 
@@ -146,8 +127,6 @@ const Forum = () => {
         setCogno(_cogno);
         const _threads = await findThreads();
         setThreads(_threads);
-        const _myThreads = findMyThreads(_threads);
-        setMyThreads(_myThreads);
         setIsLoading(false);
       };
       fetchCognoAndThreads();

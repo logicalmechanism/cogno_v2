@@ -113,6 +113,14 @@ export const handleThreadCreation = async (
     mesh.txIn(item.input.txHash, item.input.outputIndex)
   });
 
+  // Check if data.tokenName is null
+  if (data.tokenName === null) {
+    return {
+      success: false,
+      message: `Cogno Not Set Error`
+    };
+  }
+
   // the thread datum
   let threadDatum: Datum = {
     "constructor": 0,

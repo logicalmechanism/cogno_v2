@@ -20,10 +20,24 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet }) =>
       <div className="flex items-center">
         <div className="flex mx-5">
           <CardanoWallet />
-          {connected && network === 0 && (
-            <button className="hover:bg-blue-400 text-black font-bold py-1 px-2 rounded mx-2 h-8" onClick={toggleProfileModal}>
-              My Profile
-            </button>
+          {connected && network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) && (
+            <>
+              <button className="hover:bg-blue-400 text-black font-bold py-1 px-2 rounded mx-2 h-8" onClick={toggleProfileModal}>
+                My Profile
+              </button>
+              {connected && cogno ?
+                (
+                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8'>
+                    <p>Cogno Is Set</p>
+                  </div>
+                ) :
+                (
+                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8'>
+                    <p>Please Create A Cogno Using My Profile</p>
+                  </div>
+                )
+              }
+            </>
           )}
         </div>
         <div className="flex-grow"></div>
