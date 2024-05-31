@@ -19,6 +19,11 @@ reference_script_address=$(${cli} address build --payment-script-file ${referenc
 user_address=$(cat ../wallets/user-1-wallet/payment.addr)
 user_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/user-1-wallet/payment.vkey)
 
+jq \
+--arg pkh "$user_pkh" \
+'.fields[0].fields[0].bytes=$pkh' \
+../data/cogno/cogno-datum.json | sponge ../data/cogno/cogno-datum.json
+
 # collat
 collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)

@@ -61,7 +61,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
     <form onSubmit={handleSubmit} className="thread-form border p-4 rounded">
       {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
       <div className="mb-4">
-        <label className="block text-white text-sm font-bold mb-2">Title</label>
+        <label className="block text-black text-sm font-bold mb-2">Title</label>
         <input
           type="text"
           value={title}
@@ -73,7 +73,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-white text-sm font-bold mb-2">Content</label>
+        <label className="block text-black text-sm font-bold mb-2">Content</label>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -84,7 +84,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
         ></textarea>
       </div>
       <div className="mb-4">
-        <label className="block text-white text-sm font-bold mb-2">
+        <label className="block text-black text-sm font-bold mb-2">
           Category
           <span className="relative group">
             <svg
@@ -94,7 +94,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-black text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               Categories help users filter threads.
             </div>
           </span>
@@ -118,7 +118,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
         </select>
       </div>
       <div className="mb-4">
-        <label className="block text-white text-sm font-bold mb-2">
+        <label className="block text-black text-sm font-bold mb-2">
           Image URL (optional)
           <span className="relative group">
             <svg
@@ -128,7 +128,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-black text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               A image to be attached to the content of a thread.
             </div>
           </span>
@@ -149,7 +149,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           onChange={(e) => setAnonymous(e.target.checked)}
           className="mr-2"
         />
-        <label className="block text-white text-sm font-bold">
+        <label className="block text-black text-sm font-bold">
           Permanent (optional)
           <span className="relative group">
             <svg
@@ -159,14 +159,14 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-black text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               Permanent threads can not be deleted and will be locked forever.
             </div>
           </span>
         </label>
       </div>
       <div className="mb-4">
-        <label className="block text-white text-sm font-bold mb-2">
+        <label className="block text-black text-sm font-bold mb-2">
           Buffer Lovelace (optional)
           <span className="relative group">
             <svg
@@ -176,7 +176,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-700 text-black text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               Supply Lovelace to the UTxO for free comments from other users.
             </div>
           </span>
@@ -191,12 +191,15 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
       </div>
       <button
         type="submit"
-        className="bg-blue-500 text-white p-2 rounded mt-2"
+        className="bg-blue-500 text-black p-2 rounded mt-2"
         disabled={isSubmitting}
       >
         Create Thread
       </button>
-      {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
+      <div className='bg-white'>
+        {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
+
+      </div>
       {notification && <Notification message={notification} onDismiss={clearNotification} />}
     </form>
   );

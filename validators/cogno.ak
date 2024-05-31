@@ -64,8 +64,15 @@ validator(
             genesis_pid,
             genesis_tkn,
           )?,
-          // must burn cogno
-          minting.by_prefix(mint_list, ref_datum.policy_id, #"cafebabe", -1)?,
+          // must burn cafebabe token if it exists
+          or {
+            and {
+              values.prove_nft(this_input.output.value, ref_datum.policy_id)?,
+              minting.by_prefix(mint_list, ref_datum.policy_id, #"cafebabe", -1)?,
+            },
+            // if it doesn't exist then you can still remove it
+            True,
+          },
         }
       }
       // updates the metadata and can change the minimum lovelace
@@ -83,7 +90,9 @@ validator(
         expect that_datum: CognoDatum =
           find.output_datum_by_addr(outputs, this_addr)
         //
-        // 
+        // Send at least that value to this address if and only if the owner
+        // signs the transaction. The owner of the cogno can not change but
+        // the profile information can change to anything.
         //
         and {
           // send at least that value to this address
