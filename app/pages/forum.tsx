@@ -59,7 +59,7 @@ const Forum = () => {
       const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
       const scriptAddress = scriptHashToBech32(scriptHash, undefined, network);
       // this is the cafebabe policy id
-      const policyId = process.env.NEXT_PUBLIC_MINTER_POLICY_ID!;
+      const policyId = process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!;
       const networkName = network === 0 ? 'Preprod' : 'Mainnet';
       const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
       try {
@@ -80,7 +80,7 @@ const Forum = () => {
           return false;
         });
         if (foundUtxo) {
-          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, '');
+          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
           sessionStorage.setItem('tokenName', tokenName);
           // console.log('Found it');
           return foundUtxo;
