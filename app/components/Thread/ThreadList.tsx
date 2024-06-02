@@ -3,20 +3,12 @@ import { UTxO, BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
+import { hexToString } from '../utilities';
 
 interface ThreadListProps {
   network: number | null;
   wallet: BrowserWallet;
   threads: UTxO[];
-}
-
-function hexToString(hex: string): string {
-  let str = '';
-  for (let i = 0; i < hex.length; i += 2) {
-    const hexCode = parseInt(hex.substring(i, i + 2), 16);
-    str += String.fromCharCode(hexCode);
-  }
-  return str;
 }
 
 const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads }) => {
@@ -57,7 +49,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads }) => 
     <div className="thread-list-container flex flex-col my-1 border rounded w-full">
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
-        <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 text-black  p-2 mx-1 rounded w-1/6">All Threads</button>
+        <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 text-black p-2 mx-1 rounded w-1/6">All Threads</button>
         <button onClick={handleFilterMyThreads} className="bg-blue-200 hover:bg-sky-400 text-black  p-2 mx-1 rounded w-1/6">My Threads</button>
         <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-200 hover:bg-sky-400 text-black  border p-2 mx-1 rounded w-1/6 text-center">
           <option value="General">General</option>
