@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { UTxO } from '@meshsdk/core';
+import { UTxO, BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
 
 interface ThreadListProps {
+  network: number | null;
+  wallet: BrowserWallet;
   threads: UTxO[];
 }
 
@@ -17,9 +19,7 @@ function hexToString(hex: string): string {
   return str;
 }
 
-
-
-const ThreadList: React.FC<ThreadListProps> = ({ threads }) => {
+const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads }) => {
   const [filteredThreads, setFilteredThreads] = useState<UTxO[]>(threads);
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
 
@@ -40,10 +40,8 @@ const ThreadList: React.FC<ThreadListProps> = ({ threads }) => {
   const handleFilterByCategory = (category: string) => {
     const filtered = threads.filter(thread => {
       const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-
       return hexToString(parsedDatum.fields[3].bytes) === category;
     });
-  
     setFilteredThreads(filtered);
   };
   
@@ -59,9 +57,9 @@ const ThreadList: React.FC<ThreadListProps> = ({ threads }) => {
     <div className="thread-list-container flex flex-col my-1 border rounded w-full">
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
-        <button onClick={handleFilterAll} className="bg-blue-500 text-white p-2 mx-1 rounded">All</button>
-        <button onClick={handleFilterMyThreads} className="bg-blue-500 text-white p-2 mx-1 rounded">My Threads</button>
-        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-500 text-white border p-2 mx-1 rounded">
+        <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 text-black  p-2 mx-1 rounded w-1/6">All Threads</button>
+        <button onClick={handleFilterMyThreads} className="bg-blue-200 hover:bg-sky-400 text-black  p-2 mx-1 rounded w-1/6">My Threads</button>
+        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-200 hover:bg-sky-400 text-black  border p-2 mx-1 rounded w-1/6 text-center">
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
           <option value="News">News</option>
@@ -91,7 +89,10 @@ const ThreadList: React.FC<ThreadListProps> = ({ threads }) => {
                   <BlurImage imageUrl={imageField} />
                 </div>
               )}
-              <div className={imageField !== '' ? 'w-5/6 flex items-center justify-center' : 'w-full flex items-center justify-center'} onClick={() => {handleThreadClick(thread)}}>
+              <div
+                className={imageField !== '' ? 'w-5/6 flex items-center justify-center' : 'w-full flex items-center justify-center'} 
+                onClick={() => {handleThreadClick(thread)}}
+              >
                 {titleField}
               </div>
             </div>
@@ -101,7 +102,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ threads }) => {
 
       {/* Modal */}
       {selectedThread && (
-        <ThreadModal thread={selectedThread} onClose={closeModal} />
+        <ThreadModal network={network} wallet={wallet} thread={selectedThread} onClose={closeModal} />
       )}
     </div>
   );

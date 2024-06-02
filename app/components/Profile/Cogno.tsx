@@ -133,7 +133,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             <button
               type="button"
               onClick={handleEdit}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${editMode ? 'hidden' : ''}`}
+              className={`bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${editMode ? 'hidden' : ''}`}
             >
               Edit
             </button>
@@ -150,7 +150,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             <div>
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
                 disabled={isSubmitting}
               >
                 Update Cogno
@@ -158,7 +158,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="bg-red-200 hover:bg-rose-400 text-black font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
                 disabled={isSubmitting}
               >
                 Delete Cogno

@@ -195,7 +195,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
         <div className="w-1/4"></div>
         <button
           type="submit"
-          className="bg-blue-500 text-black p-2 rounded mt-2 w-2/4"
+          className="bg-blue-200 hover:bg-sky-400 text-black p-2 rounded mt-2 w-2/4"
           disabled={isSubmitting}
         >
           Create Thread

@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet }) =>
           <CardanoWallet />
           {connected && network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) && (
             <>
-              <button className="hover:bg-blue-400 text-black font-bold py-1 px-2 rounded mx-2 h-8" onClick={toggleProfileModal}>
+              <button className="hover:bg-sky-400 text-black font-bold py-1 px-2 rounded mx-2 h-8" onClick={toggleProfileModal}>
                 My Profile
               </button>
               {connected && cogno ?

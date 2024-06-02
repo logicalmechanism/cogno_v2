@@ -18,7 +18,7 @@ export const Threads: React.FC<ThreadsProps> = ({ threads, network, wallet }) =>
       </div>
       {/* Placeholder for ThreadList component */}
       <div className='w-3/4'>
-        <ThreadList threads={threads}/>
+        <ThreadList network={network} wallet={wallet} threads={threads}/>
       </div>
     </div>
   );
