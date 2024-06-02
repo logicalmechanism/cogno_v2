@@ -1,6 +1,6 @@
 # Cogno V2
 
-The newer, slimmer, and updated version of Congo. Cogno V1 is now [depreciated.](https://github.com/logicalmechanism/cogno) Please visit [cogno.me](https://www.cogno.me) to create a cogno.
+The newer, slimmer, and updated version of Congo. Cogno V1 is now [depreciated.](https://github.com/logicalmechanism/cogno) Please visit [cogno.sucks](https://www.cogno.sucks) to create a cogno.
 
 ```
 cogno an abbreviation of cognomen 
@@ -20,7 +20,7 @@ A smart contract ecosystem for UTxO-based cognomens and on-chain threads. Each c
 
 Use the `complete_build.sh` script to build the contracts using the `config.json` file with Aiken.
 
-## Headless Interaction
+## Headless Happy Path Interaction
 
 Use the `scripts` folder to interact with the dapp in a headless fashion.
 

@@ -51,7 +51,8 @@ validator(
         expect cogno_datum: CognoDatum =
           find.output_datum_by_addr(outputs, cogno_addr)
         //
-        //
+        // The owner of the cogno must sign the transactions that sends at 
+        // least the cafebabe token to the cogno address with a CognoDatum.
         //
         and {
           // owner must sign
@@ -84,7 +85,8 @@ validator(
             |> value.from_minted_value()
             |> value.flatten()
         //
-        //
+        // Burning can occur whenever but the only thing can be burned are
+        // tokens that are prefixed with cafebabe.
         //
         minting.by_prefix(mint_list, currency_symbol, #"cafebabe", -1)?
       }

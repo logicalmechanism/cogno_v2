@@ -24,27 +24,10 @@ const Forum = () => {
   const [notification, setNotification] = useState<string>('');
   const [cogno, setCogno] = useState<null | UTxO>(null);
   const [threads, setThreads] = useState<UTxO[]>([]);
-  const [myThreads, setMyThreads] = useState<UTxO[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
 
   // Function to clear notification
   const clearNotification = () => setNotification('');
-
-  const findMyThreads = (utxos: UTxO[]): UTxO[] => {
-    // get the token name if it exists
-    const tokenName = sessionStorage.getItem('tokenName');
-    const threads: UTxO[] = [];
-    // loop all the thread utxos and find all the utxos referencing the token name
-    utxos.forEach((utxo: UTxO) => {
-      const datum = parseDatumCbor(utxo.output.plutusData!);
-      console.log(datum);
-      if (datum.fields[5].bytes === tokenName) {
-        threads.push(utxo);
-      }
-    });
-    return threads;
-  }
 
   const findThreads = useCallback(async (): Promise<UTxO[]> => {
     if (network !== null) {
@@ -76,7 +59,7 @@ const Forum = () => {
       const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
       const scriptAddress = scriptHashToBech32(scriptHash, undefined, network);
       // this is the cafebabe policy id
-      const policyId = process.env.NEXT_PUBLIC_MINTER_POLICY_ID!;
+      const policyId = process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!;
       const networkName = network === 0 ? 'Preprod' : 'Mainnet';
       const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
       try {
@@ -97,7 +80,7 @@ const Forum = () => {
           return false;
         });
         if (foundUtxo) {
-          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, '');
+          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
           sessionStorage.setItem('tokenName', tokenName);
           // console.log('Found it');
           return foundUtxo;
@@ -133,8 +116,6 @@ const Forum = () => {
     setCogno(_cogno);
     const _threads = await findThreads();
     setThreads(_threads);
-    const _myThreads = findMyThreads(_threads);
-    setMyThreads(_myThreads);
     setIsLoading(false);
   };
 
@@ -146,8 +127,6 @@ const Forum = () => {
         setCogno(_cogno);
         const _threads = await findThreads();
         setThreads(_threads);
-        const _myThreads = findMyThreads(_threads);
-        setMyThreads(_myThreads);
         setIsLoading(false);
       };
       fetchCognoAndThreads();

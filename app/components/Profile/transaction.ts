@@ -122,9 +122,9 @@ export const handleCognoTransaction = async (network: number | null,
       console.log('Remove cogno:', cogno);
 
       // this token name
-      const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!));
+      const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!));
       console.log('unit:', thisUnit)
-      const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, '');
+      const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
       console.log('Token Name:', tokenName);
 
       // burn redeemer
@@ -142,14 +142,14 @@ export const handleCognoTransaction = async (network: number | null,
       console.log('Remove Redeemer: ', removeRedeemer);
 
       mesh
-        .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_REF_HASH!, 0)
+        .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
         .spendingPlutusScriptV2()
         .txIn(cogno.input.txHash!, cogno.input.outputIndex!)
         .txInInlineDatumPresent()
         .txInRedeemerValue(removeRedeemer, undefined, 'JSON')
         .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_HASH!, 1)
         .mintPlutusScriptV2()
-        .mint("-1", process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, tokenName!)
+        .mint("-1", process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, tokenName!)
         .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
         .mintTxInReference(process.env.NEXT_PUBLIC_MINTER_REF_HASH!, 1)
         .requiredSignerHash(walletKeyHashes.pubKeyHash)
@@ -160,15 +160,15 @@ export const handleCognoTransaction = async (network: number | null,
       console.log('Updating cogno:', cogno);
 
       // this token name
-      const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!));
+      const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!));
       console.log('unit:', thisUnit)
-      const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, '');
+      const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
       console.log('Token Name:', tokenName);
 
       // create teh asset list for the output using the new token
       let assets: Asset[] = [];
       let thisAsset = {
-        unit: process.env.NEXT_PUBLIC_MINTER_POLICY_ID! + tokenName,
+        unit: process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH! + tokenName,
         quantity: "1",
       };
       assets.push(thisAsset);
@@ -237,7 +237,7 @@ export const handleCognoTransaction = async (network: number | null,
     // create teh asset list for the output using the new token
     let assets: Asset[] = [];
     let thisAsset = {
-      unit: process.env.NEXT_PUBLIC_MINTER_POLICY_ID! + tokenName,
+      unit: process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH! + tokenName,
       quantity: "1",
     };
     assets.push(thisAsset);
@@ -284,11 +284,11 @@ export const handleCognoTransaction = async (network: number | null,
 
     // add in the output and the minting requirements
     mesh
-      .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_REF_HASH!, 0)
+      .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
       .txOut(scriptAddress!, assets)
       .txOutInlineDatumValue(cognoDatum, "JSON")
       .mintPlutusScriptV2()
-      .mint("1", process.env.NEXT_PUBLIC_MINTER_POLICY_ID!, tokenName)
+      .mint("1", process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, tokenName)
       .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
       .mintTxInReference(process.env.NEXT_PUBLIC_MINTER_REF_HASH!, 1)
       .requiredSignerHash(walletKeyHashes.pubKeyHash)

@@ -40,7 +40,10 @@ validator(
     expect reference_datum: ReferenceDatum =
       find.output_datum_by_nft(outputs, currency_symbol, token_name)
     //
-    // 
+    // Send at least the genesis token to the data reference contract. The 
+    // datum must contain a valid length policy id and cogno validator hash.
+    // The output reference known at compile time must be spent inside this
+    // transaction.
     //
     and {
       // policy id must have correct length

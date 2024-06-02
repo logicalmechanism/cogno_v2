@@ -23,9 +23,6 @@ user_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/us
 collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)
 
-# the policy id
-policy_id=$(cat ../../hashes/minter_contract.hash)
-
 echo -e "\033[0;36m Gathering UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \

@@ -52,7 +52,8 @@ validator(
         // this script address
         let this_addr: Address = this_input.output.address
         //
-        //
+        // If the owner of the cogno associated with this thread signs the
+        // transaction then it can be removed from the contract.
         //
         and {
           // owner must sign
@@ -85,7 +86,8 @@ validator(
         expect that_datum: ThreadDatum =
           find.output_datum_by_addr(outputs, this_addr)
         //
-        // 
+        // Send at least this value to this address with a new comment inside
+        // the datum. This transaction can be done by anyone.
         //
         and {
           // send at least this value to this address

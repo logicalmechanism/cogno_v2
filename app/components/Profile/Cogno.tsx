@@ -109,10 +109,10 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             disabled={!editMode && cogno !== null}
             autoComplete="off"
           />
-          {cogno &&
+          {cogno && image !== '' &&
             (
-              <div>
-                <p className="block text-gray-700 text-sm font-bold mb-2">Image Preview</p>
+              <div className=''>
+                <p className="block text-gray-700 text-sm font-bold my-2">Image Preview</p>
                 <BlurImage imageUrl={image} />
               </div>
             )}
@@ -133,14 +133,14 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             <button
               type="button"
               onClick={handleEdit}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${editMode ? 'hidden' : ''}`}
+              className={`bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${editMode ? 'hidden' : ''}`}
             >
               Edit
             </button>
           ) : (
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-green-200 hover:bg-teal-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               disabled={isSubmitting}
             >
               Create Cogno
@@ -150,7 +150,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             <div>
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
                 disabled={isSubmitting}
               >
                 Update Cogno
@@ -158,7 +158,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="bg-red-200 hover:bg-rose-400 text-black font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
                 disabled={isSubmitting}
               >
                 Delete Cogno
@@ -167,7 +167,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
           )}
         </div>
       </form>
-      {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
       {notification && <Notification message={notification} onDismiss={clearNotification} />}
     </div>
   );

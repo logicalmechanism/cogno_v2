@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       <div className="text-center">
         <p className="mb-4">By clicking "Yes," you acknowledge that the information displayed on this website is not controlled by the website itself but is sourced from data on the Cardano blockchain.</p>
         <p className="mb-4">You also understand that you may encounter content that is offensive and/or illegal.</p>
-        <p className="mb-4 text-red-500">Proceed at your own risk.</p>
+        <p className="mb-4 text-red-500 font-extrabold">Proceed at your own risk.</p>
         <p className="mb-4">If you agree, click Yes; otherwise, click No.</p>
         <button
           onClick={handleAgree}
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
       </div>
       <div className="text-center flex flex-col justify-center h-screen">
         <p className="mb-4">
-          If you like learn more about Cogno <a href="/about" className="text-blue-500 underline">click here</a>.
+          If you like learn more about Cogno, please visit the <a href="/about" className="text-blue-300 underline">about page</a>.
         </p>
       </div>
     </div>

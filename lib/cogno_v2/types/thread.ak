@@ -17,6 +17,13 @@ pub type ThreadDatum {
   tkn: AssetName,
 }
 
+/// Check that the comment being added to the thread is valid, i.e. it can not
+/// be empty and it must be pushed to the already existing comment list inside
+/// the thread datum.
+///
+/// ```aiken
+/// thread.is_valid_comment(this_datum, that_datum, redeemer_value)
+/// ```
 pub fn is_valid_comment(
   old: ThreadDatum,
   new: ThreadDatum,
@@ -53,7 +60,7 @@ test append_to_list_check() fail {
   list.push(x, 1) == y
 }
 
-// A thread can only be removed or commented on
+// A thread can only be removed or commented on.
 pub type ThreadRedeemer {
   RemoveThread
   CommentThread(ByteArray)
