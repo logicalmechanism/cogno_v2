@@ -6,8 +6,10 @@ interface SuccessTextProps {
 
 const SuccessText: React.FC<SuccessTextProps> = ({ txHash }) => {
   return (
-    <div className="">
+    <div className="border rounded my-1">
       <h3 className="text-lg font-semibold text-gray-800">Transaction Successful!</h3>
+      <br />
+      <h5 className="text-md font-semibold text-gray-800">Click Refresh Cogno</h5>
       <br />
       <a
         href={`https://preprod.cardanoscan.io/transaction/${txHash}`}

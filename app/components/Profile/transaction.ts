@@ -142,7 +142,7 @@ export const handleCognoTransaction = async (network: number | null,
       console.log('Remove Redeemer: ', removeRedeemer);
 
       mesh
-        .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_REF_HASH!, 0)
+        .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
         .spendingPlutusScriptV2()
         .txIn(cogno.input.txHash!, cogno.input.outputIndex!)
         .txInInlineDatumPresent()
@@ -284,7 +284,7 @@ export const handleCognoTransaction = async (network: number | null,
 
     // add in the output and the minting requirements
     mesh
-      .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_REF_HASH!, 0)
+      .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
       .txOut(scriptAddress!, assets)
       .txOutInlineDatumValue(cognoDatum, "JSON")
       .mintPlutusScriptV2()
