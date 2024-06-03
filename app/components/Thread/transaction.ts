@@ -408,8 +408,12 @@ export const handleCommentCreation = async (
     '10000000',
   );
 
+  // the lovelace on the thread
+  const lovelace = thread.output.amount.find((asset: OutputAmount) => asset.unit.includes('lovelace'));
+  console.log(lovelace)
+
   // keepRelevant should account for 
-  const selectedUtxos = keepRelevant(assetMap, utxos);
+  const selectedUtxos = keepRelevant(assetMap, utxos, lovelace?.quantity);
   console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
@@ -478,15 +482,14 @@ export const handleCommentCreation = async (
   };
   console.log('Comment Redeemer: ', commentRedeemer);
 
-  // add the change address and teh collateral
-  const lovelace = thread.output.amount.find((asset: OutputAmount) => asset.unit.includes('lovelace'));
-  console.log(lovelace)
+  
   let assets: Asset[] = [];
-  let thisAsset = {
-    unit: lovelace!.unit,
-    quantity: lovelace!.quantity,
-  };
-  assets.push(thisAsset);
+  // this needs to be taken into account for buffer amounts.
+  // let thisAsset = {
+  //   unit: lovelace!.unit,
+  //   quantity: lovelace!.quantity,
+  // };
+  // assets.push(thisAsset);
 
   mesh
     .spendingPlutusScriptV2()

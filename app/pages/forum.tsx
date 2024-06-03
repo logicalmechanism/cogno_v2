@@ -68,9 +68,7 @@ const Forum = () => {
         const keyHashes = walletKeyHashes ? JSON.parse(walletKeyHashes) : null;
 
         const foundUtxo = utxos.find(utxo => {
-          // console.log('UTxO:', utxo);
           const datum = parseDatumCbor(utxo.output.plutusData);
-          // console.log('Datum:', datum);
           const walletType = datum.fields[0];
           // find the first occurrence of a cogno that matches the key hashes
           if (walletType.fields[0].bytes === keyHashes.pubKeyHash && walletType.fields[1].bytes === keyHashes.stakeCredential) {
@@ -82,10 +80,8 @@ const Forum = () => {
         if (foundUtxo) {
           const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
           sessionStorage.setItem('tokenName', tokenName);
-          // console.log('Found it');
           return foundUtxo;
         } else {
-          // console.error('Nothing was found.');
           return null;
         }
       } catch (error) {
@@ -102,8 +98,6 @@ const Forum = () => {
     if (wallet) {
       const _network = await wallet.getNetworkId();
       const changeAddress = await wallet.getChangeAddress();
-      // console.log('pkh', serializeBech32Address(changeAddress).pubKeyHash);
-      // console.log('sc', serializeBech32Address(changeAddress).stakeCredential);
       sessionStorage.setItem('changeAddress', changeAddress);
       sessionStorage.setItem('walletKeyHashes', JSON.stringify(serializeBech32Address(changeAddress)));
       setNetwork(_network);

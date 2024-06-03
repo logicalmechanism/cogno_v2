@@ -29,9 +29,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
   useEffect(() => {
     if (cogno) {
       const datum = parseDatumCbor(cogno.output.plutusData!)
-      // console.log(datum.fields[1].fields[0].bytes, hexToString(datum.fields[1].fields[0].bytes));
-      // console.log(datum.fields[1].fields[1].bytes, hexToString(datum.fields[1].fields[1].bytes));
-      // console.log(datum.fields[1].fields[2].bytes, hexToString(datum.fields[1].fields[2].bytes));
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');

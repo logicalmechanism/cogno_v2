@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useRouter } from "next/router";
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import Notification from '../Notification';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { hexToString } from '../utilities';
 import { handleCommentCreation } from './transaction';
 import SuccessText from '../SuccessText';
+import { MaestroProvider } from '@meshsdk/core';
+
 
 interface CommentProps {
   thread: UTxO;
@@ -23,6 +26,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,11 +43,33 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      // this is where the actual sc interaction will be
+      // const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+      // const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+      // const retryDelay = 5000; // 5 seconds
+      // const maxRetries = 15;
+
+      // const navigateWithRetry = async (retryCount = 0): Promise<void> => {
+      //   try {
+      //     await router.push('/forum');
+      //     // router.reload(); // This line will be called only if router.push is successful
+      //   } catch (error) {
+      //     if (retryCount < maxRetries) {
+      //       setTimeout(() => navigateWithRetry(retryCount + 1), retryDelay);
+      //     } else {
+      //       console.error(`Failed to navigate to /forum after ${maxRetries} attempts.`, error);
+      //     }
+      //   }
+      // };
+
+      // maestro.onTxConfirmed(result.message, async () => {
+      //   await navigateWithRetry();
+      // });
     }
   };
 
   const comments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
-  console.log(comments)
 
   return (
     <div className="container flex flex-col">
@@ -61,6 +87,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
               required
               autoComplete="off"
               maxLength={1000}
+              disabled={isSubmitting}
             ></textarea>
           </div>
           <button
@@ -76,8 +103,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       </div>
       <div className="comments-container overflow-y-scroll max-h-96 text-black">
         <h3 className="text-lg font-bold">Comments</h3>
-        {comments.map((c, index) => {
-          console.log(c)
+        {comments.reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
           return (
             <div
