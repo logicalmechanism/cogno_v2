@@ -6,23 +6,15 @@ import { BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import BlurImage from '../BlurImage';
 import SuccessText from '../SuccessText';
-import Notification from '../Notification';
+import {Comments} from './Comments';
 import { handleThreadDeletion } from './transaction';
+import { hexToString } from '../utilities';
 
 interface ThreadModalProps {
   network: number | null;
   wallet: BrowserWallet;
   thread: UTxO;
   onClose: () => void;
-}
-
-function hexToString(hex: string): string {
-  let str = '';
-  for (let i = 0; i < hex.length; i += 2) {
-    const hexCode = parseInt(hex.substring(i, i + 2), 16);
-    str += String.fromCharCode(hexCode);
-  }
-  return str;
 }
 
 export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose }) => {
@@ -106,35 +98,8 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
             </p>
           </div>
         </div>
-        {/* Comment form */}
-        <div className="flex space-x-4">
-          <form onSubmit={handleSubmit} className="thread-form border p-4 rounded">
-            
-            <div className="mb-4">
-              <label className="block text-black text-sm font-bold mb-2">Comment</label>
-              <input
-                type="textarea"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className="border p-2 rounded w-full text-black"
-                required
-                autoComplete="off"
-                maxLength={300}
-              />
-            </div>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => { }}
-            >
-              Add Comment
-            </button>
-            {notification && <Notification message={notification} onDismiss={clearNotification} />}
-          </form>
-        </div>
-        <div>
-          <h3 className="text-lg font-bold">Comments</h3>
-          {/* Placeholder for comments */}
-        </div>
+        {/* Comments here*/}
+        <Comments thread={thread} network={network} wallet={wallet} />
       </div>
     </div>
   );

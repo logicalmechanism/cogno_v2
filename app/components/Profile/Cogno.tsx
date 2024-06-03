@@ -5,21 +5,13 @@ import { handleCognoTransaction } from './transaction';
 import BlurImage from '../BlurImage';
 import Notification from '../Notification';
 import SuccessText from '../SuccessText';
+import { hexToString } from '../utilities';
 
 interface CognoProps {
   network: number | null;
   wallet: BrowserWallet;
   cogno: UTxO | null;
   onClose: () => void; // Function to close the modal
-}
-
-function hexToString(hex: string): string {
-  let str = '';
-  for (let i = 0; i < hex.length; i += 2) {
-    const hexCode = parseInt(hex.substring(i, i + 2), 16);
-    str += String.fromCharCode(hexCode);
-  }
-  return str;
 }
 
 const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
@@ -37,9 +29,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
   useEffect(() => {
     if (cogno) {
       const datum = parseDatumCbor(cogno.output.plutusData!)
-      // console.log(datum.fields[1].fields[0].bytes, hexToString(datum.fields[1].fields[0].bytes));
-      // console.log(datum.fields[1].fields[1].bytes, hexToString(datum.fields[1].fields[1].bytes));
-      // console.log(datum.fields[1].fields[2].bytes, hexToString(datum.fields[1].fields[2].bytes));
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');

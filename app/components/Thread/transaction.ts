@@ -17,7 +17,7 @@ interface IntField {
 }
 
 interface ListField {
-  list: []
+  list: object[]
 }
 
 interface ConstructorField {
@@ -62,7 +62,8 @@ function stringToHex(str: string): string {
 export const handleThreadCreation = async (
   network: number | null,
   wallet: BrowserWallet,
-  data: ThreadData,): Promise<SuccessMsg> => {
+  data: ThreadData,
+): Promise<SuccessMsg> => {
   // create a thread
   // get all the utxos
   const utxos = await wallet.getUtxos();
@@ -225,7 +226,8 @@ export const handleThreadCreation = async (
 export const handleThreadDeletion = async (
   network: number | null,
   wallet: BrowserWallet,
-  thread: UTxO,): Promise<SuccessMsg> => {
+  thread: UTxO,
+): Promise<SuccessMsg> => {
   // delete a thread
   const utxos = await wallet.getUtxos();
   console.log('Wallet UTxOs: ', utxos);
@@ -278,7 +280,7 @@ export const handleThreadDeletion = async (
   const cogno = cognoScriptUtxos.find(utxo => {
     console.log('UTxO:', utxo.output.amount);
     // find the first occurrence of a cogno that matches the key hashes
-    
+
     if (utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(tokenName!))) {
       // make sure this cogno holds the correct token
       return utxo
@@ -371,9 +373,185 @@ export const handleThreadDeletion = async (
   };
 }
 
-export const handleThreadComment = async (): Promise<SuccessMsg> => {
+export const handleCommentCreation = async (
+  network: number | null,
+  wallet: BrowserWallet,
+  thread: UTxO,
+  comment: string,
+): Promise<SuccessMsg> => {
+  // create a comment
+  // get all the utxos
+  const utxos = await wallet.getUtxos();
+  console.log('Wallet UTxOs: ', utxos);
+
+  // the change address is from the login
+  const changeAddress = sessionStorage.getItem('changeAddress');
+  console.log('Change Address: ', changeAddress);
+
+  const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
+  console.log('Wallet Key Hashes:', walletKeyHashes);
+
+  // if the collateral is not set then we need to inform the user
+  const collateralUTxOs = await wallet.getCollateral();
+  console.log('Collateral: ', collateralUTxOs);
+  if (collateralUTxOs.length === 0) {
+    return {
+      success: false,
+      message: 'Collateral Not Set'
+    };
+  }
+
+  // we need to get ada to pay for the required lovelace
+  const assetMap = new Map<Unit, Quantity>();
+  assetMap.set(
+    'lovelace',
+    '10000000',
+  );
+
+  // the lovelace on the thread
+  const lovelace = thread.output.amount.find((asset: OutputAmount) => asset.unit.includes('lovelace'));
+  console.log(lovelace)
+
+  // keepRelevant should account for 
+  const selectedUtxos = keepRelevant(assetMap, utxos, lovelace?.quantity);
+  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+
+  // this is where the actual sc interaction will be
+  const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+  const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+  const mesh = new MeshTxBuilder({
+    fetcher: maestro,
+    submitter: maestro,
+    evaluator: maestro,
+  });
+
+  // script address for cogno
+  const scriptHash = process.env.NEXT_PUBLIC_THREAD_SCRIPT_HASH!;
+  const scriptAddress = scriptHashToBech32(scriptHash, undefined, network!);
+
+  // add the change address and teh collateral
+  mesh
+    .changeAddress(changeAddress!)
+    .txInCollateral(collateralUTxOs[0].input.txHash, collateralUTxOs[0].input.outputIndex);
+
+  // add in the inputs
+  selectedUtxos.forEach(item => {
+    mesh.txIn(item.input.txHash, item.input.outputIndex)
+  });
+
+  // the thread datum
+  const currentComments: object[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+  currentComments.unshift(
+    {
+      "bytes": stringToHex(comment)
+    }
+  );
+  let threadDatum: Datum = {
+    "constructor": 0,
+    "fields": [
+      {
+        "bytes": parseDatumCbor(thread.output.plutusData!).fields[0].bytes
+      },
+      {
+        "bytes": parseDatumCbor(thread.output.plutusData!).fields[1].bytes
+      },
+      {
+        "bytes": parseDatumCbor(thread.output.plutusData!).fields[2].bytes
+      },
+      {
+        "bytes": parseDatumCbor(thread.output.plutusData!).fields[3].bytes
+      },
+      {
+        "list": currentComments
+      },
+      {
+        "bytes": parseDatumCbor(thread.output.plutusData!).fields[5].bytes
+      }
+    ]
+  };
+  console.log('Thread Datum:', threadDatum);
+
+  // comment redeemer
+  let commentRedeemer: Redeemer = {
+    "constructor": 1,
+    "fields": [
+      {
+        'bytes': stringToHex(comment)
+      }
+    ]
+  };
+  console.log('Comment Redeemer: ', commentRedeemer);
+
+  
+  let assets: Asset[] = [];
+  // this needs to be taken into account for buffer amounts.
+  // let thisAsset = {
+  //   unit: lovelace!.unit,
+  //   quantity: lovelace!.quantity,
+  // };
+  // assets.push(thisAsset);
+
+  mesh
+    .spendingPlutusScriptV2()
+    .txIn(thread.input.txHash!, thread.input.outputIndex!)
+    .txInInlineDatumPresent()
+    .txInRedeemerValue(commentRedeemer, undefined, 'JSON')
+    .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_HASH!, 1)
+    .txOut(scriptAddress!, assets)
+    .txOutInlineDatumValue(threadDatum, "JSON");
+
+  // use awaits here as a test
+  try {
+    await mesh.complete();
+  } catch (error) {
+    console.error('Maestro Error: ', error);
+    return {
+      success: false,
+      message: `Maestro Error: ${error}`
+    };
+  }
+
+  let unsignedTx;
+  try {
+    // Complete the signing process
+    unsignedTx = mesh.completeSigning();
+    console.log('Unsigned Tx: ', unsignedTx);
+  } catch (error) {
+    console.error('Complete Signing Error: ', error);
+    return {
+      success: false,
+      message: `Complete Signing Error: ${error}`
+    };
+  }
+
+  // Prompt wallet to sign it
+  let signedTx;
+  try {
+    signedTx = await wallet.signTx(unsignedTx, true);
+    console.log('Signed Tx: ', signedTx);
+  } catch (error) {
+    console.error('Transaction Sign Error: ', error);
+    return {
+      success: false,
+      message: `Transaction Sign Error: ${error}`
+    };
+  }
+
+  // Submit the signed transaction
+  let txHash;
+  try {
+    txHash = await wallet.submitTx(signedTx);
+    console.log('Tx Hash: ', txHash);
+  } catch (error) {
+    console.error('Transaction Submission Error: ', error);
+    return {
+      success: false,
+      message: `Transaction Submission Error: ${error}`
+    };
+  }
+
   return {
     success: true,
-    message: ''
+    message: txHash
   };
 }

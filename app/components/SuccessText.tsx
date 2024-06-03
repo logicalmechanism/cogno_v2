@@ -10,7 +10,7 @@ const SuccessText: React.FC<SuccessTextProps> = ({ txHash }) => {
       <h3 className="text-lg font-semibold text-gray-800">Transaction Successful!</h3>
       <br />
       <h5 className="text-md font-semibold text-gray-800">
-        Wait For The Transaction To Get On-Chain Then Click Refresh Cogno<br />Or<br />Track The Status By 
+        Wait For The Transaction To Get On-Chain Then Click Refresh Cogno<br />Or<br />Track The Status By<br/>
         <a
         href={`https://preprod.cardanoscan.io/transaction/${txHash}`}
         target="_blank"
