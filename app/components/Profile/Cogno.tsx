@@ -6,15 +6,16 @@ import BlurImage from '../BlurImage';
 import Notification from '../Notification';
 import SuccessText from '../SuccessText';
 import { hexToString } from '../utilities';
+import { MaestroProvider } from '@meshsdk/core';
 
 interface CognoProps {
   network: number | null;
   wallet: BrowserWallet;
   cogno: UTxO | null;
-  onClose: () => void; // Function to close the modal
+  refreshCogno: () => void; // Function to refresh Cogno
 }
 
-const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
+const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) => {
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
@@ -39,6 +40,36 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
     setEditMode(true);
   };
 
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+      const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+      const retryDelay = 5000; // 5 seconds
+      const maxRetries = 15;
+
+      const navigateWithRetry = async (retryCount = 0): Promise<void> => {
+        try {
+          setNotification('Transaction Is On-Chain');
+          refreshCogno();
+          setTitle('');
+          setImage('');
+          setDetails('');
+          setSubmittedTxHash('');
+          setShowSuccessLink(false);
+        } catch (error) {
+          if (retryCount < maxRetries) {
+            setTimeout(() => navigateWithRetry(retryCount + 1), retryDelay);
+          } else {
+            console.error(`Failed to navigate to /forum after ${maxRetries} attempts.`, error);
+          }
+        }
+      };
+
+      maestro.onTxConfirmed(message, async () => {
+        await navigateWithRetry();
+      });
+  };
+
   const handleDelete = async () => {
     setEditMode(false);
     setSubmittedTxHash('');
@@ -51,6 +82,8 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      // this is where the actual sc interaction will be
+      checkTransaction(network!, result.message);
     }
   };
 
@@ -68,6 +101,8 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      // this is where the actual sc interaction will be
+      checkTransaction(network!, result.message);
     }
   };
 
@@ -83,7 +118,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, onClose }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            disabled={!editMode && cogno !== null}
+            disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
           />
         </div>

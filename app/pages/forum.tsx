@@ -44,11 +44,11 @@ const Forum = () => {
 
         return utxos;
       } catch (error) {
-        console.error('Error fetching UTxOs: ', error);
+        // console.error('Error fetching UTxOs: ', error);
         return [];
       }
     } else {
-      console.error('Bad Network');
+      // console.error('Bad Network');
       return [];
     }
   }, [network]);
@@ -85,11 +85,11 @@ const Forum = () => {
           return null;
         }
       } catch (error) {
-        console.error('Error fetching UTxOs: ', error);
+        // console.error('Error fetching UTxOs: ', error);
         return null;
       }
     } else {
-      console.error('Bad Network');
+      // console.error('Bad Network');
       return null; // Ensure a return value for all code paths
     }
   }, [network]);
@@ -110,6 +110,13 @@ const Forum = () => {
     setCogno(_cogno);
     const _threads = await findThreads();
     setThreads(_threads);
+    setIsLoading(false);
+  };
+
+  const refreshCogno = async () => {
+    setIsLoading(true);
+    const _cogno = await findCogno();
+    setCogno(_cogno);
     setIsLoading(false);
   };
 
@@ -155,7 +162,7 @@ const Forum = () => {
 
   return (
     <div>
-      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} />
+      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} />
       {connected ? (
         network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
           <div>

@@ -19,7 +19,6 @@ const SuccessText: React.FC<SuccessTextProps> = ({ txHash }) => {
         Viewing The Transaction
       </a>
       </h5>
-      
     </div>
   );
 };

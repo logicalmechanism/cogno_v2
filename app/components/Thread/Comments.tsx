@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from "next/router";
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import Notification from '../Notification';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -26,7 +25,6 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +74,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       <div className="">
         <form onSubmit={handleSubmit} className="border p-4 rounded">
           <div className='flex flex-col text-center items-center'>
-            {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
+            {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
           </div>
           <div className="mb-4 max-w-full">
             <label className="block text-black text-sm font-bold mb-2">Add A Comment</label>

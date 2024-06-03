@@ -14,7 +14,7 @@ const Forum = () => {
       <div className="text-center">
         <button
           onClick={handleBack}
-          className="bg-green-200 hover:bg-green-400 text-black font-bold py-2 px-4 my-5 rounded"
+          className="bg-green-200 hover:bg-teal-400 text-black  font-bold py-2 px-4 my-5 rounded"
         >
           Go Back Home
         </button>
