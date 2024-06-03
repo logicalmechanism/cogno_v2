@@ -49,8 +49,8 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
 
       const navigateWithRetry = async (retryCount = 0): Promise<void> => {
         try {
-          setNotification('Transaction Is On-Chain');
           refreshCogno();
+          setNotification('Transaction Is On-Chain');
           setTitle('');
           setImage('');
           setDetails('');
@@ -107,47 +107,47 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
   };
 
   return (
-    <div className="max-w-lg mx-auto py-1 bg-white shadow-md rounded-md items-center">
+    <div className="max-w-lg mx-auto py-1 bg-gray-400 shadow-md rounded-md items-center">
       {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">Name</label>
+          <label className="block text-black text-sm font-bold mb-2" htmlFor="title">Name</label>
           <input
             id="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">Image URL</label>
+          <label className="block text-black text-sm font-bold mb-2" htmlFor="image">Image URL</label>
           <input
             id="image"
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             disabled={!editMode && cogno !== null}
             autoComplete="off"
           />
           {cogno && image !== '' &&
             (
               <div className=''>
-                <p className="block text-gray-700 text-sm font-bold my-2">Image Preview</p>
+                <p className="block text-black text-sm font-bold my-2">Image Preview</p>
                 <BlurImage imageUrl={image} />
               </div>
             )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="details">Details</label>
+          <label className="block text-black text-sm font-bold mb-2" htmlFor="details">Details</label>
           <textarea
             id="details"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             disabled={!editMode && cogno !== null}
             autoComplete="off"
           />
