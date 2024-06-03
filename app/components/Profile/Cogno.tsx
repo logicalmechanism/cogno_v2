@@ -39,35 +39,23 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
   const handleEdit = () => {
     setEditMode(true);
   };
-
+  
   const checkTransaction = (network: number, message: string) => {
     const networkName = network === 0 ? 'Preprod' : 'Mainnet';
-      const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
 
-      const retryDelay = 5000; // 5 seconds
-      const maxRetries = 15;
+    const maxRetries = 250;
 
-      const navigateWithRetry = async (retryCount = 0): Promise<void> => {
-        try {
-          refreshCogno();
-          setNotification('Transaction Is On-Chain');
-          setTitle('');
-          setImage('');
-          setDetails('');
-          setSubmittedTxHash('');
-          setShowSuccessLink(false);
-        } catch (error) {
-          if (retryCount < maxRetries) {
-            setTimeout(() => navigateWithRetry(retryCount + 1), retryDelay);
-          } else {
-            console.error(`Failed to navigate to /forum after ${maxRetries} attempts.`, error);
-          }
-        }
-      };
-
-      maestro.onTxConfirmed(message, async () => {
-        await navigateWithRetry();
-      });
+    maestro.onTxConfirmed(message, async () => {
+      refreshCogno();
+      setNotification('Transaction Is On-Chain');
+      setTitle('');
+      setImage('');
+      setDetails('');
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+    }, maxRetries);
+ 
   };
 
   const handleDelete = async () => {

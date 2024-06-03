@@ -41,29 +41,6 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
-      // this is where the actual sc interaction will be
-      // const networkName = network === 0 ? 'Preprod' : 'Mainnet';
-      // const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
-
-      // const retryDelay = 5000; // 5 seconds
-      // const maxRetries = 15;
-
-      // const navigateWithRetry = async (retryCount = 0): Promise<void> => {
-      //   try {
-      //     await router.push('/forum');
-      //     // router.reload(); // This line will be called only if router.push is successful
-      //   } catch (error) {
-      //     if (retryCount < maxRetries) {
-      //       setTimeout(() => navigateWithRetry(retryCount + 1), retryDelay);
-      //     } else {
-      //       console.error(`Failed to navigate to /forum after ${maxRetries} attempts.`, error);
-      //     }
-      //   }
-      // };
-
-      // maestro.onTxConfirmed(result.message, async () => {
-      //   await navigateWithRetry();
-      // });
     }
   };
 

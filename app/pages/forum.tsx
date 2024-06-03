@@ -120,6 +120,13 @@ const Forum = () => {
     setIsLoading(false);
   };
 
+  const refreshThreads = async () => {
+    setIsLoading(true);
+    const _threads = await findThreads();
+    setThreads(_threads);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (network !== null) {
       const fetchCognoAndThreads = async () => {
@@ -181,7 +188,7 @@ const Forum = () => {
                 Refresh Cogno
               </button>
               </div>
-              <Threads threads={threads} network={network} wallet={wallet} />
+              <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/>
             </div>)
             }
           </div>

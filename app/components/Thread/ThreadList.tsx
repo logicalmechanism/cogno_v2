@@ -9,9 +9,10 @@ interface ThreadListProps {
   network: number | null;
   wallet: BrowserWallet;
   threads: UTxO[];
+  refreshThread: () => void; // Function to refresh threads
 }
 
-const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads }) => {
+const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refreshThread }) => {
   const [filteredThreads, setFilteredThreads] = useState<UTxO[]>(threads);
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
 
