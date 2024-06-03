@@ -12,19 +12,36 @@ interface CommentProps {
   thread: UTxO;
   network: number | null;
   wallet: BrowserWallet;
+  refreshThread: () => void; // Function to refresh threads
 }
 
 interface BytesField {
   bytes: string;
 }
 
-export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) => {
+export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refreshThread }) => {
   const [comment, setComment] = useState('');
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
+
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+    const maxRetries = 250;
+
+    maestro.onTxConfirmed(message, async () => {
+      refreshThread();
+      setNotification('Transaction Is On-Chain');
+      // reset all the values
+      setIsSubmitting(false);
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+    }, maxRetries);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +58,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      checkTransaction(network!, result.message);
     }
   };
 

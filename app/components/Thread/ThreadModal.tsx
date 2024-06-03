@@ -9,16 +9,18 @@ import SuccessText from '../SuccessText';
 import {Comments} from './Comments';
 import { handleThreadDeletion } from './transaction';
 import { hexToString } from '../utilities';
+import { MaestroProvider } from '@meshsdk/core';
+import Notification from '../Notification';
 
 interface ThreadModalProps {
   network: number | null;
   wallet: BrowserWallet;
   thread: UTxO;
   onClose: () => void;
+  refreshThread: () => void; // Function to refresh threads
 }
 
-export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose }) => {
-  const [comment, setComment] = useState('');
+export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose, refreshThread }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
@@ -27,6 +29,22 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const parsedDatum = parseDatumCbor(thread.output.plutusData!);
   const tokenName = sessionStorage.getItem('tokenName');
   const isOwner = tokenName === parsedDatum.fields[5].bytes;
+
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+    const maxRetries = 250;
+
+    maestro.onTxConfirmed(message, async () => {
+      refreshThread();
+      setNotification('Transaction Is On-Chain');
+      // reset all the values
+      setIsSubmitting(false);
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+    }, maxRetries);
+  };
 
   const handleDelete = async () => {
     setIsSubmitting(true);
@@ -42,15 +60,14 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      checkTransaction(network!, result.message);
     }
   };
-
-  const handleSubmit = async (e: React.FormEvent) => { };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative">
-      
+        {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
           {isOwner ? (
@@ -99,7 +116,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           </div>
         </div>
         {/* Comments here*/}
-        <Comments thread={thread} network={network} wallet={wallet} />
+        <Comments thread={thread} network={network} wallet={wallet} refreshThread={refreshThread}/>
       </div>
     </div>
   );
