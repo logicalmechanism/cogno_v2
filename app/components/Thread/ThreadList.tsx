@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UTxO, BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
@@ -15,6 +15,10 @@ interface ThreadListProps {
 const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refreshThread }) => {
   const [filteredThreads, setFilteredThreads] = useState<UTxO[]>(threads);
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
+
+  useEffect(() => {
+    setFilteredThreads(threads);
+  }, [threads]);
 
   const handleFilterAll = () => {
     setFilteredThreads(threads);
@@ -95,7 +99,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
 
       {/* Modal */}
       {selectedThread && (
-        <ThreadModal network={network} wallet={wallet} thread={selectedThread} onClose={closeModal} />
+        <ThreadModal network={network} wallet={wallet} thread={selectedThread} onClose={closeModal} refreshThread={refreshThread} />
       )}
     </div>
   );

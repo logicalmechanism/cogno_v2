@@ -114,17 +114,13 @@ const Forum = () => {
   };
 
   const refreshCogno = async () => {
-    setIsLoading(true);
     const _cogno = await findCogno();
     setCogno(_cogno);
-    setIsLoading(false);
   };
 
   const refreshThreads = async () => {
-    setIsLoading(true);
     const _threads = await findThreads();
     setThreads(_threads);
-    setIsLoading(false);
   };
 
   useEffect(() => {

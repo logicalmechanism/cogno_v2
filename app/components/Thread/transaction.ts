@@ -8,31 +8,31 @@ import type { Unit, Quantity } from '@meshsdk/core';
 
 import type { OutputAmount } from '../../pages/forum'
 
-interface BytesField {
+export interface BytesField {
   bytes: string;
 }
 
-interface IntField {
+export interface IntField {
   int: bigint;
 }
 
-interface ListField {
+export interface ListField {
   list: object[]
 }
 
-interface ConstructorField {
+export interface ConstructorField {
   constructor: number;
   fields: Field[];
 }
 
-type Field = BytesField | IntField | ListField | ConstructorField;
+export type Field = BytesField | IntField | ListField | ConstructorField;
 
-interface Datum {
+export interface Datum {
   constructor: number;
   fields: Field[];
 }
 
-interface Redeemer {
+export interface Redeemer {
   constructor: number;
   fields: Field[];
 }

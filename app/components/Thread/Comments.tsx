@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import Notification from '../Notification';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -21,6 +21,7 @@ interface BytesField {
 
 export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refreshThread }) => {
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<BytesField[]>([]);
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,6 +39,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
       setNotification('Transaction Is On-Chain');
       // reset all the values
       setIsSubmitting(false);
+      setComment('');
       setSubmittedTxHash('');
       setShowSuccessLink(false);
     }, maxRetries);
@@ -62,7 +64,14 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
     }
   };
 
-  const comments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+  useEffect(() => {
+    // Update comments when thread changes
+    console.log(thread)
+    console.log('b',comments)
+    const parsedComments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+    setComments(parsedComments);
+    console.log('a', comments)
+  }, [thread]);
 
   return (
     <div className="container flex flex-col">
@@ -96,7 +105,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
       </div>
       <div className="comments-container overflow-y-scroll max-h-96 text-black">
         <h3 className="text-lg font-bold">Comments</h3>
-        {comments.reverse().map((c, index) => {
+        {comments.slice().reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
           return (
             <div

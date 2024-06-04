@@ -1,6 +1,4 @@
-// components/Threads/ThreadModal.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UTxO } from '@meshsdk/core';
 import { BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -11,6 +9,7 @@ import { handleThreadDeletion } from './transaction';
 import { hexToString } from '../utilities';
 import { MaestroProvider } from '@meshsdk/core';
 import Notification from '../Notification';
+import type {BytesField, Datum} from './transaction'
 
 interface ThreadModalProps {
   network: number | null;
@@ -26,9 +25,14 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
-  const parsedDatum = parseDatumCbor(thread.output.plutusData!);
+  const [parsedDatum, setParsedDatum] = useState<Datum>(parseDatumCbor(thread.output.plutusData!));
+
+  useEffect(() => {
+    setParsedDatum(parseDatumCbor(thread.output.plutusData!));
+  }, [thread]);
+
   const tokenName = sessionStorage.getItem('tokenName');
-  const isOwner = tokenName === parsedDatum.fields[5].bytes;
+  const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
 
   const checkTransaction = (network: number, message: string) => {
     const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -66,7 +70,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative">
+      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto">
         {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
@@ -95,7 +99,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         <div className="flex space-x-4">
           <div className="flex-grow"></div>
           <h2 className="text-xl font-bold mb-2 text-black mx-2">
-            {hexToString(parsedDatum.fields[0].bytes)}
+            {hexToString((parsedDatum.fields[0] as BytesField).bytes)}
           </h2>
           <div className="flex-grow"></div>
         </div>
@@ -104,14 +108,14 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           {/* Blur Image */}
           <div className='w-1/3'>
             <div className='flex justify-center'>
-              {parsedDatum.fields[2].bytes && (
-                <BlurImage imageUrl={hexToString(parsedDatum.fields[2].bytes)} />
+              {(parsedDatum.fields[2] as BytesField).bytes && (
+                <BlurImage imageUrl={hexToString((parsedDatum.fields[2] as BytesField).bytes)} />
               )}
             </div>
           </div>
           <div className='w-2/3 flex-grow overflow-auto max-h-96'>
             <p className="text-black overflow-auto">
-              {hexToString(parsedDatum.fields[1].bytes)}
+              {hexToString((parsedDatum.fields[1] as BytesField).bytes)}
             </p>
           </div>
         </div>
