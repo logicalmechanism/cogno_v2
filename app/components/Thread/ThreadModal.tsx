@@ -31,6 +31,10 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
     setParsedDatum(parseDatumCbor(thread.output.plutusData!));
   }, [thread]);
 
+  useEffect(() => {
+    console.log('ThreadModal re-rendered with thread:', thread);
+  }, [thread]);
+
   const tokenName = sessionStorage.getItem('tokenName');
   const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
 

@@ -17,6 +17,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
 
   useEffect(() => {
+    console.log('chnage in threads occured in list')
     setFilteredThreads(threads);
   }, [threads]);
 

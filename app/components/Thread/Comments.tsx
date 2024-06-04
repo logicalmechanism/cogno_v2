@@ -103,7 +103,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           {notification && <Notification message={notification} onDismiss={clearNotification} />}
         </form>
       </div>
-      <div className="comments-container overflow-y-scroll max-h-96 text-black">
+      <div className="comments-container text-black">
         <h3 className="text-lg font-bold">Comments</h3>
         {comments.slice().reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
