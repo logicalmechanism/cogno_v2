@@ -67,8 +67,16 @@ validator(
           // must burn cafebabe token if it exists
           or {
             and {
-              values.prove_nft(this_input.output.value, ref_datum.policy_id)?,
-              minting.by_prefix(mint_list, ref_datum.policy_id, #"cafebabe", -1)?,
+              values.prove_nft(
+                this_input.output.value,
+                ref_datum.cogno_policy_id,
+              )?,
+              minting.by_prefix(
+                mint_list,
+                ref_datum.cogno_policy_id,
+                #"cafebabe",
+                -1,
+              )?,
             },
             // if it doesn't exist then you can still remove it
             True,
