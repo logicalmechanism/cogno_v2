@@ -14,10 +14,10 @@ rm -fr build/ || true
 echo -e "\033[1;34m Building Contracts \033[0m"
 
 # remove all traces for production
-aiken build --trace-level silent --filter-traces user-defined
+# aiken build --trace-level silent --filter-traces user-defined
 
 # keep the traces for testing
-# aiken build --trace-level verbose --filter-traces all
+aiken build --trace-level verbose --filter-traces all
 
 ran=$(jq -r '.random_string' config.json)
 ran_cbor=$(python3 -c "import cbor2;hex_string='${ran}';data = bytes.fromhex(hex_string);encoded = cbor2.dumps(data);print(encoded.hex())")
@@ -57,8 +57,8 @@ genesis_pid_cbor=$(python3 -c "import cbor2;hex_string='${genesis_pid}';data=byt
 genesis_tkn_cbor=$(python3 -c "import cbor2;hex_string='${genesis_tkn}';data=bytes.fromhex(hex_string);encoded=cbor2.dumps(data);print(encoded.hex())")
 
 echo -e "\033[1;33m\nBuilding Cogno Minter Contract \033[0m"
-aiken blueprint apply -o plutus.json -v cogno_minter.params "${genesis_tkn_cbor}"
 aiken blueprint apply -o plutus.json -v cogno_minter.params "${genesis_pid_cbor}"
+aiken blueprint apply -o plutus.json -v cogno_minter.params "${genesis_tkn_cbor}"
 aiken blueprint apply -o plutus.json -v cogno_minter.params "${ref_hash_cbor}"
 aiken blueprint convert -v cogno_minter.params > contracts/cogno_minter_contract.plutus
 cardano-cli transaction policyid --script-file contracts/cogno_minter_contract.plutus > hashes/cogno_minter_contract.hash
