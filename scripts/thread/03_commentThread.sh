@@ -23,8 +23,12 @@ thread_script_address=$(${cli} address build --payment-script-file ${thread_scri
 collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)
 
-# the policy id
-token_name=$(cat ../data/cogno/token.name)
+# the cogno token name
+cogno_token_name=$(cat ../data/cogno/token.name)
+
+# the thread policy id
+thread_policy_id=$(cat ../../hashes/thread_minter_contract.hash)
+thread_token_name=$(cat ../data/thread/token.name)
 
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -61,20 +65,22 @@ if [ "${TXNS}" -eq "0" ]; then
 .   exit;
 fi
 alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg token_name "$token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 thread_tx_in=${TXIN::-8}
 
 echo Thread UTxO: ${thread_tx_in}
 
-current_lovelace=$(jq -r --arg token_name "$token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .value.value.lovelace' ../tmp/script_utxo.json)
+current_lovelace=$(jq -r --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .value.value.lovelace' ../tmp/script_utxo.json)
 
 echo Current Lovelace On Thread : ${current_lovelace}
+
+ASSET="1 ${thread_policy_id}.${thread_token_name}"
 
 UTXO_VALUE=$(${cli} transaction calculate-min-required-utxo \
     --babbage-era \
     --protocol-params-file ../tmp/protocol.json \
     --tx-out-inline-datum-file ../data/thread/updated-thread-datum.json \
-    --tx-out="${thread_script_address} + 5000000" | tr -dc '0-9')
+    --tx-out="${thread_script_address} + 5000000 + ${ASSET}" | tr -dc '0-9')
 
 difference=$((${current_lovelace} - ${UTXO_VALUE}))
 if [ "$difference" -ge "0" ]; then
@@ -85,7 +91,8 @@ else
     min_utxo=${UTXO_VALUE}
 fi
 
-thread_address_out="${thread_script_address} + ${min_utxo}"
+
+thread_address_out="${thread_script_address} + ${min_utxo} + ${ASSET}"
 
 echo "Thread OUTPUT:" ${thread_address_out}
 

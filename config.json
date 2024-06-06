@@ -1,7 +1,7 @@
 {
     "__comment1__": "Genesis UTxO From Starter Wallet",
-    "genesis_tx_id": "33cbf757f395e3e1a273242e10d2b23d98fa45c53442ef6ee2b5c1b12560c835",
+    "genesis_tx_id": "5d04218d9f2e2cb2ac354d9b9950cc33ca7bd793322ba1306f697351d4919e35",
     "genesis_tx_idx": 0,
     "__comment2__": "Random String For Data Reference",
-    "random_string": "06"
+    "random_string": "07"
   }
