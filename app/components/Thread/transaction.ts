@@ -322,7 +322,21 @@ export const handleThreadDeletion = async (
   };
   console.log('Delete Redeemer: ', deleteRedeemer);
 
+  // burn redeemer
+  let burnRedeemer: Redeemer = {
+    "constructor": 1,
+    "fields": []
+  };
+  console.log('Burn Redeemer: ', burnRedeemer);
+
+  // this token name
+  const thisUnit = thread.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!));
+  console.log('unit:', thisUnit)
+  const threadTokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+  console.log('Thread Token Name:', threadTokenName);
+
   mesh
+    .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
     .changeAddress(changeAddress!)
     .txInCollateral(collateralUTxOs[0].input.txHash, collateralUTxOs[0].input.outputIndex);
 
@@ -340,7 +354,11 @@ export const handleThreadDeletion = async (
     .txInInlineDatumPresent()
     .txInRedeemerValue(deleteRedeemer, undefined, 'JSON')
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_HASH!, 1)
-    .requiredSignerHash(walletKeyHashes.pubKeyHash);
+    .requiredSignerHash(walletKeyHashes.pubKeyHash)
+    .mintPlutusScriptV2()
+    .mint("-1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, threadTokenName!)
+    .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_HASH!, 1);
 
   // use awaits here as a test
   try {
