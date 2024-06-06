@@ -108,6 +108,7 @@ export const handleThreadCreation = async (
 
   // add the change address and teh collateral
   mesh
+    .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
     .changeAddress(changeAddress!)
     .txInCollateral(collateralUTxOs[0].input.txHash, collateralUTxOs[0].input.outputIndex);
 
@@ -123,6 +124,17 @@ export const handleThreadCreation = async (
       message: `Cogno Not Set Error`
     };
   }
+
+  // create the token name for the mint
+  const tokenName = ('1abe11ed' + selectedUtxos[0].input.outputIndex.toString(16).padStart(2, '0') + selectedUtxos[0].input.txHash).substring(0, 64);
+  console.log('Token Name:', tokenName);
+
+  // mint redeemer
+  let mintRedeemer: Redeemer = {
+    "constructor": 0,
+    "fields": []
+  };
+  console.log('Mint Redeemer: ', mintRedeemer);
 
   // the thread datum
   let threadDatum: Datum = {
@@ -151,12 +163,17 @@ export const handleThreadCreation = async (
   console.log('Thread Datum:', threadDatum);
 
   // create teh asset list for the output using the new token
+  let assets: Asset[] = [];
+  let thatAsset = {
+    unit: process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH! + tokenName,
+    quantity: '1',
+    }
+  assets.push(thatAsset);
   if (data.lovelace <= 2_000_000) {
     mesh
-      .txOut(scriptAddress!, [])
+      .txOut(scriptAddress!, assets)
       .txOutInlineDatumValue(threadDatum, "JSON")
   } else {
-    let assets: Asset[] = [];
     let thisAsset = {
       unit: 'lovelace',
       quantity: data.lovelace.toString()
@@ -166,6 +183,14 @@ export const handleThreadCreation = async (
       .txOut(scriptAddress!, assets)
       .txOutInlineDatumValue(threadDatum, "JSON")
   }
+
+  console.log('Assets: ', assets);
+
+  mesh
+    .mintPlutusScriptV2()
+    .mint("1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, tokenName)
+    .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_HASH!, 1);
 
   // use awaits here as a test
   try {

@@ -55,8 +55,11 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
     <div className="thread-list-container flex flex-col my-1 border rounded w-full">
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
+        <div className="w-1/6"></div> {/* Empty spacer */}
         <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 text-black p-2 mx-1 rounded w-1/6">All Threads</button>
+        <div className="w-1/6"></div> {/* Empty spacer */}
         <button onClick={handleFilterMyThreads} className="bg-blue-200 hover:bg-sky-400 text-black  p-2 mx-1 rounded w-1/6">My Threads</button>
+        <div className="w-1/6"></div> {/* Empty spacer */}
         <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-200 hover:bg-sky-400 text-black  border p-2 mx-1 rounded w-1/6 text-center">
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
@@ -69,6 +72,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           <option value="Random">Random</option>
           <option value="Adult">Adult</option>
         </select>
+        <div className="w-1/6"></div> {/* Empty spacer */}
       </div>
 
       {/* Thread Titles */}
