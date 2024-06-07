@@ -294,7 +294,7 @@ export const handleThreadDeletion = async (
     evaluator: maestro,
   });
   // the cogno token name
-  const tokenName = sessionStorage.getItem('tokenName');
+  const cognoTokenName = sessionStorage.getItem('cognoTokenName');
 
   // script address for cogno
   const cognoScriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
@@ -306,7 +306,7 @@ export const handleThreadDeletion = async (
     console.log('UTxO:', utxo.output.amount);
     // find the first occurrence of a cogno that matches the key hashes
 
-    if (utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(tokenName!))) {
+    if (utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(cognoTokenName!))) {
       // make sure this cogno holds the correct token
       return utxo
     }
@@ -528,11 +528,12 @@ export const handleCommentCreation = async (
   
   let assets: Asset[] = [];
   // this needs to be taken into account for buffer amounts.
-  // let thisAsset = {
-  //   unit: lovelace!.unit,
-  //   quantity: lovelace!.quantity,
-  // };
-  // assets.push(thisAsset);
+  const threadTokenName = sessionStorage.getItem('threadTokenName');
+  let thatAsset = {
+    unit: process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH! + threadTokenName,
+    quantity: '1',
+    }
+  assets.push(thatAsset);
 
   mesh
     .spendingPlutusScriptV2()

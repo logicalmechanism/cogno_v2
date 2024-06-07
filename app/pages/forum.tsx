@@ -79,7 +79,7 @@ const Forum = () => {
         });
         if (foundUtxo) {
           const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
-          sessionStorage.setItem('tokenName', tokenName);
+          sessionStorage.setItem('cognoTokenName', tokenName);
           return foundUtxo;
         } else {
           return null;

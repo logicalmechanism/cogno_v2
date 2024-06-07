@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UTxO, BrowserWallet } from '@meshsdk/core';
+import { UTxO, BrowserWallet, Asset } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
@@ -17,8 +17,16 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
 
   useEffect(() => {
-    console.log('chnage in threads occured in list')
+    // console.log('chnage in threads occured in list')
     setFilteredThreads(threads);
+    // loop filtered threads
+    const threadTokenName = sessionStorage.getItem('threadTokenName');
+    // console.log('Thread token after comment',threadTokenName)
+    const updatedThread = threads.find((thread) => {
+      return thread.output.amount.find((asset: Asset) => asset.unit.includes(threadTokenName!));
+    });
+    // console.log('New Thread', updatedThread)
+    setSelectedThread(updatedThread!);
   }, [threads]);
 
   const handleFilterAll = () => {
@@ -26,7 +34,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   };
 
   const handleFilterMyThreads = () => {
-    const tokenName = sessionStorage.getItem('tokenName');
+    const tokenName = sessionStorage.getItem('cognoTokenName');
     const filtered = threads.filter(thread => {
       const parsedDatum = parseDatumCbor(thread.output.plutusData!);
       return parsedDatum.fields[5].bytes === tokenName;
@@ -44,6 +52,9 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   };
   
   const handleThreadClick = (thread: UTxO) => {
+    const tokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+    sessionStorage.setItem('threadTokenName', tokenName);
+    console.log('Thread Token Name:', tokenName)
     setSelectedThread(thread);
   };
 

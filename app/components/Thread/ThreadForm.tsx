@@ -58,7 +58,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
       content,
       category,
       imageUrl: imageUrl || '',
-      tokenName: anonymous ? '' : sessionStorage.getItem('tokenName'),
+      tokenName: anonymous ? '' : sessionStorage.getItem('cognoTokenName'),
       lovelace: 1_000_000 * lovelace
     };
     const result = await handleThreadCreation(network, wallet, newThread);
@@ -89,6 +89,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           required
           autoComplete="off"
           maxLength={300}
+          disabled={isSubmitting}
         />
       </div>
       <div className="mb-4">
@@ -100,6 +101,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           required
           autoComplete="off"
           maxLength={40000}
+          disabled={isSubmitting}
         ></textarea>
       </div>
       <div className="mb-4">
@@ -123,6 +125,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           onChange={(e) => setCategory(e.target.value)}
           className="border p-2 rounded w-full text-black"
           required
+          disabled={isSubmitting}
         >
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
@@ -159,6 +162,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           className="border p-2 rounded w-full text-black"
           autoComplete="off"
           maxLength={2000}
+          disabled={isSubmitting}
         />
       </div>
       <div className="mb-4 flex items-center">
@@ -167,6 +171,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           checked={anonymous}
           onChange={(e) => setAnonymous(e.target.checked)}
           className="mr-2"
+          disabled={isSubmitting}
         />
         <label className="block text-black text-sm font-bold">
           Permanent (optional)

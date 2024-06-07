@@ -35,7 +35,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
     console.log('ThreadModal re-rendered with thread:', thread);
   }, [thread]);
 
-  const tokenName = sessionStorage.getItem('tokenName');
+  const tokenName = sessionStorage.getItem('cognoTokenName');
   const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
 
   const checkTransaction = (network: number, message: string) => {
@@ -51,6 +51,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
       setIsSubmitting(false);
       setSubmittedTxHash('');
       setShowSuccessLink(false);
+      onClose();
     }, maxRetries);
   };
 
