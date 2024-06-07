@@ -67,15 +67,15 @@ export const handleThreadCreation = async (
   // create a thread
   // get all the utxos
   const utxos = await wallet.getUtxos();
-  console.log('Wallet UTxOs: ', utxos);
+  // console.log('Wallet UTxOs: ', utxos);
 
   // the change address is from the login
   const changeAddress = sessionStorage.getItem('changeAddress');
-  console.log('Change Address: ', changeAddress);
+  // console.log('Change Address: ', changeAddress);
 
   // if the collateral is not set then we need to inform the user
   const collateralUTxOs = await wallet.getCollateral();
-  console.log('Collateral: ', collateralUTxOs);
+  // console.log('Collateral: ', collateralUTxOs);
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
@@ -92,7 +92,7 @@ export const handleThreadCreation = async (
 
   // keepRelevant should account for 
   const selectedUtxos = keepRelevant(assetMap, utxos);
-  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+  // console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
   const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -127,14 +127,14 @@ export const handleThreadCreation = async (
 
   // create the token name for the mint
   const tokenName = ('1abe11ed' + selectedUtxos[0].input.outputIndex.toString(16).padStart(2, '0') + selectedUtxos[0].input.txHash).substring(0, 64);
-  console.log('Token Name:', tokenName);
+  // console.log('Token Name:', tokenName);
 
   // mint redeemer
   let mintRedeemer: Redeemer = {
     "constructor": 0,
     "fields": []
   };
-  console.log('Mint Redeemer: ', mintRedeemer);
+  // console.log('Mint Redeemer: ', mintRedeemer);
 
   // the thread datum
   let threadDatum: Datum = {
@@ -160,7 +160,7 @@ export const handleThreadCreation = async (
       }
     ]
   };
-  console.log('Thread Datum:', threadDatum);
+  // console.log('Thread Datum:', threadDatum);
 
   // create teh asset list for the output using the new token
   let assets: Asset[] = [];
@@ -184,7 +184,7 @@ export const handleThreadCreation = async (
       .txOutInlineDatumValue(threadDatum, "JSON")
   }
 
-  console.log('Assets: ', assets);
+  // console.log('Assets: ', assets);
 
   mesh
     .mintPlutusScriptV2()
@@ -207,7 +207,7 @@ export const handleThreadCreation = async (
   try {
     // Complete the signing process
     unsignedTx = mesh.completeSigning();
-    console.log('Unsigned Tx: ', unsignedTx);
+    // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
     console.error('Complete Signing Error: ', error);
     return {
@@ -220,7 +220,7 @@ export const handleThreadCreation = async (
   let signedTx;
   try {
     signedTx = await wallet.signTx(unsignedTx, true);
-    console.log('Signed Tx: ', signedTx);
+    // console.log('Signed Tx: ', signedTx);
   } catch (error) {
     console.error('Transaction Sign Error: ', error);
     return {
@@ -233,7 +233,7 @@ export const handleThreadCreation = async (
   let txHash;
   try {
     txHash = await wallet.submitTx(signedTx);
-    console.log('Tx Hash: ', txHash);
+    // console.log('Tx Hash: ', txHash);
   } catch (error) {
     console.error('Transaction Submission Error: ', error);
     return {
@@ -255,18 +255,18 @@ export const handleThreadDeletion = async (
 ): Promise<SuccessMsg> => {
   // delete a thread
   const utxos = await wallet.getUtxos();
-  console.log('Wallet UTxOs: ', utxos);
+  // console.log('Wallet UTxOs: ', utxos);
 
   // the change address is from the login
   const changeAddress = sessionStorage.getItem('changeAddress');
-  console.log('Change Address: ', changeAddress);
+  // console.log('Change Address: ', changeAddress);
 
   const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
-  console.log('Wallet Key Hashes:', walletKeyHashes);
+  // console.log('Wallet Key Hashes:', walletKeyHashes);
 
   // if the collateral is not set then we need to inform the user
   const collateralUTxOs = await wallet.getCollateral();
-  console.log('Collateral: ', collateralUTxOs);
+  // console.log('Collateral: ', collateralUTxOs);
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
@@ -283,7 +283,7 @@ export const handleThreadDeletion = async (
 
   // keepRelevant should account for 
   const selectedUtxos = keepRelevant(assetMap, utxos);
-  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+  // console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
   const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -303,7 +303,7 @@ export const handleThreadDeletion = async (
   const cognoScriptUtxos = await maestro.fetchAddressUTxOs(cognoScriptAddress);
 
   const cogno = cognoScriptUtxos.find(utxo => {
-    console.log('UTxO:', utxo.output.amount);
+    // console.log('UTxO:', utxo.output.amount);
     // find the first occurrence of a cogno that matches the key hashes
 
     if (utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(cognoTokenName!))) {
@@ -313,27 +313,27 @@ export const handleThreadDeletion = async (
     return false;
   });
 
-  console.log('found cogno utxo', cogno)
+  // console.log('found cogno utxo', cogno)
 
   // delete redeemer
   let deleteRedeemer: Redeemer = {
     "constructor": 0,
     "fields": []
   };
-  console.log('Delete Redeemer: ', deleteRedeemer);
+  // console.log('Delete Redeemer: ', deleteRedeemer);
 
   // burn redeemer
   let burnRedeemer: Redeemer = {
     "constructor": 1,
     "fields": []
   };
-  console.log('Burn Redeemer: ', burnRedeemer);
+  // console.log('Burn Redeemer: ', burnRedeemer);
 
   // this token name
   const thisUnit = thread.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!));
-  console.log('unit:', thisUnit)
+  // console.log('unit:', thisUnit)
   const threadTokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
-  console.log('Thread Token Name:', threadTokenName);
+  // console.log('Thread Token Name:', threadTokenName);
 
   mesh
     .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
@@ -375,7 +375,7 @@ export const handleThreadDeletion = async (
   try {
     // Complete the signing process
     unsignedTx = mesh.completeSigning();
-    console.log('Unsigned Tx: ', unsignedTx);
+    // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
     console.error('Complete Signing Error: ', error);
     return {
@@ -388,7 +388,7 @@ export const handleThreadDeletion = async (
   let signedTx;
   try {
     signedTx = await wallet.signTx(unsignedTx, true);
-    console.log('Signed Tx: ', signedTx);
+    // console.log('Signed Tx: ', signedTx);
   } catch (error) {
     console.error('Transaction Sign Error: ', error);
     return {
@@ -401,7 +401,7 @@ export const handleThreadDeletion = async (
   let txHash;
   try {
     txHash = await wallet.submitTx(signedTx);
-    console.log('Tx Hash: ', txHash);
+    // console.log('Tx Hash: ', txHash);
   } catch (error) {
     console.error('Transaction Submission Error: ', error);
     return {
@@ -425,18 +425,18 @@ export const handleCommentCreation = async (
   // create a comment
   // get all the utxos
   const utxos = await wallet.getUtxos();
-  console.log('Wallet UTxOs: ', utxos);
+  // console.log('Wallet UTxOs: ', utxos);
 
   // the change address is from the login
   const changeAddress = sessionStorage.getItem('changeAddress');
-  console.log('Change Address: ', changeAddress);
+  // console.log('Change Address: ', changeAddress);
 
   const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
-  console.log('Wallet Key Hashes:', walletKeyHashes);
+  // console.log('Wallet Key Hashes:', walletKeyHashes);
 
   // if the collateral is not set then we need to inform the user
   const collateralUTxOs = await wallet.getCollateral();
-  console.log('Collateral: ', collateralUTxOs);
+  // console.log('Collateral: ', collateralUTxOs);
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
@@ -453,11 +453,11 @@ export const handleCommentCreation = async (
 
   // the lovelace on the thread
   const lovelace = thread.output.amount.find((asset: OutputAmount) => asset.unit.includes('lovelace'));
-  console.log(lovelace)
+  // console.log(lovelace)
 
   // keepRelevant should account for 
   const selectedUtxos = keepRelevant(assetMap, utxos, lovelace?.quantity);
-  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+  // console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
   const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -512,7 +512,7 @@ export const handleCommentCreation = async (
       }
     ]
   };
-  console.log('Thread Datum:', threadDatum);
+  // console.log('Thread Datum:', threadDatum);
 
   // comment redeemer
   let commentRedeemer: Redeemer = {
@@ -523,7 +523,7 @@ export const handleCommentCreation = async (
       }
     ]
   };
-  console.log('Comment Redeemer: ', commentRedeemer);
+  // console.log('Comment Redeemer: ', commentRedeemer);
 
   
   let assets: Asset[] = [];
@@ -559,7 +559,7 @@ export const handleCommentCreation = async (
   try {
     // Complete the signing process
     unsignedTx = mesh.completeSigning();
-    console.log('Unsigned Tx: ', unsignedTx);
+    // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
     console.error('Complete Signing Error: ', error);
     return {
@@ -572,7 +572,7 @@ export const handleCommentCreation = async (
   let signedTx;
   try {
     signedTx = await wallet.signTx(unsignedTx, true);
-    console.log('Signed Tx: ', signedTx);
+    // console.log('Signed Tx: ', signedTx);
   } catch (error) {
     console.error('Transaction Sign Error: ', error);
     return {
@@ -585,7 +585,7 @@ export const handleCommentCreation = async (
   let txHash;
   try {
     txHash = await wallet.submitTx(signedTx);
-    console.log('Tx Hash: ', txHash);
+    // console.log('Tx Hash: ', txHash);
   } catch (error) {
     console.error('Transaction Submission Error: ', error);
     return {

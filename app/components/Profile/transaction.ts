@@ -55,18 +55,18 @@ export const handleCognoTransaction = async (network: number | null,
   wallet: BrowserWallet, cogno: UTxO | null, data: CognoData, removeFlag: boolean): Promise<SuccessMsg> => {
   // get all the utxos
   const utxos = await wallet.getUtxos();
-  console.log('Wallet UTxOs: ', utxos);
+  // console.log('Wallet UTxOs: ', utxos);
 
   // the change address is from the login
   const changeAddress = sessionStorage.getItem('changeAddress');
-  console.log('Change Address: ', changeAddress);
+  // console.log('Change Address: ', changeAddress);
 
   const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
-  console.log('Wallet Key Hashes:', walletKeyHashes);
+  // console.log('Wallet Key Hashes:', walletKeyHashes);
 
   // if the collateral is not set then we need to inform the user
   const collateralUTxOs = await wallet.getCollateral();
-  console.log('Collateral: ', collateralUTxOs);
+  // console.log('Collateral: ', collateralUTxOs);
   if (collateralUTxOs.length === 0) {
     // console.error('Collateral Not Set');
     return {
@@ -85,7 +85,7 @@ export const handleCognoTransaction = async (network: number | null,
 
   // keepRelevant should account for 
   const selectedUtxos = keepRelevant(assetMap, utxos);
-  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+  // console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
   const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -119,27 +119,27 @@ export const handleCognoTransaction = async (network: number | null,
     //
     if (removeFlag) {
       // remove cogno logic
-      console.log('Remove cogno:', cogno);
+      // console.log('Remove cogno:', cogno);
 
       // this token name
       const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!));
-      console.log('unit:', thisUnit)
+      // console.log('unit:', thisUnit)
       const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
-      console.log('Token Name:', tokenName);
+      // console.log('Token Name:', tokenName);
 
       // burn redeemer
       let burnRedeemer: Redeemer = {
         "constructor": 1,
         "fields": []
       };
-      console.log('Burn Redeemer: ', burnRedeemer);
+      // console.log('Burn Redeemer: ', burnRedeemer);
 
       // remove redeemer
       let removeRedeemer: Redeemer = {
         "constructor": 0,
         "fields": []
       };
-      console.log('Remove Redeemer: ', removeRedeemer);
+      // console.log('Remove Redeemer: ', removeRedeemer);
 
       mesh
         .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
@@ -157,13 +157,13 @@ export const handleCognoTransaction = async (network: number | null,
 
     } else {
       // Update cogno logic
-      console.log('Updating cogno:', cogno);
+      // console.log('Updating cogno:', cogno);
 
       // this token name
       const thisUnit = cogno.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!));
-      console.log('unit:', thisUnit)
+      // console.log('unit:', thisUnit)
       const tokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
-      console.log('Token Name:', tokenName);
+      // console.log('Token Name:', tokenName);
 
       // create teh asset list for the output using the new token
       let assets: Asset[] = [];
@@ -178,7 +178,7 @@ export const handleCognoTransaction = async (network: number | null,
         "constructor": 1,
         "fields": []
       };
-      console.log('Update Redeemer: ', updateRedeemer);
+      // console.log('Update Redeemer: ', updateRedeemer);
 
       // the cogno datum
       let cognoDatum: Datum = {
@@ -211,7 +211,7 @@ export const handleCognoTransaction = async (network: number | null,
           }
         ]
       };
-      console.log('Cogno Datum:', cognoDatum);
+      // console.log('Cogno Datum:', cognoDatum);
 
       mesh
         .spendingPlutusScriptV2()
@@ -228,11 +228,11 @@ export const handleCognoTransaction = async (network: number | null,
     //
     // Create a new cogno
     //
-    console.log('Creating cogno!');
+    // console.log('Creating cogno!');
 
     // create the token name for the mint
     const tokenName = ('cafebabe' + selectedUtxos[0].input.outputIndex.toString(16).padStart(2, '0') + selectedUtxos[0].input.txHash).substring(0, 64);
-    console.log('Token Name:', tokenName);
+    // console.log('Token Name:', tokenName);
 
     // create teh asset list for the output using the new token
     let assets: Asset[] = [];
@@ -247,7 +247,7 @@ export const handleCognoTransaction = async (network: number | null,
       "constructor": 0,
       "fields": []
     };
-    console.log('Mint Redeemer: ', mintRedeemer);
+    // console.log('Mint Redeemer: ', mintRedeemer);
 
     // the cogno datum
     let cognoDatum: Datum = {
@@ -280,7 +280,7 @@ export const handleCognoTransaction = async (network: number | null,
         }
       ]
     };
-    console.log('Cogno Datum:', cognoDatum);
+    // console.log('Cogno Datum:', cognoDatum);
 
     // add in the output and the minting requirements
     mesh
@@ -309,7 +309,7 @@ export const handleCognoTransaction = async (network: number | null,
   try {
     // Complete the signing process
     unsignedTx = mesh.completeSigning();
-    console.log('Unsigned Tx: ', unsignedTx);
+    // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
     console.error('Complete Signing Error: ', error);
     return {
@@ -322,7 +322,7 @@ export const handleCognoTransaction = async (network: number | null,
   let signedTx;
   try {
     signedTx = await wallet.signTx(unsignedTx, true);
-    console.log('Signed Tx: ', signedTx);
+    // console.log('Signed Tx: ', signedTx);
   } catch (error) {
     console.error('Transaction Sign Error: ', error);
     return {
@@ -335,7 +335,7 @@ export const handleCognoTransaction = async (network: number | null,
   let txHash;
   try {
     txHash = await wallet.submitTx(signedTx);
-    console.log('Tx Hash: ', txHash);
+    // console.log('Tx Hash: ', txHash);
   } catch (error) {
     console.error('Transaction Submission Error: ', error);
     return {

@@ -17,15 +17,15 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
 
   useEffect(() => {
-    // console.log('chnage in threads occured in list')
+    // // console.log('chnage in threads occured in list')
     setFilteredThreads(threads);
     // loop filtered threads
     const threadTokenName = sessionStorage.getItem('threadTokenName');
-    // console.log('Thread token after comment',threadTokenName)
+    // // console.log('Thread token after comment',threadTokenName)
     const updatedThread = threads.find((thread) => {
       return thread.output.amount.find((asset: Asset) => asset.unit.includes(threadTokenName!));
     });
-    // console.log('New Thread', updatedThread)
+    // // console.log('New Thread', updatedThread)
     setSelectedThread(updatedThread!);
   }, [threads]);
 
@@ -54,7 +54,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const handleThreadClick = (thread: UTxO) => {
     const tokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
     sessionStorage.setItem('threadTokenName', tokenName);
-    console.log('Thread Token Name:', tokenName)
+    // console.log('Thread Token Name:', tokenName)
     setSelectedThread(thread);
   };
 

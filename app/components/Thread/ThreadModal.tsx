@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { UTxO } from '@meshsdk/core';
 import { BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -20,6 +20,7 @@ interface ThreadModalProps {
 }
 
 export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose, refreshThread }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
@@ -32,7 +33,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   }, [thread]);
 
   useEffect(() => {
-    console.log('ThreadModal re-rendered with thread:', thread);
+    // console.log('ThreadModal re-rendered with thread:', thread);
   }, [thread]);
 
   const tokenName = sessionStorage.getItem('cognoTokenName');
@@ -73,9 +74,15 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
     }
   };
 
+  const handleBackToTop = () => {
+    if (modalRef.current) {
+      modalRef.current.scrollTo(0, 0);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto">
+      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto" ref={modalRef}>
         {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
@@ -103,7 +110,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         {/* title */}
         <div className="flex space-x-4">
           <div className="flex-grow"></div>
-          <h2 className="text-xl font-bold mb-2 text-black mx-2">
+          <h2 className="text-3xl font-bold mb-2 text-black mx-2">
             {hexToString((parsedDatum.fields[0] as BytesField).bytes)}
           </h2>
           <div className="flex-grow"></div>
@@ -126,6 +133,14 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         </div>
         {/* Comments here*/}
         <Comments thread={thread} network={network} wallet={wallet} refreshThread={refreshThread}/>
+        <div className='items-center flex flex-col'>
+          <button
+            onClick={handleBackToTop}
+            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+          >
+          Back to Top
+        </button>
+        </div>
       </div>
     </div>
   );
