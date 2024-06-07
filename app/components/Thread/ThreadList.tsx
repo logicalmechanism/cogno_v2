@@ -60,6 +60,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
 
   const closeModal = () => {
     setSelectedThread(null);
+    sessionStorage.setItem('threadTokenName', 'non existent token');
   };
 
   return (

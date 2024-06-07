@@ -52,6 +52,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
       setIsSubmitting(false);
       setSubmittedTxHash('');
       setShowSuccessLink(false);
+      sessionStorage.setItem('threadTokenName', 'non existent token');
       onClose();
     }, maxRetries);
   };
@@ -110,7 +111,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         {/* title */}
         <div className="flex space-x-4">
           <div className="flex-grow"></div>
-          <h2 className="text-3xl font-bold mb-2 text-black mx-2">
+          <h2 className="text-3xl font-bold text-black m-4">
             {hexToString((parsedDatum.fields[0] as BytesField).bytes)}
           </h2>
           <div className="flex-grow"></div>
