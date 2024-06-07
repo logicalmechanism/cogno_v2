@@ -29,7 +29,7 @@ collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)
 
 # the policy id
-policy_id=$(cat ../../hashes/minter_contract.hash)
+policy_id=$(cat ../../hashes/cogno_minter_contract.hash)
 
 echo -e "\033[0;36m Gathering UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -113,7 +113,7 @@ reference_script_tx_in=${TXIN::-8}
 
 echo Data Reference UTxO: $reference_script_tx_in
 
-minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-minter_contract.plutus.signed )
+minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-cogno_minter_contract.plutus.signed )
 
 # Add metadata to this build function for nfts with data
 echo -e "\033[0;36m Building Tx \033[0m"

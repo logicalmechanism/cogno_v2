@@ -28,8 +28,10 @@ collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)
 
 # the policy id
-policy_id=$(cat ../../hashes/minter_contract.hash)
-token_name=$(cat ../data/cogno/token.name)
+cogno_policy_id=$(cat ../../hashes/cogno_minter_contract.hash)
+thread_policy_id=$(cat ../../hashes/thread_minter_contract.hash)
+cogno_token_name=$(cat ../data/cogno/token.name)
+thread_token_name=$(cat ../data/thread/token.name)
 
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -45,6 +47,10 @@ fi
 alltxin=""
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_utxo.json)
 user_tx_in=${TXIN::-8}
+
+BURN_ASSET="-1 ${thread_policy_id}.${thread_token_name}"
+
+echo Burning: ${BURN_ASSET}
 
 #
 # exit
@@ -62,7 +68,7 @@ if [ "${TXNS}" -eq "0" ]; then
 .   exit;
 fi
 alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg token_name "$token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 thread_tx_in=${TXIN::-8}
 
 echo Thread UTxO: ${thread_tx_in}
@@ -78,7 +84,7 @@ if [ "${TXNS}" -eq "0" ]; then
 .   exit;
 fi
 alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg policy_id "$policy_id" --arg token_name "$token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+TXIN=$(jq -r --arg alltxin "" --arg policy_id "$cogno_policy_id" --arg token_name "$cogno_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 cogno_tx_in=${TXIN::-8}
 
 echo Cogno UTxO: ${cogno_tx_in}
@@ -122,6 +128,7 @@ reference_script_tx_in=${TXIN::-8}
 echo Data Reference UTxO: $reference_script_tx_in
 
 thread_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_contract.plutus.signed )
+minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_minter_contract.plutus.signed )
 
 # Add metadata to this build function for nfts with data
 echo -e "\033[0;36m Building Tx \033[0m"
@@ -140,6 +147,11 @@ FEE=$(${cli} transaction build \
     --spending-reference-tx-in-redeemer-file ../data/thread/remove-redeemer.json \
     --required-signer-hash ${user_pkh} \
     --required-signer-hash ${collat_pkh} \
+    --mint="${BURN_ASSET}" \
+    --mint-tx-in-reference="${minter_ref_utxo}#1" \
+    --mint-plutus-script-v2 \
+    --policy-id="${thread_policy_id}" \
+    --mint-reference-tx-in-redeemer-file ../data/minter/burn-redeemer.json \
     ${network})
 
 IFS=':' read -ra VALUE <<< "${FEE}"

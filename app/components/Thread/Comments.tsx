@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from 'react';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import Notification from '../Notification';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -13,20 +12,38 @@ interface CommentProps {
   thread: UTxO;
   network: number | null;
   wallet: BrowserWallet;
+  refreshThread: () => void; // Function to refresh threads
 }
 
 interface BytesField {
   bytes: string;
 }
 
-export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) => {
+export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refreshThread }) => {
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<BytesField[]>([]);
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
-  const router = useRouter();
+
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+    const maxRetries = 250;
+
+    maestro.onTxConfirmed(message, async () => {
+      refreshThread();
+      setNotification('Transaction Is On-Chain');
+      // reset all the values
+      setIsSubmitting(false);
+      setComment('');
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+    }, maxRetries);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,40 +60,25 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
-      // this is where the actual sc interaction will be
-      // const networkName = network === 0 ? 'Preprod' : 'Mainnet';
-      // const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
-
-      // const retryDelay = 5000; // 5 seconds
-      // const maxRetries = 15;
-
-      // const navigateWithRetry = async (retryCount = 0): Promise<void> => {
-      //   try {
-      //     await router.push('/forum');
-      //     // router.reload(); // This line will be called only if router.push is successful
-      //   } catch (error) {
-      //     if (retryCount < maxRetries) {
-      //       setTimeout(() => navigateWithRetry(retryCount + 1), retryDelay);
-      //     } else {
-      //       console.error(`Failed to navigate to /forum after ${maxRetries} attempts.`, error);
-      //     }
-      //   }
-      // };
-
-      // maestro.onTxConfirmed(result.message, async () => {
-      //   await navigateWithRetry();
-      // });
+      checkTransaction(network!, result.message);
     }
   };
 
-  const comments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+  useEffect(() => {
+    // Update comments when thread changes
+    // console.log(thread)
+    // console.log('b',comments)
+    const parsedComments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+    setComments(parsedComments);
+    // console.log('a', comments)
+  }, [thread]);
 
   return (
     <div className="container flex flex-col">
       <div className="">
         <form onSubmit={handleSubmit} className="border p-4 rounded">
           <div className='flex flex-col text-center items-center'>
-            {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
+            {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
           </div>
           <div className="mb-4 max-w-full">
             <label className="block text-black text-sm font-bold mb-2">Add A Comment</label>
@@ -101,9 +103,9 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet }) =>
           {notification && <Notification message={notification} onDismiss={clearNotification} />}
         </form>
       </div>
-      <div className="comments-container overflow-y-scroll max-h-96 text-black">
+      <div className="comments-container text-black">
         <h3 className="text-lg font-bold">Comments</h3>
-        {comments.reverse().map((c, index) => {
+        {comments.slice().reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
           return (
             <div

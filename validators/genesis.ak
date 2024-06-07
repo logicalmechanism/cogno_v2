@@ -47,9 +47,11 @@ validator(
     //
     and {
       // policy id must have correct length
-      (bytearray.length(reference_datum.policy_id) == 28)?,
+      (bytearray.length(reference_datum.cogno_policy_id) == 28)?,
+      (bytearray.length(reference_datum.thread_policy_id) == 28)?,
       // validator hash must have correct length
       (bytearray.length(reference_datum.cogno) == 28)?,
+      (bytearray.length(reference_datum.thread) == 28)?,
       // must send to the data reference address
       payout.at_least(
         data_ref_addr,

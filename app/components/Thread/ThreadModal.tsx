@@ -1,6 +1,4 @@
-// components/Threads/ThreadModal.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { UTxO } from '@meshsdk/core';
 import { BrowserWallet } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
@@ -9,24 +7,55 @@ import SuccessText from '../SuccessText';
 import {Comments} from './Comments';
 import { handleThreadDeletion } from './transaction';
 import { hexToString } from '../utilities';
+import { MaestroProvider } from '@meshsdk/core';
+import Notification from '../Notification';
+import type {BytesField, Datum} from './transaction'
 
 interface ThreadModalProps {
   network: number | null;
   wallet: BrowserWallet;
   thread: UTxO;
   onClose: () => void;
+  refreshThread: () => void; // Function to refresh threads
 }
 
-export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose }) => {
-  const [comment, setComment] = useState('');
+export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread, onClose, refreshThread }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessLink, setShowSuccessLink] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
-  const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-  const tokenName = sessionStorage.getItem('tokenName');
-  const isOwner = tokenName === parsedDatum.fields[5].bytes;
+  const [parsedDatum, setParsedDatum] = useState<Datum>(parseDatumCbor(thread.output.plutusData!));
+
+  useEffect(() => {
+    setParsedDatum(parseDatumCbor(thread.output.plutusData!));
+  }, [thread]);
+
+  useEffect(() => {
+    // console.log('ThreadModal re-rendered with thread:', thread);
+  }, [thread]);
+
+  const tokenName = sessionStorage.getItem('cognoTokenName');
+  const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
+
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+    const maxRetries = 250;
+
+    maestro.onTxConfirmed(message, async () => {
+      refreshThread();
+      setNotification('Transaction Is On-Chain');
+      // reset all the values
+      setIsSubmitting(false);
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+      sessionStorage.setItem('threadTokenName', 'non existent token');
+      onClose();
+    }, maxRetries);
+  };
 
   const handleDelete = async () => {
     setIsSubmitting(true);
@@ -42,15 +71,20 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
+      checkTransaction(network!, result.message);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => { };
+  const handleBackToTop = () => {
+    if (modalRef.current) {
+      modalRef.current.scrollTo(0, 0);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative">
-      
+      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto" ref={modalRef}>
+        {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
           {isOwner ? (
@@ -77,8 +111,8 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         {/* title */}
         <div className="flex space-x-4">
           <div className="flex-grow"></div>
-          <h2 className="text-xl font-bold mb-2 text-black mx-2">
-            {hexToString(parsedDatum.fields[0].bytes)}
+          <h2 className="text-3xl font-bold text-black m-4">
+            {hexToString((parsedDatum.fields[0] as BytesField).bytes)}
           </h2>
           <div className="flex-grow"></div>
         </div>
@@ -87,19 +121,27 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           {/* Blur Image */}
           <div className='w-1/3'>
             <div className='flex justify-center'>
-              {parsedDatum.fields[2].bytes && (
-                <BlurImage imageUrl={hexToString(parsedDatum.fields[2].bytes)} />
+              {(parsedDatum.fields[2] as BytesField).bytes && (
+                <BlurImage imageUrl={hexToString((parsedDatum.fields[2] as BytesField).bytes)} />
               )}
             </div>
           </div>
           <div className='w-2/3 flex-grow overflow-auto max-h-96'>
             <p className="text-black overflow-auto">
-              {hexToString(parsedDatum.fields[1].bytes)}
+              {hexToString((parsedDatum.fields[1] as BytesField).bytes)}
             </p>
           </div>
         </div>
         {/* Comments here*/}
-        <Comments thread={thread} network={network} wallet={wallet} />
+        <Comments thread={thread} network={network} wallet={wallet} refreshThread={refreshThread}/>
+        <div className='items-center flex flex-col'>
+          <button
+            onClick={handleBackToTop}
+            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+          >
+          Back to Top
+        </button>
+        </div>
       </div>
     </div>
   );

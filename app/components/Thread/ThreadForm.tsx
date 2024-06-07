@@ -5,13 +5,15 @@ import { BrowserWallet } from '@meshsdk/core';
 import { handleThreadCreation } from './transaction';
 import SuccessText from '../SuccessText';
 import Notification from '../Notification';
+import { MaestroProvider } from '@meshsdk/core';
 
 interface ThreadFormProps {
   network: number | null;
   wallet: BrowserWallet;
+  refreshThread: () => void; // Function to refresh threads
 }
 
-export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
+export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refreshThread }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('General');
@@ -24,6 +26,28 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
 
+  const checkTransaction = (network: number, message: string) => {
+    const networkName = network === 0 ? 'Preprod' : 'Mainnet';
+    const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
+
+    const maxRetries = 250;
+
+    maestro.onTxConfirmed(message, async () => {
+      refreshThread();
+      setNotification('Transaction Is On-Chain');
+      // reset all the values
+      setTitle('');
+      setContent('');
+      setCategory('General'); // default value
+      setImageUrl('');
+      setAnonymous(false);
+      setLovelace(0);
+      setIsSubmitting(false);
+      setSubmittedTxHash('');
+      setShowSuccessLink(false);
+    }, maxRetries);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     setIsSubmitting(true);
     setSubmittedTxHash('');
@@ -34,7 +58,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
       content,
       category,
       imageUrl: imageUrl || '',
-      tokenName: anonymous ? '' : sessionStorage.getItem('tokenName'),
+      tokenName: anonymous ? '' : sessionStorage.getItem('cognoTokenName'),
       lovelace: 1_000_000 * lovelace
     };
     const result = await handleThreadCreation(network, wallet, newThread);
@@ -46,14 +70,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
       // the transaction was submitted and we need to show the success modal
       setSubmittedTxHash(result.message);
       setShowSuccessLink(true);
-      // reset all the values
-      setTitle('');
-      setContent('');
-      setCategory('General'); // default value
-      setImageUrl('');
-      setAnonymous(false);
-      setLovelace(0);
-      setIsSubmitting(false);
+      checkTransaction(network!, result.message);
     }
   };
 
@@ -72,6 +89,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           required
           autoComplete="off"
           maxLength={300}
+          disabled={isSubmitting}
         />
       </div>
       <div className="mb-4">
@@ -83,6 +101,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           required
           autoComplete="off"
           maxLength={40000}
+          disabled={isSubmitting}
         ></textarea>
       </div>
       <div className="mb-4">
@@ -106,6 +125,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           onChange={(e) => setCategory(e.target.value)}
           className="border p-2 rounded w-full text-black"
           required
+          disabled={isSubmitting}
         >
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
@@ -142,6 +162,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           className="border p-2 rounded w-full text-black"
           autoComplete="off"
           maxLength={2000}
+          disabled={isSubmitting}
         />
       </div>
       <div className="mb-4 flex items-center">
@@ -150,6 +171,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           checked={anonymous}
           onChange={(e) => setAnonymous(e.target.checked)}
           className="mr-2"
+          disabled={isSubmitting}
         />
         <label className="block text-black text-sm font-bold">
           Permanent (optional)
@@ -167,7 +189,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
           </span>
         </label>
       </div>
-      <div className="mb-4 flex">
+      {/* <div className="mb-4 flex">
         <input
           type="number"
           value={lovelace}
@@ -190,7 +212,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet }) => {
             </div>
           </span>
         </label>
-      </div>
+      </div> */}
       <div className='flex space-x-4'>
         <div className="w-1/4"></div>
         <button

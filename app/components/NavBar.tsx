@@ -9,9 +9,10 @@ interface NavBarProps {
   connected: boolean;
   network: number | null;
   wallet: BrowserWallet;
+  refreshCogno: () => void; // Function to update cogno
 }
 
-const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet }) => {
+const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refreshCogno }) => {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const toggleProfileModal = () => setProfileModalOpen(!isProfileModalOpen);
 
@@ -50,7 +51,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet }) =>
           </Link>
         </div>
       </div>
-      {isProfileModalOpen && <Profile cogno={cogno} network={network} wallet={wallet} onClose={toggleProfileModal} />}
+      {isProfileModalOpen && <Profile cogno={cogno} network={network} wallet={wallet} onClose={toggleProfileModal} refreshCogno={refreshCogno}/>}
     </nav>
   );
 };

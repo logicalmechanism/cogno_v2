@@ -19,12 +19,12 @@ reference_script_address=$(${cli} address build --payment-script-file ${referenc
 cogno_script_path="../../contracts/cogno_contract.plutus"
 cogno_script_address=$(${cli} address build --payment-script-file ${cogno_script_path} ${network})
 
-#
+# collateral
 collat_address=$(cat ../wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/collat-wallet/payment.vkey)
 
 # the policy id
-policy_id=$(cat ../../hashes/minter_contract.hash)
+policy_id=$(cat ../../hashes/cogno_minter_contract.hash)
 token_name=$(cat ../data/cogno/token.name)
 
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
@@ -105,7 +105,7 @@ reference_script_tx_in=${TXIN::-8}
 
 echo Data Reference UTxO: $reference_script_tx_in
 
-minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-minter_contract.plutus.signed )
+minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-cogno_minter_contract.plutus.signed )
 cogno_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-cogno_contract.plutus.signed )
 
 # Add metadata to this build function for nfts with data

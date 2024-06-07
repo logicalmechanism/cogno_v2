@@ -4,6 +4,7 @@ use aiken/transaction/value.{AssetName, PolicyId}
 use assist/count
 use assist/data
 use assist/find
+use assist/minting
 use assist/payout
 use assist/signing
 use assist/types/hashes.{ValidatorHash}
@@ -35,6 +36,7 @@ validator(
           inputs,
           outputs,
           reference_inputs,
+          mint,
           extra_signatories,
           ..
         } = context.transaction
@@ -51,6 +53,11 @@ validator(
         let this_input: Input = find.input_by_ref(inputs, output_reference)
         // this script address
         let this_addr: Address = this_input.output.address
+        // what is being minted in this transaction
+        let mint_list: List<(PolicyId, AssetName, Int)> =
+          mint
+            |> value.from_minted_value()
+            |> value.flatten()
         //
         // If the owner of the cogno associated with this thread signs the
         // transaction then it can be removed from the contract.
@@ -70,9 +77,26 @@ validator(
           // must be correct cogno
           values.prove_exact_nft(
             cogno_input.output.value,
-            ref_datum.policy_id,
+            ref_datum.cogno_policy_id,
             this_datum.tkn,
           )?,
+          // must burn 1abe11ed token if it exists
+          or {
+            and {
+              values.prove_nft(
+                this_input.output.value,
+                ref_datum.thread_policy_id,
+              )?,
+              minting.by_prefix(
+                mint_list,
+                ref_datum.thread_policy_id,
+                #"1abe11ed",
+                -1,
+              )?,
+            },
+            // if it doesn't exist then you can still remove it
+            True,
+          },
         }
       }
       // updates the metadata and can change the minimum lovelace

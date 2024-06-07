@@ -44,11 +44,11 @@ const Forum = () => {
 
         return utxos;
       } catch (error) {
-        console.error('Error fetching UTxOs: ', error);
+        // console.error('Error fetching UTxOs: ', error);
         return [];
       }
     } else {
-      console.error('Bad Network');
+      // console.error('Bad Network');
       return [];
     }
   }, [network]);
@@ -59,7 +59,7 @@ const Forum = () => {
       const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
       const scriptAddress = scriptHashToBech32(scriptHash, undefined, network);
       // this is the cafebabe policy id
-      const policyId = process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!;
+      const policyId = process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!;
       const networkName = network === 0 ? 'Preprod' : 'Mainnet';
       const maestro = new MaestroProvider({ network: networkName, apiKey: process.env.NEXT_PUBLIC_MAESTRO!, turboSubmit: false });
       try {
@@ -78,18 +78,18 @@ const Forum = () => {
           return false;
         });
         if (foundUtxo) {
-          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_MINTER_SCRIPT_HASH!, '');
-          sessionStorage.setItem('tokenName', tokenName);
+          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
+          sessionStorage.setItem('cognoTokenName', tokenName);
           return foundUtxo;
         } else {
           return null;
         }
       } catch (error) {
-        console.error('Error fetching UTxOs: ', error);
+        // console.error('Error fetching UTxOs: ', error);
         return null;
       }
     } else {
-      console.error('Bad Network');
+      // console.error('Bad Network');
       return null; // Ensure a return value for all code paths
     }
   }, [network]);
@@ -111,6 +111,16 @@ const Forum = () => {
     const _threads = await findThreads();
     setThreads(_threads);
     setIsLoading(false);
+  };
+
+  const refreshCogno = async () => {
+    const _cogno = await findCogno();
+    setCogno(_cogno);
+  };
+
+  const refreshThreads = async () => {
+    const _threads = await findThreads();
+    setThreads(_threads);
   };
 
   useEffect(() => {
@@ -155,7 +165,7 @@ const Forum = () => {
 
   return (
     <div>
-      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} />
+      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} />
       {connected ? (
         network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
           <div>
@@ -174,7 +184,7 @@ const Forum = () => {
                 Refresh Cogno
               </button>
               </div>
-              <Threads threads={threads} network={network} wallet={wallet} />
+              <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/>
             </div>)
             }
           </div>
