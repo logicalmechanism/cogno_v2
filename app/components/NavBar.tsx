@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
   const toggleProfileModal = () => setProfileModalOpen(!isProfileModalOpen);
 
   return (
-    <nav className="bg-indigo-200 text-white py-1">
+    <nav className="bg-indigo-200 text-white py-1 w-full">
       <div className="flex items-center">
         <div className="flex mx-5">
           <CardanoWallet />

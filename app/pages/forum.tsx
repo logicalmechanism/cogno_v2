@@ -164,7 +164,7 @@ const Forum = () => {
   }, [network, disconnect]);
 
   return (
-    <div>
+    <div className="flex flex-col w-max lg:w-full">
       <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} />
       {connected ? (
         network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
@@ -184,7 +184,7 @@ const Forum = () => {
                 Refresh Cogno
               </button>
               </div>
-              {/* <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/> */}
+              <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/>
             </div>)
             }
           </div>

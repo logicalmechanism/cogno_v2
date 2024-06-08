@@ -64,7 +64,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   };
 
   return (
-    <div className="thread-list-container flex flex-col my-1 border rounded w-full">
+    <div className="thread-list-container flex flex-col border rounded w-full">
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
         <div className="w-1/6"></div> {/* Empty spacer */}
