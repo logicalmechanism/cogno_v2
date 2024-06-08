@@ -110,7 +110,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           return (
             <div
               key={index}
-              className="text-black"
+              className="text-black border border-gray-300 rounded m-1 p-1"
             >
               <p>{commentText}</p>
               <br/>
