@@ -70,6 +70,14 @@ const FAQ: React.FC = () => {
       question: 'How should I track if my transaction hit the chain?',
       answer: 'Use the "view transactions" link. It will open a new tab to CardanoScan. Wait two blocks and hit refresh to check the status. You can also check your wallet for the status of your pending transaction.',
     },
+    {
+      question: 'How can I donate to this project?',
+      answer: `Send Lovelace to:
+      addr1q8rdcfvj5a27gmp04q5c4nuly385mseam09y777xa8mjn40ax0z9yaxg2mjj3ctg4uj6ggwsc6nja0kj446w2gv5zcvqjk47zh
+      
+      or if you perfer send Monero to:
+      44DiRiEWVkXghqESJfMkMG6J3YwMSQqzNaRwEYSYQZBkHJwhRbqsAX76g978xP1b1sHAk8BLbmsmWZff8AVpNaNHRP1jYJM`,
+    },
   ];
   
 
@@ -84,7 +92,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-full mx-auto">
       <h1 className='text-3xl text-center my-2 font-extrabold'>FAQ</h1>
       {faqs.map((faq, index) => (
         <div key={index} className="mb-4">
@@ -109,7 +117,7 @@ const FAQ: React.FC = () => {
           </div>
           {activeIndex === index && (
             <div className="bg-gray-100 py-2 px-4">
-              <p className="text-gray-700">{faq.answer}</p>
+              <p className="text-gray-700 break-words whitespace-pre-wrap">{faq.answer}</p>
             </div>
           )}
         </div>

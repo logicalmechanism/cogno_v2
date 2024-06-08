@@ -10,15 +10,15 @@ const Forum = () => {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <div className="text-center">
+    <div className="flex items-center justify-center flex-col text-center">
+      <div className="">
         <button
           onClick={handleBack}
-          className="bg-green-200 hover:bg-teal-400 text-black  font-bold py-2 px-4 my-5 rounded"
+          className="bg-green-200 hover:bg-teal-400 text-black font-bold py-2 px-4 my-5 rounded"
         >
           Go Back Home
         </button>
-        <div>
+        <div className="m-7">
           <p>Cogno is a fully on-chain social media platform. There is no central db, no ads, no censorship, and no algorithm.</p>
           <p>It is just a never ending doom scroll of shit posting.</p>
           <br/>
@@ -31,6 +31,7 @@ const Forum = () => {
       </div>
       <br/>
       <FAQ />
+      <div className="mt-36"></div>
     </div>
   );
 };

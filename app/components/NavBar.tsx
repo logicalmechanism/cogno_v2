@@ -23,17 +23,17 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
           <CardanoWallet />
           {connected && network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) && (
             <>
-              <button className="hover:bg-sky-400 text-black font-bold py-1 px-2 rounded mx-2 h-8" onClick={toggleProfileModal}>
-                My Profile
+              <button className="hover:bg-sky-400 text-black font-bold rounded pl-2" onClick={toggleProfileModal}>
+                Profile
               </button>
               {connected && cogno ?
                 (
-                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8'>
+                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8 hidden md:block'>
                     <p>Cogno Is Set</p>
                   </div>
                 ) :
                 (
-                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8'>
+                  <div className='text-gray-500 font-bold py-1 px-2 mx-2 h-8 hidden md:block'>
                     <p>Please Create A Cogno Using My Profile</p>
                   </div>
                 )
@@ -42,11 +42,11 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
           )}
         </div>
         <div className="flex-grow"></div>
-          <div className='text-gray-700 font-bold py-1 px-2 mx-2 h-8'>
-            <Link href='/forum'>cogno.sucks</Link>
-          </div>
+        <div className='text-gray-700 font-bold py-1 px-4 mx-2 h-8 hidden md:block'>
+          <Link href='/forum'>cogno.sucks</Link>
+        </div>
         <div className="flex">
-          <Link href="/about" className="text-sm mx-5 px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-500 hover:bg-white mt-4 lg:mt-0">
+          <Link href="/about" className="py-2 px-4 mr-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-500 hover:bg-white">
             About
           </Link>
         </div>
