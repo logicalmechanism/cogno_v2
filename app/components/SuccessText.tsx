@@ -6,7 +6,7 @@ interface SuccessTextProps {
 
 const SuccessText: React.FC<SuccessTextProps> = ({ txHash }) => {
   return (
-    <div className="border rounded my-1">
+    <div className="border rounded m-2">
       <h3 className="text-lg font-semibold text-gray-800">Transaction Successful!</h3>
       <br />
       <h5 className="text-md font-semibold text-gray-800">

@@ -89,7 +89,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
 
       {/* Thread Titles */}
       <div className="flex flex-col space-y-2 items-center my-1">
-        {filteredThreads.map((thread, index) => {
+        {filteredThreads.slice().reverse().map((thread, index) => {
           const titleField = hexToString(parseDatumCbor(thread.output.plutusData!).fields[0].bytes);
           const imageField = hexToString(parseDatumCbor(thread.output.plutusData!).fields[2].bytes);
       
