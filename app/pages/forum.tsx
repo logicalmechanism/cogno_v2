@@ -184,7 +184,7 @@ const Forum = () => {
                 Refresh Cogno
               </button>
               </div>
-              <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/>
+              {/* <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/> */}
             </div>)
             }
           </div>
