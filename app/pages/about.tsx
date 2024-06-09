@@ -19,14 +19,22 @@ const Forum = () => {
           Go Back Home
         </button>
         <div className="m-7">
-          <p>Cogno is a fully on-chain social media platform. There is no central db, no ads, no censorship, and no algorithm.</p>
-          <p>It is just a never ending doom scroll of shit posting.</p>
+          <p>Cogno.sucks is a fully on-chain social media platform. There is no central database, ads, censorship, or algorithm.</p>
           <br/>
-          <p> Read the FAQ below if you need some questions answered.</p>
+          <p>Read the FAQ below if you need some questions answered.</p>
           <br/>
-          <p>This application relies on open-source technology. It is not built for speed but for decentralization.</p>
+          <p>This application relies on open-source technology. It is not built for speed or looks but for decentralization.</p>
           <br/>
-          <p>Cogno was created by Logical Mechanism LLC</p>
+          <p>cogno.sucks was created by Logical Mechanism LLC</p>
+          <br/>
+          <a
+            href={'https://github.com/logicalmechanism/cogno_v2'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-500 text-blue-700 underline"
+          >
+            <span>View on GitHub</span>
+          </a>
         </div>
       </div>
       <br/>
