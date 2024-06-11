@@ -72,10 +72,12 @@ const FAQ: React.FC = () => {
     },
     {
       question: `How can I donate to this project?`,
-      answer: `Send Lovelace to:
+      answer: `Send ADA to:
       addr1q8rdcfvj5a27gmp04q5c4nuly385mseam09y777xa8mjn40ax0z9yaxg2mjj3ctg4uj6ggwsc6nja0kj446w2gv5zcvqjk47zh
       
-      or if you perfer send Monero to:
+      or
+
+      Send XMR to:
       44DiRiEWVkXghqESJfMkMG6J3YwMSQqzNaRwEYSYQZBkHJwhRbqsAX76g978xP1b1sHAk8BLbmsmWZff8AVpNaNHRP1jYJM`,
     },
   ];

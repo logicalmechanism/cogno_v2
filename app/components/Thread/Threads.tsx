@@ -19,13 +19,13 @@ export const Threads: React.FC<ThreadsProps> = ({ threads, network, wallet, refr
   return (
     <div className="container flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 w-full my-2">
       {/* Placeholder for ThreadForm component */}
-      <div className='w-full lg:w-1/4 bg-gray-400 h-full'>
-        <ThreadForm network={network} wallet={wallet} refreshThread={refreshThreads}/>
-      </div>
-      {/* Placeholder for ThreadList component */}
-      <div className='w-full lg:w-3/4'>
-        <ThreadList network={network} wallet={wallet} threads={threads} refreshThread={refreshThreads}/>
-      </div>
+        <div className='w-full lg:w-1/4 bg-gray-400 h-full'>
+          <ThreadForm network={network} wallet={wallet} refreshThread={refreshThreads}/>
+        </div>
+        {/* Placeholder for ThreadList component */}
+        <div className='w-full lg:w-3/4'>
+          <ThreadList network={network} wallet={wallet} threads={threads} refreshThread={refreshThreads}/>
+        </div>
       <button
         onClick={handleBackToTop}
         className="fixed bottom-4 right-4 bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
