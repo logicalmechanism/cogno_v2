@@ -5,7 +5,7 @@ const FAQ: React.FC = () => {
     {
       question: `What is cogno.sucks?`,
       answer: `Cogno.sucks is all of your favorite social media sites in one decentralized application.
-      Its a forum, image board, aggregator, social network, and chat all in one.
+      Its a forum, image board, aggregator, and social network all in one.
       The only difference here is that no one can control it, censor it, or turn it off.`,
     },
     {
