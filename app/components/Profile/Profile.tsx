@@ -17,7 +17,7 @@ interface ProfileProps {
 
 export const Profile: FC<ProfileProps> = ({ cogno, network, wallet, onClose, refreshCogno }) => {
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="profile-modal">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto z-50" id="profile-modal">
       <div className="relative top-20 mx-auto p-5 border shadow-lg rounded-md bg-gray-400 w-fit">
         {/* Top right close button */}
         <button
