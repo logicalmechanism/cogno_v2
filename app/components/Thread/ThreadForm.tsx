@@ -75,11 +75,11 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
   };
 
   return (
-    <form onSubmit={handleSubmit} className="thread-form border p-4 rounded">
-      <div className='items-center mx-auto text-center'>
+    <form onSubmit={handleSubmit} className="flex flex-col border rounded w-full">
+      <div className='items-center text-center'>
         {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
       </div>
-      <div className="mb-4">
+      <div className="m-2">
         <label className="block text-black text-sm font-bold mb-2">Title</label>
         <input
           type="text"
@@ -92,7 +92,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           disabled={isSubmitting}
         />
       </div>
-      <div className="mb-4">
+      <div className="m-2">
         <label className="block text-black text-sm font-bold mb-2">Content</label>
         <textarea
           value={content}
@@ -104,7 +104,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           disabled={isSubmitting}
         ></textarea>
       </div>
-      <div className="mb-4">
+      <div className="m-2">
         <label className="block text-black text-sm font-bold mb-2">
           Category
           <span className="relative group">
@@ -139,7 +139,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           <option value="Adult">Adult</option>
         </select>
       </div>
-      <div className="mb-4">
+      <div className="m-2">
         <label className="block text-black text-sm font-bold mb-2">
           Image URL (optional)
           <span className="relative group">
@@ -165,7 +165,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           disabled={isSubmitting}
         />
       </div>
-      <div className="mb-4 flex items-center">
+      <div className="m-2 flex items-center">
         <input
           type="checkbox"
           checked={anonymous}
@@ -189,7 +189,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           </span>
         </label>
       </div>
-      {/* <div className="mb-4 flex">
+      {/* <div className="m-2 flex">
         <input
           type="number"
           value={lovelace}
@@ -217,7 +217,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
         <div className="w-1/4"></div>
         <button
           type="submit"
-          className="bg-blue-200 hover:bg-sky-400 text-black p-2 rounded mt-2 w-2/4"
+          className="bg-blue-200 hover:bg-sky-400 text-black p-2 rounded m-2 w-2/4"
           disabled={isSubmitting}
         >
           Create Thread

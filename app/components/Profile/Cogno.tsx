@@ -98,7 +98,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
     <div className="max-w-lg mx-auto py-1 bg-gray-400 shadow-md rounded-md items-center">
       {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="block text-black text-sm font-bold mb-2" htmlFor="title">Name</label>
           <input
             id="title"
@@ -108,9 +108,10 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
+            maxLength={300}
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="block text-black text-sm font-bold mb-2" htmlFor="image">Image URL</label>
           <input
             id="image"
@@ -118,8 +119,9 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             value={image}
             onChange={(e) => setImage(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-            disabled={!editMode && cogno !== null}
+            disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
+            maxLength={2048}
           />
           {cogno && image !== '' &&
             (
@@ -129,15 +131,16 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
               </div>
             )}
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="block text-black text-sm font-bold mb-2" htmlFor="details">Details</label>
           <textarea
             id="details"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-            disabled={!editMode && cogno !== null}
+            disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
+            maxLength={40000}
           />
         </div>
         <div className="flex flex-col items-center justify-between">

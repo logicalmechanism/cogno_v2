@@ -298,7 +298,7 @@ export const handleCognoTransaction = async (network: number | null,
   try {
     await mesh.complete();
   } catch (error) {
-    console.error('Maestro Error: ', error);
+    // console.error('Maestro Error: ', error);
     return {
       success: false,
       message: `Maestro Error: ${error}`
@@ -311,10 +311,10 @@ export const handleCognoTransaction = async (network: number | null,
     unsignedTx = mesh.completeSigning();
     // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
-    console.error('Complete Signing Error: ', error);
+    console.error('Complete Error: ', error);
     return {
       success: false,
-      message: `Complete Signing Error: ${error}`
+      message: `Complete Error: ${error}`
     };
   }
 
@@ -324,10 +324,10 @@ export const handleCognoTransaction = async (network: number | null,
     signedTx = await wallet.signTx(unsignedTx, true);
     // console.log('Signed Tx: ', signedTx);
   } catch (error) {
-    console.error('Transaction Sign Error: ', error);
+    // console.error('Sign Error: ', error);
     return {
       success: false,
-      message: `Transaction Sign Error: ${error}`
+      message: `Sign Error: ${error}`
     };
   }
 
@@ -337,10 +337,10 @@ export const handleCognoTransaction = async (network: number | null,
     txHash = await wallet.submitTx(signedTx);
     // console.log('Tx Hash: ', txHash);
   } catch (error) {
-    console.error('Transaction Submission Error: ', error);
+    // console.error('Submission Error: ', error);
     return {
       success: false,
-      message: `Transaction Submission Error: ${error}`
+      message: `Submission Error: ${error}`
     };
   }
 

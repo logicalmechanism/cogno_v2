@@ -27,17 +27,22 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const [notification, setNotification] = useState<string>('');
   const clearNotification = () => setNotification('');
   const [parsedDatum, setParsedDatum] = useState<Datum>(parseDatumCbor(thread.output.plutusData!));
+  const commentsRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollToComments = () => {
+    if (commentsRef.current) {
+      commentsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     setParsedDatum(parseDatumCbor(thread.output.plutusData!));
   }, [thread]);
 
-  useEffect(() => {
-    // console.log('ThreadModal re-rendered with thread:', thread);
-  }, [thread]);
 
   const tokenName = sessionStorage.getItem('cognoTokenName');
   const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
+  const hasImage = (parsedDatum.fields[2] as BytesField).bytes;
 
   const checkTransaction = (network: number, message: string) => {
     const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -119,28 +124,45 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         {/* content */}
         <div className='flex space-x-4'>
           {/* Blur Image */}
-          <div className='w-1/3'>
-            <div className='flex justify-center'>
-              {(parsedDatum.fields[2] as BytesField).bytes && (
-                <BlurImage imageUrl={hexToString((parsedDatum.fields[2] as BytesField).bytes)} />
-              )}
+          {hasImage && (
+            <div className='w-1/3'>
+              <div className='flex justify-center'>
+                <BlurImage imageUrl={hexToString(hasImage)} />
+              </div>
             </div>
-          </div>
-          <div className='w-2/3 flex-grow overflow-auto max-h-96'>
+          )}
+          <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
             <p className="text-black overflow-auto">
               {hexToString((parsedDatum.fields[1] as BytesField).bytes)}
             </p>
           </div>
         </div>
         {/* Comments here*/}
+        <div ref={commentsRef}></div>
         <Comments thread={thread} network={network} wallet={wallet} refreshThread={refreshThread}/>
-        <div className='items-center flex flex-col'>
+        <div className='items-center flex'>
+          <div className="flex-grow"></div>
           <button
             onClick={handleBackToTop}
             className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
           >
-          Back to Top
-        </button>
+            Back to Top
+          </button>
+          <div className="flex-grow"></div>
+          <button
+            onClick={handleScrollToComments}
+            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+          >
+            Make A Comment
+          </button>
+          <div className="flex-grow"></div>
+          <button
+            onClick={onClose}
+            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+          >
+            Close Thread
+          </button>
+          <div className="flex-grow"></div>
         </div>
       </div>
     </div>

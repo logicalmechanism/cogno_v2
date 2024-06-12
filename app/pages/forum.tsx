@@ -159,12 +159,18 @@ const Forum = () => {
       // this needs to display some alert
       const alertMsg = networkFlag === 1 ? 'Pre-Production' : 'Mainnet';
       setNotification(`Network Must Be Set To ${alertMsg}!`);
-      disconnect(); // Automatically disconnect
+      const timer = setTimeout(() => {
+        disconnect(); // Automatically disconnect
+      }, 1234);
+
+      return () => {
+        clearTimeout(timer); // Cleanup the timeout if the component unmounts early
+      }
     }
   }, [network, disconnect]);
 
   return (
-    <div>
+    <div className="flex flex-col lg:w-full min-w-max">
       <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} />
       {connected ? (
         network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
@@ -174,22 +180,24 @@ const Forum = () => {
                 <p className="text-lg font-semibold">Loading Cogno and Thread Data...</p>
               </div>
             ) : (
-            <div className="flex flex-col w-full items-center justify-center">
-              <div className="w-auto">
-                <button
-                className="px-4 py-2 my-2 bg-green-200 text-black text-base font-medium rounded-md shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                type="button"
-                onClick={refreshCognoAndThreads}
-              >
-                Refresh Cogno
-              </button>
-              </div>
-              <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads}/>
-            </div>)
+              <div className="flex flex-col w-full items-center justify-center">
+                <div className="w-auto">
+                  <button
+                    className="px-4 py-2 my-2 bg-green-200 text-black text-base font-medium rounded-md shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    type="button"
+                    onClick={refreshCognoAndThreads}
+                  >
+                    Refresh Cogno
+                  </button>
+                </div>
+                <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads} />
+              </div>)
             }
           </div>
         ) : network === parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
-          <div>Incorrect Network</div>
+          <div className="flex items-center justify-center h-screen">
+            <p className="text-lg font-semibold">Incorrect Network</p>
+          </div>
         ) : (
           <div>Network Not Recognized</div>
         )
