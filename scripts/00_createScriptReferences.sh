@@ -9,7 +9,10 @@ ${cli} query protocol-parameters ${network} --out-file ./tmp/protocol.json
 
 # Addresses
 reference_address=$(cat ./wallets/reference-wallet/payment.addr)
-script_reference_address=$(cat ./wallets/reference-wallet/payment.addr)
+
+# perma lock the script references to the reference contract
+reference_script_path="../contracts/reference_contract.plutus"
+script_reference_address=$(${cli} address build --payment-script-file ${reference_script_path} ${network})
 
 echo -e "\033[0;35m\nGathering UTxO Information  \033[0m"
 ${cli} query utxo \
