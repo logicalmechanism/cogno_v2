@@ -50,7 +50,9 @@ validator(
             |> value.from_minted_value()
             |> value.flatten()
         //
-        //
+        // Remove a cogno by burning the cafebabe token if it exists. This
+        // transaction is valid if and only if there exists a valid signature.
+        // If the cafebabe token doesn't exist then it is still removeable.
         //
         and {
           // owner must sign
@@ -66,6 +68,7 @@ validator(
           )?,
           // must burn cafebabe token if it exists
           or {
+            // if cogno exists then burn it
             and {
               values.prove_nft(
                 this_input.output.value,

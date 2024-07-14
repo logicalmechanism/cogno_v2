@@ -15,7 +15,7 @@ reference_script_address=$(${cli} address build --payment-script-file ${referenc
 genesis_script_path="../contracts/genesis_contract.plutus"
 genesis_policy_id=$(cat ../hashes/genesis_contract.hash)
 
-# fraction estate wallet
+# starter wallet
 starter_address=$(cat wallets/starter-wallet/payment.addr)
 starter_pkh=$(${cli} address key-hash --payment-verification-key-file wallets/starter-wallet/payment.vkey)
 
@@ -24,7 +24,6 @@ change_address="addr_test1qrvnxkaylr4upwxfxctpxpcumj0fl6fdujdc72j8sgpraa9l4gu9er
 # collat wallet
 collat_address=$(cat wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file wallets/collat-wallet/payment.vkey)
-
 
 echo -e "\033[0;36m Gathering Starter UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -52,7 +51,6 @@ full_genesis_tkn="${genesis_prefix}${genesis_tx_idx_cbor}${genesis_tx_id}"
 genesis_tkn="${full_genesis_tkn:0:64}"
 mint_genesis_asset="1 ${genesis_policy_id}.${genesis_tkn}"
 echo -e "\033[1;36m\nGenesis Token: ${mint_genesis_asset} \033[0m"
-
 
 # mint 1 genesis token and burn 100M old fet
 mint_asset="${mint_genesis_asset}"
