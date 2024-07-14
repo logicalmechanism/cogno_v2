@@ -1,6 +1,6 @@
-# Running cogno.sucks Locally
+# Running cogno.forum Locally
 
-It is highly recommended to run cogno.sucks locally using `yarn`. Follow the installation instructions for [node](https://nodejs.org/en/download/package-manager) and [yarn](https://yarnpkg.com/getting-started/install).
+It is highly recommended to run cogno.forum locally using `yarn`. Follow the installation instructions for [node](https://nodejs.org/en/download/package-manager) and [yarn](https://yarnpkg.com/getting-started/install).
 
 Install required packages:
 

@@ -43,7 +43,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
         </div>
         <div className="flex-grow"></div>
         <div className='text-gray-700 font-bold py-1 px-4 mx-2 h-8 hidden md:block'>
-          <Link href='/forum'>cogno.sucks</Link>
+          <Link href='/forum'>cogno.forum</Link>
         </div>
         <div className="flex">
           <Link href="/about" className="py-2 px-4 mr-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-500 hover:bg-white">

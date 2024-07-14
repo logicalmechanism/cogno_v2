@@ -1,7 +1,9 @@
 name = "logicalmechanism/cogno_v2"
-version = "0.1.0"
-license = "Apache-2.0"
-description = "Aiken contracts for project 'logicalmechanism/cogno_v2'"
+version = "1.0.0"
+compiler = "v1.0.29-alpha"
+plutus = "v2"
+license = "GPL-3.0-or-later"
+description = "A fully on-chain social media platform."
 
 [repository]
 user = "logicalmechanism"
@@ -15,5 +17,5 @@ source = "github"
 
 [[dependencies]]
 name = "logicalmechanism/assist"
-version = "v0.4.9"
+version = "v0.4.10"
 source = "github"

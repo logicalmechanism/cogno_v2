@@ -3,19 +3,19 @@ import React, { useState } from 'react';
 const FAQ: React.FC = () => {
   const faqs = [
     {
-      question: `What is cogno.sucks?`,
-      answer: `Cogno.sucks is all of your favorite social media sites in one decentralized application.
+      question: `What is cogno.forum?`,
+      answer: `cogno.forum is all of your favorite social media sites in one decentralized application.
       Its a forum, image board, aggregator, and social network all in one.
       The only difference here is that no one can control it, censor it, or turn it off.`,
     },
     {
-      question: `How do I use cogno.sucks?`,
+      question: `How do I use cogno.forum?`,
       answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet, create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That\`s it!`,
     },
     {
-      question: `Why does it cost money to use cogno.sucks?`,
+      question: `Why does it cost money to use cogno.forum?`,
       answer: `A Cogno is an on-chain profile which means you need Lovelace to create a Cogno. 
-      Using cogno.sucks involves creating on-chain threads associated with a Cogno profile which means you need Lovelace to create threads. 
+      Using cogno.forum involves creating on-chain threads associated with a Cogno profile which means you need Lovelace to create threads. 
       To comment on a thread, you need Lovelace. To use Cardano, you need Lovelace. Welcome to the reality of blockchain technology, where everything costs money.`,
     },
     {
@@ -24,20 +24,20 @@ const FAQ: React.FC = () => {
     },
     {
       question: `How do I view the application?`,
-      answer: `Cogno is designed to be used locally with yarn but it will be hosted at www.cogno.sucks.
-      There are no guarantees ww.cogno.sucks will exist or be online. The app will be hosted for convenience
+      answer: `Cogno is designed to be used locally with yarn but it will be hosted at www.cogno.forum.
+      There are no guarantees ww.cogno.forum will exist or be online. The app will be hosted for convenience
       but it is highly suggested that you just use yarn and run it locally.`,
     },
     {
-      question: `Is everything on cogno.sucks public?`,
-      answer: `Yes, everything on cogno.sucks is public.`,
+      question: `Is everything on cogno.forum public?`,
+      answer: `Yes, everything on cogno.forum is public.`,
     },
     {
       question: `Is the project open-sourced?`,
       answer: `Yes, the validators, headless scripts, and application frontend are all available inside the mono repo.`,
     },
     {
-      question: `Do you make money from cogno.sucks?`,
+      question: `Do you make money from cogno.forum?`,
       answer: `Nope.`,
     },
     {
@@ -50,18 +50,18 @@ const FAQ: React.FC = () => {
       answer: `Reporting threads to the proper authorities is controlled by you, the user. Content can not be blocked or censored.`,
     },
     {
-      question: `How can I blame cogno.sucks for something?`,
-      answer: `You, as the user, accept the risk of using cogno.sucks. There are no promises, no protection, and no regulation.`,
+      question: `How can I blame cogno.forum for something?`,
+      answer: `You, as the user, accept the risk of using cogno.forum. There are no promises, no protection, and no regulation.`,
     },
     {
-      question: `Why does cogno.sucks look like zero effort was put into the frontend?`,
+      question: `Why does cogno.forum look like zero effort was put into the frontend?`,
       answer: `Minimum effort was used at every step of the way. Every component is made with AI.
-      Cogno.sucks is not suppose to be pretty, it is supposed to be decentralized. 
+      cogno.forum is not suppose to be pretty, it is supposed to be decentralized. 
       If you want it to look pretty, then contribute to the frontend.`,
     },
     {
       question: `Why did my comment or thread deletion not hit the chain?`,
-      answer: `Cogno.sucks uses Maestro to query the Cardano blockchain. Additionally, there are no contingency protections at the contract level.
+      answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no contingency protections at the contract level.
       This combo makes for some interesting user experiences when many users are trying to be interact at once with a single thread.
       If someone spent what you are trying to spend, then just try again. You just have to wait a block or two.`,
     },

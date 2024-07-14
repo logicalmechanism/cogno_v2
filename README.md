@@ -1,6 +1,6 @@
 # Cogno V2
 
-The newer, slimmer, and updated version of Congo. Cogno V1 is now [depreciated](https://github.com/logicalmechanism/cogno).
+The newer, slimmer, and updated version of Congo, a fully on-chain social media platform. Cogno V1 is now [depreciated](https://github.com/logicalmechanism/cogno_v1).
 
 Cogno is a collection of smart contracts for UTxO-based cognomens and on-chain threads. Each Cogno acts as an user profile. Each thread is an on-chain message. Together they are a fully decentralized, completly public, social media platform. Ran entirely on the Cardano blockchain.
 
