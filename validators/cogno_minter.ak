@@ -74,7 +74,7 @@ validator(
             value.from_asset(currency_symbol, token_name, 1),
             outputs,
           )?,
-          // can not spend anything from cogno address
+          // single output going to the cogno address
           count.outputs_by_addr(outputs, cogno_addr, 1)?,
         }
       }

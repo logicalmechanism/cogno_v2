@@ -14,6 +14,10 @@ reference_address=$(cat ./wallets/reference-wallet/payment.addr)
 reference_script_path="../contracts/reference_contract.plutus"
 script_reference_address=$(${cli} address build --payment-script-file ${reference_script_path} ${network})
 
+# address to send the leftover ada too
+change_address=$(jq -r '.change_address' ../config.json)
+
+
 echo -e "\033[0;35m\nGathering UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
@@ -62,12 +66,9 @@ do
     --tx-out-reference-script-file ${contract} \
     --fee 900000
 
-    FEE=$(cardano-cli transaction calculate-min-fee \
+    FEE=$(${cli} transaction calculate-min-fee \
         --tx-body-file ./tmp/tx.draft \
-        ${network} \
         --protocol-params-file ./tmp/protocol.json \
-        --tx-in-count 1 \
-        --tx-out-count 2 \
         --witness-count 1)
     echo -e "\033[0;35mFEE: ${FEE} \033[0m"
     fee=$(echo $FEE | rev | cut -c 9- | rev)
@@ -90,11 +91,43 @@ do
         --out-file ./tmp/utxo-${file_name}.signed \
         ${network}
 
-    ref_tx_in=$(${cli} transaction txid --tx-body-file ./tmp/tx.draft)#0
+    tx_id=$(${cli} transaction txid --tx-body-file ./tmp/tx.draft)
+    ref_tx_in=${tx_id}#0
     echo 
-    echo -e "\033[0;36mNext UTxO: $ref_tx_in \033[0m"
+    echo -e "\033[0;36m$file_name: $tx_id#1 \033[0m"
 
 done
+
+${cli} transaction build-raw \
+    --babbage-era \
+    --protocol-params-file ./tmp/protocol.json \
+    --out-file ./tmp/tx.draft \
+    --tx-in ${ref_tx_in} \
+    --tx-out="${change_address} + ${changeAmount}" \
+    --fee 900000
+
+FEE=$(${cli} transaction calculate-min-fee \
+    --tx-body-file ./tmp/tx.draft \
+    --protocol-params-file ./tmp/protocol.json \
+    --witness-count 1)
+echo -e "\033[0;35mFEE: ${FEE} \033[0m"
+fee=$(echo $FEE | rev | cut -c 9- | rev)
+
+changeAmount=$((${changeAmount} - ${fee}))
+
+${cli} transaction build-raw \
+    --babbage-era \
+    --protocol-params-file ./tmp/protocol.json \
+    --out-file ./tmp/tx.draft \
+    --tx-in ${ref_tx_in} \
+    --tx-out="${change_address} + ${changeAmount}" \
+    --fee ${fee}
+
+${cli} transaction sign \
+    --signing-key-file ./wallets/reference-wallet/payment.skey \
+    --tx-body-file ./tmp/tx.draft \
+    --out-file ./tmp/change-tx.signed \
+    ${network}
 
 echo -e "\033[1;37m --------------------------------------------------------------------------------\033[0m"
 # now submit them in that order
@@ -107,5 +140,9 @@ do
         ${network} \
         --tx-file ./tmp/utxo-${file_name}.signed
 done
+
+${cli} transaction submit \
+    ${network} \
+    --tx-file ./tmp/change-tx.signed
 
 echo -e "\033[0;32m\nDone!\033[0m"

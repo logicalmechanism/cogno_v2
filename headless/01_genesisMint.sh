@@ -19,7 +19,7 @@ genesis_policy_id=$(cat ../hashes/genesis_contract.hash)
 starter_address=$(cat wallets/starter-wallet/payment.addr)
 starter_pkh=$(${cli} address key-hash --payment-verification-key-file wallets/starter-wallet/payment.vkey)
 
-change_address="addr_test1qrvnxkaylr4upwxfxctpxpcumj0fl6fdujdc72j8sgpraa9l4gu9er4t0w7udjvt2pqngddn6q4h8h3uv38p8p9cq82qav4lmp"
+change_address=$(jq -r '.change_address' ../config.json)
 
 # collat wallet
 collat_address=$(cat wallets/collat-wallet/payment.addr)
@@ -80,17 +80,10 @@ collat_utxo=$(jq -r 'keys[0]' tmp/collat_utxo.json)
 
 genesis_ref_utxo=$(${cli} transaction txid --tx-file tmp/utxo-genesis_contract.plutus.signed )
 
-# slot contraints
-slot=$(${cli} query tip ${network} | jq .slot)
-current_slot=$(($slot - 1))
-final_slot=$(($slot + 2500))
-
 echo -e "\033[0;36m Building Tx \033[0m"
 FEE=$(${cli} transaction build \
     --babbage-era \
     --out-file tmp/tx.draft \
-    --invalid-before ${current_slot} \
-    --invalid-hereafter ${final_slot} \
     --change-address ${change_address} \
     --tx-in-collateral="${collat_utxo}" \
     --tx-in ${starter_tx_in} \
