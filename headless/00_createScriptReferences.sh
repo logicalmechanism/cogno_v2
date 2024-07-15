@@ -15,8 +15,7 @@ change_address=$(jq -r '.change_address' ../config.json)
 
 # perma lock the script references to the reference contract
 reference_script_path="../contracts/reference_contract.plutus"
-# script_reference_address=$(${cli} address build --payment-script-file ${reference_script_path} ${network})
-script_reference_address=${change_address}
+script_reference_address=$(${cli} address build --payment-script-file ${reference_script_path} ${network})
 
 echo -e "\033[0;35m\nGathering UTxO Information  \033[0m"
 ${cli} query utxo \
