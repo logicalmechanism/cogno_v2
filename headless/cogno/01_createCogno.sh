@@ -69,7 +69,6 @@ UTXO_VALUE=$(${cli} transaction calculate-min-required-utxo \
     --tx-out="${cogno_script_address} + 5000000 + ${MINT_ASSET}" | tr -dc '0-9')
 cogno_address_out="${cogno_script_address} + ${UTXO_VALUE} + ${MINT_ASSET}"
 
-
 echo "Cogno OUTPUT:" ${cogno_address_out}
 #
 # exit

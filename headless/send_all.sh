@@ -10,12 +10,12 @@ rm ./tmp/tx.signed || true
 ${cli} query protocol-parameters ${network} --out-file ./tmp/protocol.json
 
 # Sender Address
-sender_path="wallets/user-1-wallet/"
+sender_path="wallets/reference-wallet/"
 sender_address=$(cat ${sender_path}payment.addr)
 
 # Receiver Address
 # receiver_address=$(cat ${sender_path}payment.addr)
-receiver_address="addr_test1qrvnxkaylr4upwxfxctpxpcumj0fl6fdujdc72j8sgpraa9l4gu9er4t0w7udjvt2pqngddn6q4h8h3uv38p8p9cq82qav4lmp"
+receiver_address=$(jq -r '.change_address' ../config.json)
 #
 # exit
 #
