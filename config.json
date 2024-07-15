@@ -1,9 +1,9 @@
 {
     "__comment1__": "Genesis UTxO From Starter Wallet",
-    "genesis_tx_id": "57d3a65415bc240fafbd636afde43ae32a42fdf0b46edced0666953cbe161cf1",
+    "genesis_tx_id": "0dd7c0a8a7926c439fdfba2a27d1dc93dad08569be8aaef66158318a9d25d955",
     "genesis_tx_idx": 0,
     "__comment2__": "Random String For Data Reference",
-    "random_string": "11",
+    "random_string": "12",
     "__comment3__": "Change address for reference and genesis",
     "change_address": "addr_test1qrvnxkaylr4upwxfxctpxpcumj0fl6fdujdc72j8sgpraa9l4gu9er4t0w7udjvt2pqngddn6q4h8h3uv38p8p9cq82qav4lmp"
   }
