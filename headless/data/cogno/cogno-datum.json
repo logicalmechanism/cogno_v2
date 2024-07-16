@@ -25,6 +25,20 @@
           "bytes": ""
         }
       ]
+    },
+    {
+      "constructor": 0,
+      "fields": [
+        {
+          "list": []
+        },
+        {
+          "list": []
+        },
+        {
+          "list": []
+        }
+      ]
     }
   ]
 }

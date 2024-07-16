@@ -63,7 +63,7 @@ validator(
         // transaction then it can be removed from the contract.
         //
         and {
-          // owner must sign
+          // owner must sign by referenced cogno
           signing.verify_sig(extra_signatories, cogno_datum.owner.pkh)?,
           // single script input, no script output
           count.inputs_by_addr(inputs, this_addr, 1)?,

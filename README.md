@@ -22,7 +22,7 @@ Use the `complete_build.sh` script to build the contracts using the data from `c
 
 ## Headless Interaction
 
-Use the `scripts` folder to interact with the dapp using the cardano-cli.
+Use the `headless` folder to interact with the dapp using the cardano-cli.
 
 ## CIP30 Frontend Interaction
 

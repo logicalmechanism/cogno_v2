@@ -14,7 +14,10 @@ rm -fr build/ || true
 echo -e "\033[1;34m Building Contracts \033[0m"
 
 # remove all traces for production
-aiken build --trace-level silent --filter-traces user-defined
+# aiken build --trace-level silent --filter-traces user-defined
+
+# partial traces
+aiken build --trace-level compact --filter-traces user-defined
 
 # keep the traces for testing
 # aiken build --trace-level verbose --filter-traces all
@@ -97,8 +100,6 @@ echo -e "\033[1;33m Thread Contract Hash: $(cat hashes/thread_contract.hash) \03
 thread_vkh=$(cat hashes/thread_contract.hash)
 
 ###############################################################################
-############## DATUM AND REDEEMER STUFF #######################################
-###############################################################################
 
 jq \
 --arg cpid "$cogno_minter_pid" \
@@ -110,7 +111,7 @@ jq \
 .fields[2].bytes=$cvkh |
 .fields[3].bytes=$tvkh
 ' \
-./scripts/data/reference/reference-datum.json | sponge ./scripts/data/reference/reference-datum.json
+./headless/data/reference/reference-datum.json | sponge ./headless/data/reference/reference-datum.json
 
 # end of build
 echo -e "\033[1;32m\nBuilding Complete! \033[0m"

@@ -33,13 +33,14 @@ validator(
           extra_signatories,
           ..
         } = context.transaction
-        // get tx info
+        // get first tx info
         let index: Int = find.first_input_index(inputs)
         let tx_hash: TxHash = find.first_input_txid(inputs)
         // get reference data stuff
         let ref_addr: Address = credential.from_script(data_ref_hash)
         let ref_input: Input = find.input_by_addr(reference_inputs, ref_addr)
         expect ref_datum: ReferenceDatum = data.input_datum(ref_input)
+        // generate the cafebabe token name
         let token_name: AssetName = util.token_name(tx_hash, index, #"cafebabe")
         // what is being minted in this transaction
         let mint_list: List<(PolicyId, AssetName, Int)> =
@@ -73,7 +74,7 @@ validator(
             value.from_asset(currency_symbol, token_name, 1),
             outputs,
           )?,
-          // can not spend anything from cogno address
+          // single output going to the cogno address
           count.outputs_by_addr(outputs, cogno_addr, 1)?,
         }
       }

@@ -13,7 +13,7 @@ pub type ThreadDatum {
   category: ByteArray,
   // a list of comments, can be strings or images
   comments: List<ByteArray>,
-  // the tkn of the owner
+  // the cafebabe tkn of the owner
   tkn: AssetName,
 }
 
