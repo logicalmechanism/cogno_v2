@@ -67,7 +67,10 @@ do
 
     FEE=$(${cli} transaction calculate-min-fee \
         --tx-body-file ./tmp/tx.draft \
+        ${network} \
         --protocol-params-file ./tmp/protocol.json \
+        --tx-in-count 1 \
+        --tx-out-count 2 \
         --witness-count 1)
     echo -e "\033[0;35mFEE: ${FEE} \033[0m"
     fee=$(echo $FEE | rev | cut -c 9- | rev)
@@ -107,7 +110,10 @@ ${cli} transaction build-raw \
 
 FEE=$(${cli} transaction calculate-min-fee \
     --tx-body-file ./tmp/tx.draft \
+    ${network} \
     --protocol-params-file ./tmp/protocol.json \
+    --tx-in-count 1 \
+    --tx-out-count 2 \
     --witness-count 1)
 echo -e "\033[0;35mFEE: ${FEE} \033[0m"
 fee=$(echo $FEE | rev | cut -c 9- | rev)
