@@ -7,6 +7,7 @@ import Notification from '../Notification';
 import SuccessText from '../SuccessText';
 import { hexToString } from '../utilities';
 import { MaestroProvider } from '@meshsdk/core';
+import { BytesField } from './transaction';
 
 interface CognoProps {
   network: number | null;
@@ -17,9 +18,15 @@ interface CognoProps {
 
 const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) => {
   const [editMode, setEditMode] = useState(false);
+  // profile info from the cogno utxo
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [details, setDetails] = useState('');
+  // moderation info from the cogno utxo
+  const [friendList, setFriendList] = useState<string[]>([]);
+  const [restrictedUserList, setRestrictedUserList] = useState<string[]>([]);
+  const [restrictedThreadList, setRestrictedThreadList] = useState<string[]>([]);
+  // states for updating and dispalying
   const [notification, setNotification] = useState<string>('');
   const [showSuccessLink, setShowSuccessLink] = useState(false);
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
@@ -33,6 +40,9 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');
+      setFriendList(datum.fields[2].fields[0].list.map((element: BytesField) => {hexToString(element.bytes)}));
+      setRestrictedUserList(datum.fields[2].fields[1].list.map((element: BytesField) => {hexToString(element.bytes)}));
+      setRestrictedThreadList(datum.fields[2].fields[2].list.map((element: BytesField) => {hexToString(element.bytes)}));
     }
   }, [cogno]);
 
@@ -52,8 +62,12 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
       setTitle('');
       setImage('');
       setDetails('');
+      setFriendList([]);
+      setRestrictedUserList([]);
+      setRestrictedThreadList([]);
       setSubmittedTxHash('');
       setShowSuccessLink(false);
+      setIsSubmitting(false);
     }, maxRetries);
  
   };
@@ -62,7 +76,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
     setEditMode(false);
     setSubmittedTxHash('');
     setShowSuccessLink(false);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details }, true);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, true);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -80,7 +94,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
     setSubmittedTxHash('');
     setShowSuccessLink(false);
     setIsSubmitting(true);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details }, false);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, false);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -95,7 +109,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
   };
 
   return (
-    <div className="max-w-lg mx-auto py-1 bg-gray-400 shadow-md rounded-md items-center">
+    <div className="max-w-lg mx-auto py-1 bg-gray-100 rounded-md items-center">
       {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <div className="mb-2">
@@ -105,10 +119,11 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline text-center"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={300}
+            required
           />
         </div>
         <div className="mb-2">
@@ -181,6 +196,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             </div>
           )}
         </div>
+        <div><p className='mt-2 text-black flex flex-col items-center justify-between'>Moderation Settings Need To Go Below Here</p></div>
       </form>
       {notification && <Notification message={notification} onDismiss={clearNotification} />}
     </div>

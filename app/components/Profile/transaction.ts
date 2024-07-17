@@ -10,9 +10,12 @@ interface CognoData {
   title: string;
   image: string;
   details: string;
+  friendList: string[];
+  restrictedUserList: string[];
+  restrictedThreadList: string[];
 }
 
-interface BytesField {
+export interface BytesField {
   bytes: string;
 }
 
@@ -20,12 +23,16 @@ interface IntField {
   int: bigint;
 }
 
+export interface ListField {
+  list: BytesField[]
+}
+
 interface ConstructorField {
   constructor: number;
   fields: Field[];
 }
 
-type Field = BytesField | IntField | ConstructorField;
+type Field = BytesField | IntField | ListField | ConstructorField;
 
 interface Datum {
   constructor: number;
@@ -208,6 +215,20 @@ export const handleCognoTransaction = async (network: number | null,
                 "bytes": stringToHex(data.details)
               }
             ]
+          },
+          {
+            "constructor": 0,
+            "fields": [
+              {
+                "list": data.friendList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              },
+              {
+                "list": data.restrictedUserList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              },
+              {
+                "list": data.restrictedThreadList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              }
+            ]
           }
         ]
       };
@@ -228,11 +249,9 @@ export const handleCognoTransaction = async (network: number | null,
     //
     // Create a new cogno
     //
-    // console.log('Creating cogno!');
 
     // create the token name for the mint
     const tokenName = ('cafebabe' + selectedUtxos[0].input.outputIndex.toString(16).padStart(2, '0') + selectedUtxos[0].input.txHash).substring(0, 64);
-    // console.log('Token Name:', tokenName);
 
     // create teh asset list for the output using the new token
     let assets: Asset[] = [];
@@ -247,7 +266,6 @@ export const handleCognoTransaction = async (network: number | null,
       "constructor": 0,
       "fields": []
     };
-    // console.log('Mint Redeemer: ', mintRedeemer);
 
     // the cogno datum
     let cognoDatum: Datum = {
@@ -277,10 +295,23 @@ export const handleCognoTransaction = async (network: number | null,
               "bytes": stringToHex(data.details)
             }
           ]
+        },
+        {
+          "constructor": 0,
+          "fields": [
+            {
+              "list": data.friendList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+            },
+            {
+              "list": data.restrictedUserList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+            },
+            {
+              "list": data.restrictedThreadList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+            }
+          ]
         }
       ]
     };
-    // console.log('Cogno Datum:', cognoDatum);
 
     // add in the output and the minting requirements
     mesh
