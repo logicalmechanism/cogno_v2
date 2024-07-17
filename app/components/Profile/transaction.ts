@@ -147,11 +147,11 @@ export const handleCognoTransaction = async (network: number | null,
         .txIn(cogno.input.txHash!, cogno.input.outputIndex!)
         .txInInlineDatumPresent()
         .txInRedeemerValue(removeRedeemer, undefined, 'JSON')
-        .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_HASH!, 1)
+        .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_UTXO!, 1)
         .mintPlutusScriptV2()
         .mint("-1", process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, tokenName!)
         .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
-        .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_HASH!, 1)
+        .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
         .requiredSignerHash(walletKeyHashes.pubKeyHash)
 
 
@@ -218,7 +218,7 @@ export const handleCognoTransaction = async (network: number | null,
         .txIn(cogno.input.txHash!, cogno.input.outputIndex!)
         .txInInlineDatumPresent()
         .txInRedeemerValue(updateRedeemer, undefined, 'JSON')
-        .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_HASH!, 1)
+        .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_UTXO!, 1)
         .txOut(scriptAddress!, assets)
         .txOutInlineDatumValue(cognoDatum, "JSON")
         .requiredSignerHash(walletKeyHashes.pubKeyHash);
@@ -290,7 +290,7 @@ export const handleCognoTransaction = async (network: number | null,
       .mintPlutusScriptV2()
       .mint("1", process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, tokenName)
       .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
-      .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_HASH!, 1)
+      .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
       .requiredSignerHash(walletKeyHashes.pubKeyHash)
   } // end if create cogno
 

@@ -190,7 +190,7 @@ export const handleThreadCreation = async (
     .mintPlutusScriptV2()
     .mint("1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, tokenName)
     .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_HASH!, 1);
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
 
   // use awaits here as a test
   try {
@@ -353,12 +353,12 @@ export const handleThreadDeletion = async (
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
     .txInRedeemerValue(deleteRedeemer, undefined, 'JSON')
-    .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_HASH!, 1)
+    .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
     .mintPlutusScriptV2()
     .mint("-1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, threadTokenName!)
     .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_HASH!, 1);
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
 
   // use awaits here as a test
   try {
@@ -540,7 +540,7 @@ export const handleCommentCreation = async (
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
     .txInRedeemerValue(commentRedeemer, undefined, 'JSON')
-    .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_HASH!, 1)
+    .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
     .txOutInlineDatumValue(threadDatum, "JSON");
 

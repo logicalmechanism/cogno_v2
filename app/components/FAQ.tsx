@@ -6,26 +6,29 @@ const FAQ: React.FC = () => {
       question: `What is cogno.forum?`,
       answer: `cogno.forum is all of your favorite social media sites in one decentralized application.
       Its a forum, image board, aggregator, and social network all in one.
-      The only difference here is that no one can control it, censor it, or turn it off.`,
+      The only difference here is that no one can control it, censor it, or turn it off.
+      It lives forever on the Cardano blockchain.`,
     },
     {
       question: `How do I use cogno.forum?`,
-      answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet, create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That\`s it!`,
+      answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet,
+      create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That\`s it!`,
     },
     {
       question: `Why does it cost money to use cogno.forum?`,
-      answer: `A Cogno is an on-chain profile which means you need Lovelace to create a Cogno. 
-      Using cogno.forum involves creating on-chain threads associated with a Cogno profile which means you need Lovelace to create threads. 
-      To comment on a thread, you need Lovelace. To use Cardano, you need Lovelace. Welcome to the reality of blockchain technology, where everything costs money.`,
+      answer: `Cogno.forum is fully on-chain. This means to create a cogno profile, threads, and comments,
+      you need Lovelace to pay for the required minimum and the transaction fees.`,
     },
     {
       question: `Do I get my Lovelace back when I post comments?`,
-      answer: `No, they go onto the UTxO to hold the data. When the thread is deleted, the content creator gets all the Lovelace on the UTxO. Make your comments worth it.`,
+      answer: `No, they go onto the UTxO to hold the data. If a thread is deleted, the content creator 
+      gets all the Lovelace on the UTxO. This way content creators get paid for creating content that users
+      comment on.`,
     },
     {
       question: `How do I view the application?`,
       answer: `Cogno is designed to be used locally with yarn but it will be hosted at www.cogno.forum.
-      There are no guarantees ww.cogno.forum will exist or be online. The app will be hosted for convenience
+      There are no guarantees www.cogno.forum will exist or be online. The app will be hosted for convenience
       but it is highly suggested that you just use yarn and run it locally.`,
     },
     {
@@ -34,24 +37,28 @@ const FAQ: React.FC = () => {
     },
     {
       question: `Is the project open-sourced?`,
-      answer: `Yes, the validators, headless scripts, and application frontend are all available inside the mono repo.`,
+      answer: `Yes, the validators, headless scripts, and application frontend are all open-sourced and
+      available inside the github repository.`,
     },
     {
       question: `Do you make money from cogno.forum?`,
-      answer: `Nope.`,
+      answer: `Nope but donations are highly appreciated.`,
     },
     {
       question: `How can I make suggestions?`,
-      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it then we will probably add it,
-      or you can just fork the repo and add the feature yourself. It’s open-sourced for a reason. Contributions are more than welcome.`,
+      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it then
+      we will probably add it, or you can fork the repo and add the feature yourself. It\’s open-sourced
+      for a reason. Contributions and suggestions are more than welcome.`,
     },
     {
       question: `How do I report illegal content?`,
-      answer: `Reporting threads to the proper authorities is controlled by you, the user. Content can not be blocked or censored.`,
+      answer: `Reporting threads to the proper authorities is controlled by you, the user. Content can 
+      only be blocked or censored by setting your on-chain moderation data inside your cogno profile.`,
     },
     {
       question: `How can I blame cogno.forum for something?`,
-      answer: `You, as the user, accept the risk of using cogno.forum. There are no promises, no protection, and no regulation.`,
+      answer: `You, as the user, accept the risk of using cogno.forum. There are no promises, no protection,
+      and no regulation. It is intended only for mature audiences.`,
     },
     {
       question: `Why does cogno.forum look like zero effort was put into the frontend?`,
@@ -61,14 +68,16 @@ const FAQ: React.FC = () => {
     },
     {
       question: `Why did my comment or thread deletion not hit the chain?`,
-      answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no contingency protections at the contract level.
-      This combo makes for some interesting user experiences when many users are trying to be interact at once with a single thread.
-      If someone spent what you are trying to spend, then just try again. You just have to wait a block or two.`,
+      answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no 
+      contingency protections at the contract level. This combination makes for some interesting user
+      experiences when many users are trying to be interact with a single thread. If someone spent what
+      you are trying to spend, then just try again. You just have to wait a block or two.`,
     },
     {
-      question: `How should I track if my transaction hit the chain?`,
-      answer: `Use the "view transaction" link after a successful transaction. It will open a new tab to CardanoScan. 
-      Use this to manually track the transaction. You can also check your wallet for the status of your pending transaction.`,
+      question: `How should I track my transaction?`,
+      answer: `Use the "view transaction" link after a successful transaction. It will open a new tab to
+      CardanoScan. Use this to manually track the transaction. You can also check your wallet for the 
+      status of your pending transaction.`,
     },
     {
       question: `How can I donate to this project?`,
@@ -99,10 +108,10 @@ const FAQ: React.FC = () => {
       {faqs.map((faq, index) => (
         <div key={index} className="mb-4">
           <div
-            className="flex justify-between items-center p-4 cursor-pointer"
+            className="flex justify-between items-center p-4 cursor-pointer text-center"
             onClick={() => toggleActiveIndex(index)}
           >
-            <p className="text-xl font-extrabold">{faq.question}</p>
+            <p className="text-xl font-extrabold text-center">{faq.question}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={`h-6 w-6 transform transition-transform ${activeIndex === index ? 'rotate-180' : ''
