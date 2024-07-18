@@ -44,12 +44,6 @@ user_tx_in=${TXIN::-8}
 
 BURN_ASSET="-1 ${policy_id}.${token_name}"
 
-echo Burning: ${BURN_ASSET}
-
-#
-# exit
-#
-
 # get script utxo
 echo -e "\033[0;36m Gathering Cogno UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -61,12 +55,33 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${cogno_script_address} \033[0m \n";
 .   exit;
 fi
-alltxin=""
+exist_check=$(jq -r --arg pkh "$user_pkh" 'to_entries[] | select(.value.inlineDatum.fields[0].fields[0].bytes==$pkh) | .key' ../tmp/script_utxo.json)
+if [ -z "$exist_check" ]; then
+    echo "Cogno Does Not Exist For ${user_pkh}"
+    exit;
+fi
+
 TXIN=$(jq -r --arg alltxin "" --arg policy_id "$policy_id" --arg token_name "$token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 cogno_tx_in=${TXIN::-8}
 
 echo Cogno UTxO: ${cogno_tx_in}
 
+echo Burning: ${BURN_ASSET}
+# Prompt user for confirmation
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Delete Your Cogno Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Deleting your Cogno..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
+#
+# exit
+#
 echo -e "\033[0;36m Gathering Collateral UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \

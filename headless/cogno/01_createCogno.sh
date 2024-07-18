@@ -19,10 +19,20 @@ reference_script_address=$(${cli} address build --payment-script-file ${referenc
 user_address=$(cat ../wallets/user-1-wallet/payment.addr)
 user_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/user-1-wallet/payment.vkey)
 
-jq \
---arg pkh "$user_pkh" \
-'.fields[0].fields[0].bytes=$pkh' \
-../data/cogno/cogno-datum.json | sponge ../data/cogno/cogno-datum.json
+# check if the user already has a cogno token
+echo -e "\033[0;36m Gathering Cogno UTxO Information  \033[0m"
+${cli} query utxo \
+    --address ${cogno_script_address} \
+    ${network} \
+    --out-file ../tmp/script_utxo.json
+exist_check=$(jq -r --arg pkh "$user_pkh" 'to_entries[] | select(.value.inlineDatum.fields[0].fields[0].bytes==$pkh) | .key' ../tmp/script_utxo.json)
+if [ -n "$exist_check" ]; then
+    echo "Cogno Already Exists For ${user_pkh}"
+    exit;
+fi
+
+jq -r '' cogno.json
+python3 -c "import sys, json; sys.path.append('../py/'); from cogno import create_datum; create_datum('cogno.json', '../wallets/user-1-wallet/payment.hash', '../data/cogno/cogno-datum.json');"
 
 # collat
 collat_address=$(cat ../wallets/collat-wallet/payment.addr)
@@ -56,6 +66,7 @@ tx_idx_cbor=$(python3 -c "import cbor2;encoded=cbor2.dumps(${array[1]});print(en
 full_tkn="cafebabe${tx_idx_cbor}${array[0]}"
 tkn="${full_tkn:0:64}"
 
+# the token.name will live in the data folder for headless as it shouldnt need changing
 echo ${tkn} > ../data/cogno/token.name
 
 echo Minting: 1 ${policy_id}.${tkn}
@@ -69,10 +80,10 @@ UTXO_VALUE=$(${cli} transaction calculate-min-required-utxo \
     --tx-out="${cogno_script_address} + 5000000 + ${MINT_ASSET}" | tr -dc '0-9')
 cogno_address_out="${cogno_script_address} + ${UTXO_VALUE} + ${MINT_ASSET}"
 
-echo "Cogno OUTPUT:" ${cogno_address_out}
 #
 # exit
 #
+
 echo -e "\033[0;36m Gathering Collateral UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
