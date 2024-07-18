@@ -28,9 +28,54 @@ cogno_token_name=$(cat ../data/cogno/token.name)
 
 # the thread policy id
 thread_policy_id=$(cat ../../hashes/thread_minter_contract.hash)
-thread_token_name=$(cat ../data/thread/token.name)
+if [ "$#" -eq 1 ]; then
+    thread_token_name="$1"
+else
+    echo "Error: This script requires exactly one argument."
+    exit 1;
+fi
 
-echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
+# check if the user already has a cogno token
+${cli} query utxo \
+    --address ${thread_script_address} \
+    ${network} \
+    --out-file ../tmp/script_utxo.json
+exist_check=$(jq -r --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key' ../tmp/script_utxo.json)
+if [ -z "$exist_check" ]; then
+    echo "Thread Does Not Exist For ${thread_token_name}"
+    exit;
+fi
+
+TXIN=$(jq -r --arg alltxin "" --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+thread_tx_in=${TXIN::-8}
+
+current_lovelace=$(jq -r --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .value.value.lovelace' ../tmp/script_utxo.json)
+
+echo Current Lovelace On Thread : ${current_lovelace}
+
+echo Thread UTxO: ${thread_tx_in}
+
+current_datum=$(jq -r --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .value.inlineDatum' ../tmp/script_utxo.json)
+echo $current_datum > ../data/thread/thread-datum.json
+# make a copy so we dont just add to the datum too many times
+cp ../data/thread/thread-datum.json ../data/thread/updated-thread-datum.json
+echo
+cat comment.txt
+echo
+python3 -c "import sys, json; sys.path.append('../py/'); from thread import add_comment_to_datum; add_comment_to_datum('comment.txt', '../data/thread/updated-thread-datum.json','../data/thread/comment-redeemer.json');"
+
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Comment To The Thread Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Adding your comment..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
+echo -e "\033[0;36m\nGathering User UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
     --address ${user_address} \
@@ -45,34 +90,12 @@ alltxin=""
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_utxo.json)
 user_tx_in=${TXIN::-8}
 
-cp ../data/thread/thread-datum.json ../data/thread/updated-thread-datum.json
-
-python3 -c "import sys, json; sys.path.append('../py/'); from create_comment import update_datum; update_datum('comment.txt', '../data/thread/updated-thread-datum.json','../data/thread/comment-redeemer.json');"
-
 #
 # exit
 #
 
 # get script utxo
-echo -e "\033[0;36m Gathering Thread UTxO Information  \033[0m"
-${cli} query utxo \
-    --address ${thread_script_address} \
-    ${network} \
-    --out-file ../tmp/script_utxo.json
-TXNS=$(jq length ../tmp/script_utxo.json)
-if [ "${TXNS}" -eq "0" ]; then
-   echo -e "\n \033[0;31m NO UTxOs Found At ${thread_script_address} \033[0m \n";
-.   exit;
-fi
-alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
-thread_tx_in=${TXIN::-8}
 
-echo Thread UTxO: ${thread_tx_in}
-
-current_lovelace=$(jq -r --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .value.value.lovelace' ../tmp/script_utxo.json)
-
-echo Current Lovelace On Thread : ${current_lovelace}
 
 ASSET="1 ${thread_policy_id}.${thread_token_name}"
 
@@ -91,10 +114,7 @@ else
     min_utxo=${UTXO_VALUE}
 fi
 
-
 thread_address_out="${thread_script_address} + ${min_utxo} + ${ASSET}"
-
-echo "Thread OUTPUT:" ${thread_address_out}
 
 echo -e "\033[0;36m Gathering Collateral UTxO Information  \033[0m"
 ${cli} query utxo \
