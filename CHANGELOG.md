@@ -5,6 +5,7 @@
 ### Added
 
 - **cogno-project**: added changelog and contributing markdown files
+- **contracts**: added top level and public function documentation, and added additional tests
 
 ### Fixed
 

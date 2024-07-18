@@ -1,3 +1,9 @@
+//// The Cogno profile contract for holding the cogno data. UTxOs inside this
+//// contract hold the profile and moderation data for a cogno. It can only
+//// be removed or updated. Each cogno is supposed to co-exist with a cafebabe
+//// pointer token.
+////
+
 use aiken/transaction.{Input, ScriptContext, Spend, Transaction}
 use aiken/transaction/credential.{Address}
 use aiken/transaction/value.{AssetName, PolicyId, Value}

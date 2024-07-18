@@ -1,3 +1,7 @@
+//// An always fail contract designed to hold the reference data and the script
+//// references for the rest of the contracts.
+////
+
 use aiken/transaction.{ScriptContext}
 use cogno_v2/types/reference.{ReferenceDatum}
 

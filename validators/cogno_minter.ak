@@ -1,3 +1,8 @@
+//// Handles the minting and burning of the cafebabe pointer tokens. Official
+//// cogno profiles hold a cafebabe token. These tokens may only exist inside
+//// the cogno contract and must be burned when a cogno profile is deleted.
+////
+
 use aiken/transaction.{Input, Mint, ScriptContext, Transaction}
 use aiken/transaction/credential.{Address}
 use aiken/transaction/value.{AssetName, PolicyId}

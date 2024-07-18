@@ -1,3 +1,10 @@
+//// The thread contract for holding thread data. Each thread is a UTxO. All 
+//// comments made to a thread are located inside the datum. The threads are
+//// designed to pay the thread creator via comments made to a thread. This
+//// should incentivize quality content creation as it is profitable. Each
+//// thread is supposed to co-exist with a 1abe11ed pointer token.
+////
+
 use aiken/transaction.{Input, ScriptContext, Spend, Transaction}
 use aiken/transaction/credential.{Address}
 use aiken/transaction/value.{AssetName, PolicyId}
