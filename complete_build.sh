@@ -17,10 +17,10 @@ echo -e "\033[1;34m Building Contracts \033[0m"
 # aiken build --trace-level silent --filter-traces user-defined
 
 # partial traces
-aiken build --trace-level compact --filter-traces user-defined
+# aiken build --trace-level compact --filter-traces user-defined
 
 # keep the traces for testing
-# aiken build --trace-level verbose --filter-traces all
+aiken build --trace-level verbose --filter-traces all
 
 ran=$(jq -r '.random_string' config.json)
 ran_cbor=$(python3 -c "import cbor2;hex_string='${ran}';data = bytes.fromhex(hex_string);encoded = cbor2.dumps(data);print(encoded.hex())")
