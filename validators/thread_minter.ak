@@ -1,3 +1,8 @@
+//// Handles the minting and burning of the 1abe11ed pointer token for threads.
+//// Official threads hold the 1abe11ed tokens. These tokens may only exist inside
+//// the thread contract and must be burned when a thread is deleted.
+////
+
 use aiken/transaction.{Input, Mint, ScriptContext, Transaction}
 use aiken/transaction/credential.{Address}
 use aiken/transaction/value.{AssetName, PolicyId}

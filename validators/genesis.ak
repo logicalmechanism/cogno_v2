@@ -1,3 +1,9 @@
+//// A one-shot minting policy that creates the genesis token for the reference
+//// data contract. It has to be sent to the reference data contract and it 
+//// must spend the parameterized UTxO. The validation performs basic length
+//// checks as the real values can not be supplied.
+////
+
 use aiken/bytearray
 use aiken/transaction.{Mint, OutputReference, ScriptContext, Transaction}
 use aiken/transaction/credential.{Address}
