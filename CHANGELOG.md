@@ -11,6 +11,8 @@
 - **headless**: added python scripts for thread creation and comment updating
 - **headless**: added a display threads and thread functionality, uses feh to view thread images
 - **headless**: added beginning of comment parser for advance comments on headless
+- **cogno-project**: added text to contributing about the bounty system
+
 
 ### Fixed
 
