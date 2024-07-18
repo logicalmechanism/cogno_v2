@@ -38,7 +38,8 @@ validator(
         let tx_hash: TxHash = find.first_input_txid(inputs)
         // get reference data stuff
         let ref_addr: Address = credential.from_script(data_ref_hash)
-        let ref_input: Input = find.input_by_addr(reference_inputs, ref_addr)
+        let ref_input: Input =
+          reference.find_first_input_with_datum(reference_inputs, ref_addr)
         expect ref_datum: ReferenceDatum = data.input_datum(ref_input)
         // generate the cafebabe token name
         let token_name: AssetName = util.token_name(tx_hash, index, #"cafebabe")

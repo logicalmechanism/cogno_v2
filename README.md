@@ -18,7 +18,7 @@ Used instead of the actual name of the person or thing
 
 ## Building
 
-Use the `complete_build.sh` script to build the contracts using the data from `config.json`.
+Use the `complete_build.sh` script to build the contracts using the data from `config.json`. The config file requires information from the headless interaction, namely the starter wallet UTxO and a random string.
 
 ## Headless Interaction
 

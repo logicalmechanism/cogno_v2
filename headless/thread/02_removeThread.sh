@@ -33,6 +33,8 @@ thread_policy_id=$(cat ../../hashes/thread_minter_contract.hash)
 cogno_token_name=$(cat ../data/cogno/token.name)
 thread_token_name=$(cat ../data/thread/token.name)
 
+echo $cogno_token_name
+
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
@@ -68,7 +70,7 @@ if [ "${TXNS}" -eq "0" ]; then
 .   exit;
 fi
 alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.inlineDatum.fields[5].bytes=$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.value.inlineDatum.fields[5].bytes==$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 thread_tx_in=${TXIN::-8}
 
 echo Thread UTxO: ${thread_tx_in}
