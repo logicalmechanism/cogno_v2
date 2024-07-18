@@ -27,6 +27,40 @@ collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/
 policy_id=$(cat ../../hashes/cogno_minter_contract.hash)
 token_name=$(cat ../data/cogno/token.name)
 
+# check if the user already has a cogno token
+echo -e "\033[0;36m Gathering Cogno UTxO Information  \033[0m"
+${cli} query utxo \
+    --address ${cogno_script_address} \
+    ${network} \
+    --out-file ../tmp/script_utxo.json
+exist_check=$(jq -r --arg pkh "$user_pkh" 'to_entries[] | select(.value.inlineDatum.fields[0].fields[0].bytes==$pkh) | .key' ../tmp/script_utxo.json)
+if [ -z "$exist_check" ]; then
+    echo "Cogno Does Not Exist For ${user_pkh}"
+    exit;
+fi
+
+current_datum=$(jq -r --arg pkh "$user_pkh" 'to_entries[] | select(.value.inlineDatum.fields[0].fields[0].bytes==$pkh) | .value.inlineDatum' ../tmp/script_utxo.json)
+python3 -c "import sys, json; sys.path.append('../py/'); from cogno import update_datum; update_datum(${current_datum}, 'cogno.json', '../data/cogno/cogno-datum.json');"
+
+TXIN=$(jq -r --arg alltxin "" --arg policy_id "$policy_id" --arg token_name "$token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+cogno_tx_in=${TXIN::-8}
+
+echo Cogno UTxO: ${cogno_tx_in}
+
+echo Updating: 1 ${policy_id}.${token_name}
+
+# Prompt user for confirmation
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Update Your Cogno Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Updating your Cogno..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
@@ -38,37 +72,19 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${user_address} \033[0m \n";
    exit;
 fi
-alltxin=""
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_utxo.json)
 user_tx_in=${TXIN::-8}
 
 UTXO_VALUE=$(${cli} transaction calculate-min-required-utxo \
     --babbage-era \
     --protocol-params-file ../tmp/protocol.json \
-    --tx-out-inline-datum-file ../data/cogno/updated-cogno-datum.json \
+    --tx-out-inline-datum-file ../data/cogno/cogno-datum.json \
     --tx-out="${cogno_script_address} + 5000000 + 1 ${policy_id}.${token_name}" | tr -dc '0-9')
 cogno_address_out="${cogno_script_address} + ${UTXO_VALUE} + 1 ${policy_id}.${token_name}"
 
 #
 # exit
 #
-
-# get script utxo
-echo -e "\033[0;36m Gathering Cogno UTxO Information  \033[0m"
-${cli} query utxo \
-    --address ${cogno_script_address} \
-    ${network} \
-    --out-file ../tmp/script_utxo.json
-TXNS=$(jq length ../tmp/script_utxo.json)
-if [ "${TXNS}" -eq "0" ]; then
-   echo -e "\n \033[0;31m NO UTxOs Found At ${cogno_script_address} \033[0m \n";
-.   exit;
-fi
-alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg policy_id "$policy_id" --arg token_name "$token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
-cogno_tx_in=${TXIN::-8}
-
-echo Cogno UTxO: ${cogno_tx_in}
 
 echo -e "\033[0;36m Gathering Collateral UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -98,7 +114,7 @@ FEE=$(${cli} transaction build \
     --spending-reference-tx-in-inline-datum-present \
     --spending-reference-tx-in-redeemer-file ../data/cogno/update-redeemer.json \
     --tx-out="${cogno_address_out}" \
-    --tx-out-inline-datum-file ../data/cogno/updated-cogno-datum.json \
+    --tx-out-inline-datum-file ../data/cogno/cogno-datum.json \
     --required-signer-hash ${user_pkh} \
     --required-signer-hash ${collat_pkh} \
     ${network})
@@ -127,5 +143,3 @@ ${cli} transaction submit \
 
 tx=$(${cli} transaction txid --tx-file ../tmp/tx.signed)
 echo "Tx Hash:" $tx
-
-cp ../data/cogno/updated-cogno-datum.json ../data/cogno/cogno-datum.json
