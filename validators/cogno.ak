@@ -39,7 +39,8 @@ validator(
         } = context.transaction
         // get reference data stuff
         let ref_addr: Address = credential.from_script(data_ref_hash)
-        let ref_input: Input = find.input_by_addr(reference_inputs, ref_addr)
+        let ref_input: Input =
+          reference.find_first_input_with_datum(reference_inputs, ref_addr)
         expect ref_datum: ReferenceDatum = data.input_datum(ref_input)
         // this input is being validated
         let this_input: Input = find.input_by_ref(inputs, output_reference)
