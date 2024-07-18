@@ -42,16 +42,12 @@ TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_u
 user_tx_in=${TXIN::-8}
 
 echo "User UTxO:" $user_tx_in
+cogno_token=$(cat ../data/cogno/token.name)
 
-python3 -c "import sys, json; sys.path.append('../py/'); from create_thread import update_datum; update_datum('thread.json', '../data/thread/thread-datum.json');"
+echo Cogno Token: ${cogno_token}
 
-tkn=$(cat ../data/cogno/token.name)
-jq \
---arg tkn "$tkn" \
-'.fields[5].bytes=$tkn
-' \
-../data/thread/thread-datum.json | sponge ../data/thread/thread-datum.json
-
+jq -r '' thread.json
+python3 -c "import sys, json; sys.path.append('../py/'); from thread import create_datum; create_datum('thread.json', '${cogno_token}', '../data/thread/thread-datum.json');"
 
 first_utxo=$(jq -r 'keys[0]' ../tmp/user_utxo.json)
 string=${first_utxo}
@@ -61,9 +57,18 @@ tx_idx_cbor=$(python3 -c "import cbor2;encoded=cbor2.dumps(${array[1]});print(en
 full_tkn="1abe11ed${tx_idx_cbor}${array[0]}"
 tkn="${full_tkn:0:64}"
 
-echo ${tkn} > ../data/thread/token.name
-
 echo Minting: 1 ${policy_id}.${tkn}
+# Prompt user for confirmation
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Create The Thread Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Creating the thread..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
 
 MINT_ASSET="1 ${policy_id}.${tkn}"
 
@@ -77,8 +82,6 @@ buffer_lovelace=0
 min_utxo_value=$((${UTXO_VALUE} + ${buffer_lovelace}))
 thread_address_out="${thread_script_address} + ${min_utxo_value} + ${MINT_ASSET}"
 
-echo "Thread OUTPUT:" ${thread_address_out}
-
 echo -e "\033[0;36m Gathering Collateral UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
@@ -90,7 +93,6 @@ if [ "${TXNS}" -eq "0" ]; then
    exit;
 fi
 collat_utxo=$(jq -r 'keys[0]' ../tmp/collat_utxo.json)
-
 
 genesis_policy_id=$(cat ../../hashes/genesis_contract.hash)
 genesis_tx_id=$(jq -r '.genesis_tx_id' ../../config.json)

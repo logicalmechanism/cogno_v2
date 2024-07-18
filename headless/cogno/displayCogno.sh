@@ -57,5 +57,5 @@ if [ -z "$image_url" ]; then
 fi
 
 temp_image=$(mktemp /tmp/image.XXXXXX)
-curl -s $(echo $current_datum | jq -r '.fields[1].fields[1].bytes' | xxd -p -r) > $temp_image
+curl -s ${image_url} > $temp_image
 feh "$temp_image"

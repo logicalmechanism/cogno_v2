@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import Notification from '../Notification';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
-import { hexToString } from '../utilities';
+import { hexToString} from '../utilities';
 import { handleCommentCreation } from './transaction';
 import SuccessText from '../SuccessText';
 import { MaestroProvider } from '@meshsdk/core';
@@ -112,7 +112,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
               key={index}
               className="text-black border border-gray-300 rounded m-1 p-1"
             >
-              <p>{commentText}</p>
+              <pre className='whitespace-pre-wrap'>{commentText}</pre>
               <br/>
             </div>
           );

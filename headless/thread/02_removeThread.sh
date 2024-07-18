@@ -31,9 +31,29 @@ collat_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/
 cogno_policy_id=$(cat ../../hashes/cogno_minter_contract.hash)
 thread_policy_id=$(cat ../../hashes/thread_minter_contract.hash)
 cogno_token_name=$(cat ../data/cogno/token.name)
-thread_token_name=$(cat ../data/thread/token.name)
 
-echo $cogno_token_name
+if [ "$#" -eq 1 ]; then
+    thread_token_name="$1"
+else
+    echo "Error: This script requires exactly one argument."
+    exit 1;
+fi
+
+# check if the user already has a cogno token
+${cli} query utxo \
+    --address ${thread_script_address} \
+    ${network} \
+    --out-file ../tmp/script_utxo.json
+exist_check=$(jq -r --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key' ../tmp/script_utxo.json)
+if [ -z "$exist_check" ]; then
+    echo "Thread Does Not Exist For ${thread_token_name}"
+    exit;
+fi
+
+TXIN=$(jq -r --arg alltxin "" --arg policy_id "$thread_policy_id" --arg token_name "$thread_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
+thread_tx_in=${TXIN::-8}
+
+echo Thread UTxO: ${thread_tx_in}
 
 echo -e "\033[0;36m Gathering User UTxO Information  \033[0m"
 ${cli} query utxo \
@@ -54,26 +74,20 @@ BURN_ASSET="-1 ${thread_policy_id}.${thread_token_name}"
 
 echo Burning: ${BURN_ASSET}
 
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Delete Your Thread Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Deleting your Thread..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
 #
 # exit
 #
-
-# get script utxo
-echo -e "\033[0;36m Gathering Thread UTxO Information  \033[0m"
-${cli} query utxo \
-    --address ${thread_script_address} \
-    ${network} \
-    --out-file ../tmp/script_utxo.json
-TXNS=$(jq length ../tmp/script_utxo.json)
-if [ "${TXNS}" -eq "0" ]; then
-   echo -e "\n \033[0;31m NO UTxOs Found At ${thread_script_address} \033[0m \n";
-.   exit;
-fi
-alltxin=""
-TXIN=$(jq -r --arg alltxin "" --arg token_name "$cogno_token_name" 'to_entries[] | select(.value.inlineDatum.fields[5].bytes==$token_name) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
-thread_tx_in=${TXIN::-8}
-
-echo Thread UTxO: ${thread_tx_in}
 
 echo -e "\033[0;36m Gathering Cogno UTxO Information  \033[0m"
 ${cli} query utxo \
