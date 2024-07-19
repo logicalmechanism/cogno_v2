@@ -17,6 +17,18 @@ change_address=$(jq -r '.change_address' ../config.json)
 reference_script_path="../contracts/reference_contract.plutus"
 script_reference_address=$(${cli} address build --payment-script-file ${reference_script_path} ${network})
 
+# Prompt user for confirmation
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Create Script Reference UTxOs Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Creating script reference UTxOs..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
 echo -e "\033[0;35m\nGathering UTxO Information  \033[0m"
 ${cli} query utxo \
     ${network} \
