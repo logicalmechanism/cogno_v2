@@ -17,6 +17,7 @@
 - **headless**: added script reference tx, contracts, and hashes
 - **headless**: added guardrails to parent level headless scripts
 - **headless**: added wallet protections
+- **headless**: added doctests and documentation to the python scripts
 
 
 ### Fixed

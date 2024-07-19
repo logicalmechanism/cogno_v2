@@ -1,20 +1,41 @@
-def string_to_hex2(s):
-    return ''.join([hex(ord(c))[2:] for c in s])
+def hex_to_string(h: str) -> str:
+    """
+    Convert a hexadecimal string to an ASCII string.
 
+    Args:
+        h (str): The hexadecimal string to convert.
 
-def hex_to_string(h):
+    Returns:
+        str: The resulting ASCII string.
+
+    Examples:
+        >>> hex_to_string('68656c6c6f')
+        'hello'
+        >>> hex_to_string('776f726c64')
+        'world'
+    """
     return bytes.fromhex(h).decode('ascii')
 
 
 def string_to_hex(s: str) -> str:
+    """
+    Convert an ASCII string to a hexadecimal string.
+
+    Args:
+        s (str): The ASCII string to convert.
+
+    Returns:
+        str: The resulting hexadecimal string.
+
+    Examples:
+        >>> string_to_hex('hello')
+        '68656c6c6f'
+        >>> string_to_hex('world')
+        '776f726c64'
+    """
     return ''.join(format(ord(char), '02x') for char in s)
 
 
-# Example usage
 if __name__ == "__main__":
-    with open('../thread/comment.txt', 'r') as f:
-        concatenated_string = ''.join(f.readlines())
-
-    assert string_to_hex("https://i.imgur.com/JOKsNeT.jpeg") == string_to_hex2("https://i.imgur.com/JOKsNeT.jpeg")
-    assert string_to_hex("This is a test string inside the test thread.") == string_to_hex2("This is a test string inside the test thread.")
-    assert string_to_hex(concatenated_string) != string_to_hex2(concatenated_string)
+    import doctest
+    doctest.testmod()
