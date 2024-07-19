@@ -36,6 +36,8 @@
 
 ### Removed
 
+- **app**: removed commented out code that can't work for now
+
 ## pre-alpha-17-07-24
 
 - **app**: pre-alpha release of frontend application
