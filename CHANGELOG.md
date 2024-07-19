@@ -13,6 +13,7 @@
 - **headless**: added beginning of comment parser for advance comments on headless
 - **cogno-project**: added text to contributing about the bounty system
 - **cogno-project**: added text to the landing README in the parent directory
+- **cogno-project**: added text to the headless README
 
 
 ### Fixed

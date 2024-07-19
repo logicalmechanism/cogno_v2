@@ -1,4 +1,4 @@
-# Cogno V2
+# Cogno
 
 Welcome to Congo, a fully on-chain social media platform. 
 
