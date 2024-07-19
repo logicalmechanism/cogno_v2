@@ -25,7 +25,19 @@ change_address=$(jq -r '.change_address' ../config.json)
 collat_address=$(cat wallets/collat-wallet/payment.addr)
 collat_pkh=$(${cli} address key-hash --payment-verification-key-file wallets/collat-wallet/payment.vkey)
 
-echo -e "\033[0;36m Gathering Starter UTxO Information  \033[0m"
+# Prompt user for confirmation
+read -p "$(echo -e "\033[1;37\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Mint Genesis Token Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Minting Genesis Token..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
+
+echo -e "\033[0;36m Gathering Starter UTxO Information\033[0m"
 ${cli} query utxo \
     ${network} \
     --address ${starter_address} \
