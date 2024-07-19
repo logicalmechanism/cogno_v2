@@ -1,2 +1,3 @@
-tmp/
+tmp/*
+!tmp/utxo-*.plutus.signed
 wallets/

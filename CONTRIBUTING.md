@@ -14,7 +14,7 @@
 
 3. **Code**
 
-    **Getting started**
+   **Getting started**
 
    - `git clone https://github.com/logicalmechanism/cogno_v2.git`
    - `cd cogno_v2`
@@ -32,7 +32,7 @@
 
    ### Added
 
-   - **app**: some new thing
+   - **app**: added something
 
    ### Fixed
 
@@ -40,12 +40,16 @@
 
    ### Changed
 
-   - **app**: changed something
+   - **cogno-project**: changed something
 
    ### Removed
 
-   - **contracts**: something is gone now
+   - **contracts**: removed something
    ```
+
+   **Bounty System**
+
+   To incentivize public contribution, some open issues will have an ADA bounty tagged to it. When a successful PR solves the issue, the reward will be sent to the PR author if they provide a Cardano address in the PR or as a comment to the PR. Bounties will also be rewarded to anyone who finds any bugs in the smart contracts. In that case, the bounty amount will be based on the severity. If you solved an issue or found a bug and did not receive a payment and can provide proof then please email support@logicalmechanism.io with the relevant details and evidence.
 
 4. **Donation**
 
