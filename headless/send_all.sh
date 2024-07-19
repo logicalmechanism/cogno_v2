@@ -4,8 +4,6 @@ set -e
 # SET UP VARS HERE
 source .env
 
-rm ./tmp/tx.signed || true
-
 # get params
 ${cli} query protocol-parameters ${network} --out-file ./tmp/protocol.json
 
@@ -16,6 +14,19 @@ sender_address=$(cat ${sender_path}payment.addr)
 # Receiver Address
 # receiver_address=$(cat ${sender_path}payment.addr)
 receiver_address=$(jq -r '.change_address' ../config.json)
+
+# Prompt user for confirmation
+echo -e "\033[1;37mSending All UTxOs From \033[1;34m${sender_path}\033[0m\033[1;37m to \033[1;35m${receiver_address}\033[0m"
+read -p "$(echo -e "\033[1;37m\033[1;36m\nPress\033[0m \033[1;32mEnter\033[0m \033[1;36mTo Send All UTxOs Or Any Other Key To Exit:\n\033[0m")" -n 1 -r
+echo -ne '\033[1A\033[2K\r'
+
+# Check if input is empty (user pressed Enter)
+if [[ -z $REPLY ]]; then
+    echo "Sending all UTxOs..."
+else
+    echo "Operation cancelled."
+    exit;
+fi
 #
 # exit
 #
@@ -32,14 +43,14 @@ if [ "${TXNS}" -eq "0" ]; then
 fi
 alltxin=""
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' tmp/sender_utxo.json)
-seller_tx_in=${TXIN::-8}
+sender_tx_in=${TXIN::-8}
 
 echo -e "\033[0;36m Building Tx \033[0m"
 FEE=$(${cli} transaction build \
     --babbage-era \
     --out-file ./tmp/tx.draft \
     --change-address ${receiver_address} \
-    --tx-in ${seller_tx_in} \
+    --tx-in ${sender_tx_in} \
     ${network})
 
 IFS=':' read -ra VALUE <<< "${FEE}"
