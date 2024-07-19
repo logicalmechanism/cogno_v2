@@ -15,6 +15,8 @@
 - **cogno-project**: added text to the landing README in the parent directory
 - **cogno-project**: added text to the headless README
 - **headless**: added script reference tx, contracts, and hashes
+- **headless**: added guardrails to parent level headless scripts
+- **headless**: added wallet protections
 
 
 ### Fixed
