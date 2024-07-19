@@ -5,6 +5,4 @@ build/
 # Aiken's default documentation export
 docs/
 aiken.lock
-contracts/
-hashes/
 plutus.json

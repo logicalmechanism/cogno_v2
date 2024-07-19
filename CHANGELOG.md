@@ -14,6 +14,7 @@
 - **cogno-project**: added text to contributing about the bounty system
 - **cogno-project**: added text to the landing README in the parent directory
 - **cogno-project**: added text to the headless README
+- **headless**: added script reference tx, contracts, and hashes
 
 
 ### Fixed
