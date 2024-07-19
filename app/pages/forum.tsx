@@ -213,7 +213,7 @@ const Forum = () => {
         )
       ) : (
         <div className="flex h-screen items-center justify-center flex-col light-text">
-          <h1>Connect Your Wallet To Use The Cogno App</h1>
+          <h1>Connect Your Wallet To Use The Forum</h1>
         </div>
       )}
       {notification && <Notification message={notification} onDismiss={clearNotification} />}

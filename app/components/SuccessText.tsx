@@ -15,7 +15,7 @@ const SuccessText: React.FC<SuccessTextProps> = ({ txHash }) => {
           href={`https://preprod.cardanoscan.io/transaction/${txHash}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="blue-text blue-text-hover"
+          className="dark-text blue-text-hover"
         >
           View The Transaction
         </a>

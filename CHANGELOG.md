@@ -33,6 +33,9 @@
 - **app**: changed how the comments are displayed on a thread, they now perserve newlines and wrap
 - **app**: changed shadow boxes on all the things
 - **app**: changed any duration to e seconds
+- **app**: changed the tos on the landing page
+- **app**: changed the faq to full width and added additional q&a
+- **app**: changed cogno app is now just the forum
 
 ### Removed
 
