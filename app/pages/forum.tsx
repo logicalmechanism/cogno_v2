@@ -171,7 +171,7 @@ const Forum = () => {
       setNotification(`Network Must Be Set To ${alertMsg}!`);
       const timer = setTimeout(() => {
         disconnect(); // Automatically disconnect
-      }, 1234);
+      }, 2718);
 
       return () => {
         clearTimeout(timer); // Cleanup the timeout if the component unmounts early
@@ -187,13 +187,13 @@ const Forum = () => {
           <div>
             {isLoading ? (
               <div className="flex items-center justify-center h-screen">
-                <p className="text-lg font-semibold">Loading Cogno and Thread Data...</p>
+                <p className="text-lg font-semibold light-text">Loading Cogno and Thread Data...</p>
               </div>
             ) : (
               <div className="flex flex-col w-full items-center justify-center">
                 <div className="w-auto">
                   <button
-                    className="px-4 py-2 my-2 green-bg dark-text text-base font-medium rounded-md green-bg-hover"
+                    className="px-4 py-2 my-2 green-bg dark-text text-base font-medium rounded green-bg-hover"
                     type="button"
                     onClick={refreshCognoAndThreads}
                   >

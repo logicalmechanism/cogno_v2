@@ -127,7 +127,7 @@ const FAQ: React.FC = () => {
             </svg>
           </div>
           {activeIndex === index && (
-            <div className="gray-bg py-2 px-4">
+            <div className="light-bg py-2 px-4">
               <p className="dark-text break-words whitespace-pre-wrap">{faq.answer}</p>
             </div>
           )}

@@ -44,14 +44,34 @@
 
 /* gray stuff */
 
-.gray-bg {
-    @apply bg-gray-100;
+.light-bg {
+    @apply bg-gray-200;
+}
+
+.dark-bg {
+    @apply bg-gray-800;
 }
 
 .light-text {
     @apply text-gray-200;
 }
 
+.medium-text {
+    @apply text-gray-500;
+}
+
 .dark-text {
     @apply text-gray-800;
+}
+
+.light-border {
+    @apply border-gray-200;
+}
+
+.medium-border {
+    @apply border-gray-500;
+}
+
+.dark-border {
+    @apply border-gray-800;
 }

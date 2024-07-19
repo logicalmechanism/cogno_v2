@@ -109,7 +109,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
   };
 
   return (
-    <div className="max-w-lg mx-auto py-1 gray-bg rounded-md items-center">
+    <div className="max-w-lg mx-auto py-1 light-bg rounded items-center">
       {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
         <div className="mb-2">
@@ -119,7 +119,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="appearance-none border rounded w-full py-2 px-3 dark-text leading-tight focus:outline-none focus:shadow-outline text-center"
+            className="appearance-none border rounded w-full py-2 px-3 dark-text text-center"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={300}
@@ -133,7 +133,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 dark-text leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 dark-text"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={2048}
@@ -152,7 +152,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             id="details"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 dark-text leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none border rounded w-full py-2 px-3 dark-text"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={40000}
@@ -163,14 +163,14 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             <button
               type="button"
               onClick={handleEdit}
-              className={`bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${editMode ? 'hidden' : ''}`}
+              className={`blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded ${editMode ? 'hidden' : ''}`}
             >
               Edit
             </button>
           ) : (
             <button
               type="submit"
-              className="green-bg green-bg-hover dark-text font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="green-bg green-bg-hover dark-text font-bold py-2 px-4 rounded"
               disabled={isSubmitting}
             >
               Create Cogno
@@ -180,7 +180,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             <div>
               <button
                 type="submit"
-                className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded"
                 disabled={isSubmitting}
               >
                 Update Cogno
@@ -188,7 +188,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
               <button
                 type="button"
                 onClick={handleDelete}
-                className="red-bg red-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded focus:outline-none focus:shadow-outline"
+                className="red-bg red-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded"
                 disabled={isSubmitting}
               >
                 Delete Cogno

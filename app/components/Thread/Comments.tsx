@@ -85,7 +85,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="border p-2 rounded w-full dark-text w-full"
+              className="border p-2 rounded dark-text w-full"
               required
               autoComplete="off"
               maxLength={1000}
@@ -94,7 +94,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           </div>
           <button
             type="submit"
-            className="bg-blue-200 hover:bg-sky-400 dark-text px-4 py-2 rounded"
+            className="blue-bg blue-bg-hover dark-text px-4 py-2 rounded font-bold"
             disabled={isSubmitting}
 
           >
@@ -110,7 +110,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           return (
             <div
               key={index}
-              className="dark-text border border-gray-300 rounded m-1 p-1"
+              className="dark-text border dark-border rounded m-2 p-2"
             >
               <pre className='whitespace-pre-wrap'>{commentText}</pre>
               <br/>

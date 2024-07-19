@@ -85,7 +85,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border p-2 rounded w-full dark-text"
+          className="border p-2 rounded w-full dark-text text-center"
           required
           autoComplete="off"
           maxLength={300}
@@ -109,13 +109,13 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Category
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 text-gray-500 cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-300 dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               Categories help users filter threads.
             </div>
           </span>
@@ -137,6 +137,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           <option value="Music">Music</option>
           <option value="Random">Random</option>
           <option value="Adult">Adult</option>
+          <option value="Etc">Etc</option>
         </select>
       </div>
       <div className="m-2">
@@ -144,13 +145,13 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Image URL (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 text-gray-500 cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-300 dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               A image to be attached to the content of a thread.
             </div>
           </span>
@@ -177,47 +178,23 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Permanent (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 text-gray-500 cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-300 dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
               Permanent threads can not be deleted and will be locked forever.
             </div>
           </span>
         </label>
       </div>
-      {/* <div className="m-2 flex">
-        <input
-          type="number"
-          value={lovelace}
-          onChange={(e) => setLovelace(Math.max(0, Number(e.target.value)))}
-          className="border p-2 rounded w-32 dark-text"
-          min={0}
-        />
-        <label className="block dark-text text-sm font-bold m-2">
-          Buffer Lovelace (optional)
-          <span className="relative group">
-            <svg
-              className="w-4 h-4 inline-block ml-2 text-gray-500 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
-            </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full bg-gray-300 dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
-              Supply Lovelace to the UTxO for free comments from other users.
-            </div>
-          </span>
-        </label>
-      </div> */}
       <div className='flex space-x-4'>
         <div className="w-1/4"></div>
         <button
           type="submit"
-          className="bg-blue-200 hover:bg-sky-400 dark-text p-2 rounded m-2 w-2/4"
+          className="blue-bg blue-bg-hover dark-text p-2 rounded m-2 w-2/4 font-bold"
           disabled={isSubmitting}
         >
           Create Thread

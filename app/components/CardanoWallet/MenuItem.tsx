@@ -10,7 +10,7 @@ interface MenuItemProps {
 export const MenuItem: React.FC<MenuItemProps> = ({ icon, label, action, active }) => {
   return (
     <div
-      className="opacity-80 hover:opacity-100 hover:bg-sky-400 flex fex-col items-center justify-center cursor-pointer px-1 py-1"
+      className="opacity-80 hover:opacity-100 blue-bg-hover flex fex-col items-center justify-center cursor-pointer px-1 py-1"
       onClick={action}
     >
       <span className="text-xl flex">

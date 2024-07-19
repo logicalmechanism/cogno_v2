@@ -39,7 +39,7 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
         loading='lazy'
       />
       {isBlurred && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer" onClick={toggleBlur}>
+        <div className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text cursor-pointer" onClick={toggleBlur}>
           Click To Unblur
         </div>
       )}

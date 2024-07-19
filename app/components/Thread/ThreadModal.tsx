@@ -87,8 +87,8 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-gray-200 p-6 rounded-lg shadow-lg max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto" ref={modalRef}>
+    <div className="fixed inset-0 bg-opacity-45 flex items-center justify-center z-50">
+      <div className="light-bg p-6 rounded max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto border-4 medium-border" ref={modalRef}>
         {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
@@ -104,7 +104,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           <div className="w-1/4"></div> {/* Empty spacer */}
           <div className="w-1/4"></div> {/* Empty spacer */}
           <button
-            className="text-5xl absolute top-0 right-1 mt-2 mr-4 w-1/4 dark-text hover:text-gray-900"
+            className="text-5xl absolute top-0 right-1 mt-2 mr-4 w-1/4 dark-text"
             onClick={onClose}
           >
             &times;
@@ -144,21 +144,21 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           <div className="flex-grow"></div>
           <button
             onClick={handleBackToTop}
-            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
+            className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
           >
             Back to Top
           </button>
           <div className="flex-grow"></div>
           <button
             onClick={handleScrollToComments}
-            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
+            className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
           >
             Make A Comment
           </button>
           <div className="flex-grow"></div>
           <button
             onClick={onClose}
-            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
+            className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
           >
             Close Thread
           </button>
