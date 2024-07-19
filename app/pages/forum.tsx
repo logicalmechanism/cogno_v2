@@ -171,7 +171,7 @@ const Forum = () => {
       setNotification(`Network Must Be Set To ${alertMsg}!`);
       const timer = setTimeout(() => {
         disconnect(); // Automatically disconnect
-      }, 1234);
+      }, 2718);
 
       return () => {
         clearTimeout(timer); // Cleanup the timeout if the component unmounts early
@@ -187,13 +187,13 @@ const Forum = () => {
           <div>
             {isLoading ? (
               <div className="flex items-center justify-center h-screen">
-                <p className="text-lg font-semibold">Loading Cogno and Thread Data...</p>
+                <p className="text-lg font-semibold light-text">Loading Cogno and Thread Data...</p>
               </div>
             ) : (
               <div className="flex flex-col w-full items-center justify-center">
                 <div className="w-auto">
                   <button
-                    className="px-4 py-2 my-2 bg-green-200 text-black text-base font-medium rounded-md shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="px-4 py-2 my-2 green-bg dark-text text-base font-medium rounded green-bg-hover"
                     type="button"
                     onClick={refreshCognoAndThreads}
                   >
@@ -206,13 +206,13 @@ const Forum = () => {
           </div>
         ) : network === parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
           <div className="flex items-center justify-center h-screen">
-            <p className="text-lg font-semibold">Incorrect Network</p>
+            <p className="text-lg font-semibold light-text">Incorrect Network</p>
           </div>
         ) : (
-          <div>Network Not Recognized</div>
+          <div className="light-text">Network Not Recognized</div>
         )
       ) : (
-        <div className="flex h-screen items-center justify-center flex-col">
+        <div className="flex h-screen items-center justify-center flex-col light-text">
           <h1>Connect Your Wallet To Use The Cogno App</h1>
         </div>
       )}

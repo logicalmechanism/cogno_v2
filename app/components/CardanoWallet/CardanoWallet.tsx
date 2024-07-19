@@ -13,9 +13,7 @@ interface CardanoWalletProps {
 export const CardanoWallet: React.FC<CardanoWalletProps> = ({
   label = 'Connect',
   onConnected,
-  isDark = false,
 }) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const wallets = useWalletList();
   const [hideMenuList, setHideMenuList] = useState<boolean>(true);
   const { connect, connecting, connected, disconnect, name } = useWallet();
@@ -26,17 +24,13 @@ export const CardanoWallet: React.FC<CardanoWalletProps> = ({
     }
   }, [connected, onConnected]);
 
-  useEffect(() => {
-    setIsDarkMode(isDark);
-  }, [isDark]);
-
-  const bgClass = isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black';
+  const bgClass = 'blue-bg dark-text';
 
   return (
     <div className="w-fit relative" onMouseEnter={() => setHideMenuList(false)} onMouseLeave={() => setHideMenuList(true)}>
   <button
     type="button"
-    className={`flex items-center justify-center w-30 px-4 py-1 ${bgClass}`}
+    className={`flex items-center justify-center w-30 px-4 py-2 rounded font-bold ${bgClass}`}
     onClick={() => setHideMenuList(!hideMenuList)}
   >
     <WalletBalance

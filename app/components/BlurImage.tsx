@@ -10,19 +10,6 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
 
   const toggleBlur = () => {
     if (isBlurred) {
-      // maybe check if the return response is a content type of image before loading it?
-      // fetch(imageUrl, { method: 'HEAD' })
-      // .then(response => {
-      //   if (response.headers.get('content-type')?.startsWith('image/')) {
-      //       // It's an image
-      //   } else {
-      //       // Not an image
-      //     }
-      //   })
-      // .catch(error => {
-      //     // Handle error
-      //   });
-              
       // Load the high-resolution image when unblurring
       setLoadedImageUrl(imageUrl);
     }
@@ -39,7 +26,7 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
         loading='lazy'
       />
       {isBlurred && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer" onClick={toggleBlur}>
+        <div className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text cursor-pointer" onClick={toggleBlur}>
           Click To Unblur
         </div>
       )}

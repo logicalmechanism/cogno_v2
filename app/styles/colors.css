@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom color classes for the application */
+
+/* blue stuff */
+
+.blue-bg {
+    @apply bg-blue-200;
+}
+
+.blue-bg-hover {
+    @apply hover:bg-sky-400;
+}
+
+.blue-text {
+    @apply text-blue-200;
+}
+
+.blue-text-hover {
+    @apply hover:text-sky-400;
+}
+
+/* red stuff */
+
+.red-bg {
+    @apply bg-red-200;
+}
+
+.red-bg-hover {
+    @apply hover:bg-rose-400;
+}
+
+/* green stuff */
+
+.green-bg {
+    @apply bg-green-200;
+}
+
+.green-bg-hover {
+    @apply hover:bg-teal-400;
+}
+
+/* gray stuff */
+
+.light-bg {
+    @apply bg-gray-200;
+}
+
+.dark-bg {
+    @apply bg-gray-800;
+}
+
+.light-text {
+    @apply text-gray-200;
+}
+
+.medium-text {
+    @apply text-gray-500;
+}
+
+.dark-text {
+    @apply text-gray-800;
+}
+
+.light-border {
+    @apply border-gray-200;
+}
+
+.medium-border {
+    @apply border-gray-500;
+}
+
+.dark-border {
+    @apply border-gray-800;
+}

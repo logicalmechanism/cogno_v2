@@ -14,7 +14,7 @@ const Forum = () => {
       <div className="">
         <button
           onClick={handleBack}
-          className="bg-green-200 hover:bg-teal-400 text-black font-bold py-2 px-4 my-5 rounded"
+          className="green-bg green-bg-hover dark-text font-bold py-2 px-4 my-5 rounded"
         >
           Go Back Home
         </button>
@@ -31,7 +31,7 @@ const Forum = () => {
             href={'https://github.com/logicalmechanism/cogno_v2'}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-blue-500 text-blue-700 underline"
+            className="blue-text blue-text-hover underline"
           >
             <span>View on GitHub</span>
           </a>

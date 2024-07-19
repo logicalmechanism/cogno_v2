@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../styles/colors.css";
 import type { AppProps } from "next/app";
 import { MeshProvider } from "@meshsdk/react";
 import Head from "next/head";

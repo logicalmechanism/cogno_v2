@@ -18,6 +18,8 @@
 - **headless**: added guardrails to parent level headless scripts
 - **headless**: added wallet protections
 - **headless**: added doctests and documentation to the python scripts
+- **app**: added standard app colors for backgrounds, borders, and text
+- **app**: added an Etc category
 
 
 ### Fixed
@@ -29,8 +31,12 @@
 - **headless**: changed the cogno creation, removal, and updating by adding in guards to prevent accidental changes
 - **headless**: changed the thread creation, removal, and commenting by adding in guards to prevent accidental changes
 - **app**: changed how the comments are displayed on a thread, they now perserve newlines and wrap
+- **app**: changed shadow boxes on all the things
+- **app**: changed any duration to e seconds
 
 ### Removed
+
+- **app**: removed commented out code that can't work for now
 
 ## pre-alpha-17-07-24
 

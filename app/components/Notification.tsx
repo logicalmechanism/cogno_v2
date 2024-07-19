@@ -6,7 +6,7 @@ interface NotificationProps {
   onDismiss: () => void; // Function to call on dismiss
 }
 
-const Notification: React.FC<NotificationProps> = ({ message, duration = 3500, onDismiss }) => {
+const Notification: React.FC<NotificationProps> = ({ message, duration = 2718, onDismiss }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Notification: React.FC<NotificationProps> = ({ message, duration = 3500, o
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-16 right-4 bg-rose-300 text-black py-4 px-4 rounded shadow-lg">
+    <div className="fixed bottom-16 right-4 red-bg dark-text py-4 px-4 rounded">
       {message}
     </div>
   );
