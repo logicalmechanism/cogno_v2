@@ -94,7 +94,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         <div className="flex space-x-4">
           {isOwner ? (
             <button
-              className="bg-red-200 hover:bg-rose-400 text-black px-4 py-2 mx-2 rounded w-1/4 h-10"
+              className="red-bg red-bg-hover dark-text px-4 py-2 mx-2 rounded w-1/4 h-10"
               onClick={handleDelete}
               disabled={isSubmitting}
             >
@@ -104,7 +104,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           <div className="w-1/4"></div> {/* Empty spacer */}
           <div className="w-1/4"></div> {/* Empty spacer */}
           <button
-            className="text-5xl absolute top-0 right-1 mt-2 mr-4 w-1/4 text-black hover:text-gray-900"
+            className="text-5xl absolute top-0 right-1 mt-2 mr-4 w-1/4 dark-text hover:text-gray-900"
             onClick={onClose}
           >
             &times;
@@ -116,7 +116,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         {/* title */}
         <div className="flex space-x-4">
           <div className="flex-grow"></div>
-          <h2 className="text-3xl font-bold text-black m-4">
+          <h2 className="text-3xl font-bold dark-text m-4">
             {hexToString((parsedDatum.fields[0] as BytesField).bytes)}
           </h2>
           <div className="flex-grow"></div>
@@ -132,7 +132,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
             </div>
           )}
           <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
-            <p className="text-black overflow-auto">
+            <p className="dark-text overflow-auto">
               {hexToString((parsedDatum.fields[1] as BytesField).bytes)}
             </p>
           </div>
@@ -144,21 +144,21 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           <div className="flex-grow"></div>
           <button
             onClick={handleBackToTop}
-            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
           >
             Back to Top
           </button>
           <div className="flex-grow"></div>
           <button
             onClick={handleScrollToComments}
-            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
           >
             Make A Comment
           </button>
           <div className="flex-grow"></div>
           <button
             onClick={onClose}
-            className="bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+            className="bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
           >
             Close Thread
           </button>

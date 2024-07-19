@@ -30,7 +30,7 @@ export const CardanoWallet: React.FC<CardanoWalletProps> = ({
     setIsDarkMode(isDark);
   }, [isDark]);
 
-  const bgClass = isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black';
+  const bgClass = isDarkMode ? 'bg-gray-800 text-white' : 'bg-white dark-text';
 
   return (
     <div className="w-fit relative" onMouseEnter={() => setHideMenuList(false)} onMouseLeave={() => setHideMenuList(true)}>

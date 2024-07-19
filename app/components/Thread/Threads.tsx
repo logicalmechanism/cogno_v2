@@ -28,7 +28,7 @@ export const Threads: React.FC<ThreadsProps> = ({ threads, network, wallet, refr
         </div>
       <button
         onClick={handleBackToTop}
-        className="fixed bottom-4 right-4 bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+        className="fixed bottom-4 right-4 bg-blue-200 hover:bg-sky-400 dark-text font-bold py-2 px-4 rounded"
       >
         Back to Top
       </button>

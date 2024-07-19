@@ -137,11 +137,11 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
         <div className="w-1/6"></div> {/* Empty spacer */}
-        <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 text-black p-2 mx-1 rounded w-1/6">All Threads</button>
+        <button onClick={handleFilterAll} className="bg-blue-200 hover:bg-sky-400 dark-text p-2 mx-1 rounded w-1/6">All Threads</button>
         <div className="w-1/6"></div> {/* Empty spacer */}
-        <button onClick={handleFilterMyThreads} className="bg-blue-200 hover:bg-sky-400 text-black p-2 mx-1 rounded w-1/6">My Threads</button>
+        <button onClick={handleFilterMyThreads} className="bg-blue-200 hover:bg-sky-400 dark-text p-2 mx-1 rounded w-1/6">My Threads</button>
         <div className="w-1/6"></div> {/* Empty spacer */}
-        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-200 hover:bg-sky-400 text-black border p-2 mx-1 rounded w-1/6 text-center">
+        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="bg-blue-200 hover:bg-sky-400 dark-text border p-2 mx-1 rounded w-1/6 text-center">
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
           <option value="News">News</option>
@@ -159,7 +159,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           type="text"
           value={searchInput}
           onChange={handleSearchInputChange}
-          className="border rounded text-black p-1"
+          className="border rounded dark-text p-1"
           autoComplete="off"
         />
         <div className="w-1/6"></div> {/* Empty spacer */}
@@ -178,7 +178,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           return (
             <div
               key={index}
-              className="bg-gray-400 py-2 text-black rounded cursor-pointer hover:bg-gray-100 w-11/12 text-center flex h-auto"
+              className="bg-gray-400 py-2 dark-text rounded cursor-pointer hover:gray-bg w-11/12 text-center flex h-auto"
             >
               {imageField !== '' && (
                 <div className='w-1/6 flex justify-center max-w-full max-h-16'>
@@ -201,10 +201,10 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
 
       {/* Pagination Controls */}
       <div className="flex justify-center mt-4">
-        <button onClick={handleFirstPage} disabled={currentPage === 1} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 text-black disabled:opacity-50">
+        <button onClick={handleFirstPage} disabled={currentPage === 1} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 dark-text disabled:opacity-50">
           First
         </button>
-        <button onClick={handlePreviousPage} disabled={currentPage === 1} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 text-black disabled:opacity-50">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 dark-text disabled:opacity-50">
           Previous
         </button>
         {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
@@ -213,16 +213,16 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`mx-1 px-3 py-1 rounded ${page === currentPage ? 'bg-blue-500 text-white' : 'bg-blue-200 hover:bg-sky-400 text-black'}`}
+              className={`mx-1 px-3 py-1 rounded ${page === currentPage ? 'bg-blue-500 text-white' : 'bg-blue-200 hover:bg-sky-400 dark-text'}`}
             >
               {page}
             </button>
           );
         })}
-        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 text-black disabled:opacity-50">
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 dark-text disabled:opacity-50">
           Next
         </button>
-        <button onClick={handleLastPage} disabled={currentPage === totalPages} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 text-black disabled:opacity-50">
+        <button onClick={handleLastPage} disabled={currentPage === totalPages} className="mx-1 px-3 py-1 rounded bg-blue-200 hover:bg-sky-400 dark-text disabled:opacity-50">
           Last
         </button>
       </div>

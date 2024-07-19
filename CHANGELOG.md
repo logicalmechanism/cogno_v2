@@ -29,6 +29,7 @@
 - **headless**: changed the cogno creation, removal, and updating by adding in guards to prevent accidental changes
 - **headless**: changed the thread creation, removal, and commenting by adding in guards to prevent accidental changes
 - **app**: changed how the comments are displayed on a thread, they now perserve newlines and wrap
+- **app**: remove shadow boxes on all the things
 
 ### Removed
 

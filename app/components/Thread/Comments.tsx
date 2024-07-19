@@ -81,11 +81,11 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
             {showSuccessLink && <SuccessText txHash={submittedTxHash}/>}
           </div>
           <div className="mb-4 max-w-full">
-            <label className="block text-black text-sm font-bold mb-2">Add A Comment</label>
+            <label className="block dark-text text-sm font-bold mb-2">Add A Comment</label>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="border p-2 rounded w-full text-black w-full"
+              className="border p-2 rounded w-full dark-text w-full"
               required
               autoComplete="off"
               maxLength={1000}
@@ -94,7 +94,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           </div>
           <button
             type="submit"
-            className="bg-blue-200 hover:bg-sky-400 text-black px-4 py-2 rounded"
+            className="bg-blue-200 hover:bg-sky-400 dark-text px-4 py-2 rounded"
             disabled={isSubmitting}
 
           >
@@ -103,14 +103,14 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           {notification && <Notification message={notification} onDismiss={clearNotification} />}
         </form>
       </div>
-      <div className="comments-container text-black">
+      <div className="comments-container dark-text">
         <h3 className="text-lg font-bold">Comments</h3>
         {comments.slice().reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
           return (
             <div
               key={index}
-              className="text-black border border-gray-300 rounded m-1 p-1"
+              className="dark-text border border-gray-300 rounded m-1 p-1"
             >
               <pre className='whitespace-pre-wrap'>{commentText}</pre>
               <br/>

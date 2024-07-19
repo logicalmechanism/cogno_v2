@@ -104,14 +104,14 @@ const FAQ: React.FC = () => {
 
   return (
     <div className="max-w-96 lg:max-w-full mx-auto">
-      <h1 className='text-3xl text-center my-2 font-extrabold'>FAQ</h1>
+      <h1 className='text-3xl text-center my-2 font-extrabold light-text'>FAQ</h1>
       {faqs.map((faq, index) => (
         <div key={index} className="mb-4">
           <div
             className="flex justify-between items-center p-4 cursor-pointer text-center"
             onClick={() => toggleActiveIndex(index)}
           >
-            <p className="text-xl font-extrabold text-center">{faq.question}</p>
+            <p className="text-xl font-extrabold text-center light-text">{faq.question}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={`h-6 w-6 transform transition-transform ${activeIndex === index ? 'rotate-180' : ''
@@ -127,15 +127,15 @@ const FAQ: React.FC = () => {
             </svg>
           </div>
           {activeIndex === index && (
-            <div className="bg-gray-100 py-2 px-4">
-              <p className="text-gray-700 break-words whitespace-pre-wrap">{faq.answer}</p>
+            <div className="gray-bg py-2 px-4">
+              <p className="dark-text break-words whitespace-pre-wrap">{faq.answer}</p>
             </div>
           )}
         </div>
       ))}
       <button
         onClick={handleBackToTop}
-        className="fixed bottom-4 right-4 bg-blue-200 hover:bg-sky-400 text-black font-bold py-2 px-4 rounded"
+        className="fixed bottom-4 right-4 blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
       >
         Back to Top
       </button>
