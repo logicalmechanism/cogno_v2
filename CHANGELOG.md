@@ -21,10 +21,14 @@
 - **app**: added standard app colors for backgrounds, borders, and text
 - **app**: added an Etc category
 - **app**: added default image instead of placeholder
+- **app**: added top threads and my friends thread filter
 
 ### Fixed
 
 - **headless**: fixed the newline error occuring when making comments on threads
+- **app**: fixed the image size for threads both at the preview and modal
+- **app**: fixed text on buttons for the threadlist for dynamic screen sizes
+
 
 ### Changed
 

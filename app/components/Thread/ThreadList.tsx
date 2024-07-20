@@ -136,12 +136,25 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
     <div className="thread-list-container flex flex-col border rounded w-full mb-24">
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
-        <div className="w-1/6"></div> {/* Empty spacer */}
-        <button onClick={handleFilterAll} className="blue-bg blue-bg-hover dark-text p-2 mx-1 rounded w-1/6 font-bold">All Threads</button>
-        <div className="w-1/6"></div> {/* Empty spacer */}
-        <button onClick={handleFilterMyThreads} className="blue-bg blue-bg-hover dark-text p-2 mx-1 rounded w-1/6 font-bold">My Threads</button>
-        <div className="w-1/6"></div> {/* Empty spacer */}
-        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="blue-bg blue-bg-hover dark-text border p-2 mx-1 rounded w-1/6 text-center font-bold">
+        <div className="w-1/12"></div> {/* Empty spacer */}
+        <button onClick={handleFilterAll} className="blue-bg blue-bg-hover dark-text py-2 mr-1 rounded w-2/12 font-bold">All Threads</button>
+        <button onClick={handleFilterMyThreads} className="blue-bg blue-bg-hover dark-text py-2 rounded w-2/12 font-bold">My Threads</button>
+        <div className="w-2/12"></div> {/* Empty spacer */}
+        <input
+          placeholder='Search'
+          type="text"
+          value={searchInput}
+          onChange={handleSearchInputChange}
+          className="border rounded dark-text py-2 ml-1 text-center w-4/12"
+          autoComplete="off"
+        />
+        <div className="w-1/12"></div> {/* Empty spacer */}
+      </div>
+      <div className="flex justify-start my-1">
+        <div className="w-1/12"></div> {/* Empty spacer */}
+        <button onClick={() => {console.log("Clicked Top Threads")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">Top Threads</button>
+        <button onClick={() => {console.log("Clicked My Friends")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">My Friends</button>
+        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="blue-bg blue-bg-hover dark-text border py-1 rounded w-2/12 text-center">
           <option value="General">General</option>
           <option value="Blockchain">Blockchain</option>
           <option value="News">News</option>
@@ -153,16 +166,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           <option value="Random">Random</option>
           <option value="Adult">Adult</option>
         </select>
-        <div className="w-1/6"></div> {/* Empty spacer */}
-        <input
-          placeholder='Search'
-          type="text"
-          value={searchInput}
-          onChange={handleSearchInputChange}
-          className="border rounded dark-text p-1 text-center"
-          autoComplete="off"
-        />
-        <div className="w-1/6"></div> {/* Empty spacer */}
+        <div className="w-1/12"></div> {/* Empty spacer */}
       </div>
 
       {/* Thread Titles */}
@@ -181,7 +185,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
               className="light-bg py-2 dark-text rounded cursor-pointer hover:light-bg w-11/12 text-center flex h-auto"
             >
               {imageField !== '' && (
-                <div className='w-1/6 flex justify-center max-w-full max-h-16'>
+                <div className='ml-4 max-w-16 flex justify-center items-center max-h-16'>
                   <BlurImage imageUrl={imageField} />
                 </div>
               )}
