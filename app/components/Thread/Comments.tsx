@@ -111,7 +111,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
           return (
             <div
               key={index}
-              className="dark-text border dark-border rounded m-2 p-2"
+              className="dark-text border dark-border rounded m-2 p-2 overflow-auto"
             >
               <pre className='whitespace-pre-wrap'>{commentText}</pre>
               <br/>

@@ -107,6 +107,7 @@ const Forum = () => {
 
   const getNetworkId = useCallback(async () => {
     if (wallet) {
+      setIsLoading(true);
       // get the network and change address from the connected wallet
       const _network = await wallet.getNetworkId();
       const changeAddress = await wallet.getChangeAddress();
@@ -114,6 +115,7 @@ const Forum = () => {
       sessionStorage.setItem('changeAddress', changeAddress);
       sessionStorage.setItem('walletKeyHashes', JSON.stringify(serializeBech32Address(changeAddress)));
       setNetwork(_network);
+      setIsLoading(false);
     }
   }, [wallet]);
 
@@ -209,10 +211,10 @@ const Forum = () => {
             <p className="text-lg font-semibold light-text">Incorrect Network</p>
           </div>
         ) : (
-          <div className="light-text">Network Not Recognized</div>
+          <div className="text-lg light-text font-semibold ">Network Not Recognized</div>
         )
       ) : (
-        <div className="flex h-screen items-center justify-center flex-col light-text">
+        <div className="flex h-screen items-center justify-center flex-col light-text text-lg font-semibold ">
           <h1>Connect Your Wallet To Use The Forum</h1>
         </div>
       )}
