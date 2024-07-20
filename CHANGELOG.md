@@ -22,6 +22,7 @@
 - **app**: added an Etc category
 - **app**: added default image instead of placeholder
 - **app**: added top threads and my friends thread filter
+- **app**: arweave and ipfs support for blur image
 
 ### Fixed
 
@@ -40,6 +41,8 @@
 - **app**: changed the tos on the landing page
 - **app**: changed the faq to full width and added additional q&a
 - **app**: changed cogno app is now just the forum
+- **app**: changed how the image is displayed if no content is present
+- **app**: changed the thread modal width from 3xl to 5xl
 
 ### Removed
 
