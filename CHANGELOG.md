@@ -20,7 +20,7 @@
 - **headless**: added doctests and documentation to the python scripts
 - **app**: added standard app colors for backgrounds, borders, and text
 - **app**: added an Etc category
-
+- **app**: added default image instead of placeholder
 
 ### Fixed
 
