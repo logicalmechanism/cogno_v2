@@ -32,6 +32,11 @@
     @apply hover:bg-rose-400;
 }
 
+.red-text {
+    @apply text-red-200;
+}
+
+
 /* green stuff */
 
 .green-bg {

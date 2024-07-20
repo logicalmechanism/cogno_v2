@@ -19,13 +19,13 @@ const Forum = () => {
           Go Back Home
         </button>
         <div className="m-7">
-          <p>Welcome to cogno.forum, a fully on-chain social media platform. There is no central database, ads, censorship, or algorithm. The content of the forum is sourced directly from the Cardano blockchain and is created by you, the user.</p>
+          <div className="text-wrap text-lg">
+            <p>
+              Welcome to cogno.forum, a fully on-chain social media platform. There is no central database, advertisements, censorship, or algorithm. The content of the forum is sourced directly from the Cardano blockchain and is created by you, the user. Refer to the FAQ below if you have any questions. This application relies heavily on open-source technology. It is not built for speed or appearance but for decentralization and open access. Users are responsible for the content they create and share. Please follow community guidelines and maintain a respectful environment. Be aware that, due to the lack of censorship, you may encounter inappropriate content. If you need support, please open a support ticket on GitHub or email support@logicalmechanism.io.
+            </p>
+          </div>
           <br/>
-          <p>Refer to the FAQ below if you have any questions.</p>
-          <br/>
-          <p>This application relies heavily on open-source technology. It is not built for speed or looks but for decentralization and open access.</p>
-          <br/>
-          <p>cogno.forum was created by Logical Mechanism LLC</p>
+          <p>Created by Logical Mechanism LLC</p>
           <br/>
           <a
             href={'https://github.com/logicalmechanism/cogno_v2'}

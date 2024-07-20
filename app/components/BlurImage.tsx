@@ -6,7 +6,7 @@ interface BlurImageProps {
 
 const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
   const [isBlurred, setIsBlurred] = useState(true);
-  const [loadedImageUrl, setLoadedImageUrl] = useState('https://placehold.co/400'); // default placeholder for quicker loading times
+  const [loadedImageUrl, setLoadedImageUrl] = useState('/default-420x420.png'); // default placeholder for quicker loading times
 
   const toggleBlur = () => {
     if (isBlurred) {

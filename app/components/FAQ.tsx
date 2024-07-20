@@ -5,30 +5,30 @@ const FAQ: React.FC = () => {
     {
       question: `What is cogno.forum?`,
       answer: `cogno.forum is all of your favorite social media sites in one decentralized application.
-      Its a forum, image board, aggregator, and social network all in one.
+      It's a forum, image board, aggregator, and social network all in one.
       The only difference here is that no one can control it, censor it, or turn it off.
       It lives forever on the Cardano blockchain.`,
     },
     {
       question: `How do I use cogno.forum?`,
       answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet,
-      create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That\`s it!`,
+      create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That's it!`,
     },
     {
       question: `Why does it cost money to use cogno.forum?`,
       answer: `Cogno.forum is fully on-chain. This means to create a cogno profile, threads, and comments,
-      you need Lovelace to pay for the required minimum and the transaction fees.`,
+      you need Lovelace to pay for the required UTxO minimum value and the transaction fees.`,
     },
     {
       question: `Do I get my Lovelace back when I post comments?`,
       answer: `No, they go onto the UTxO to hold the data. If a thread is deleted, the content creator 
-      gets all the Lovelace on the UTxO. This way content creators get paid for creating content that users
+      gets all the Lovelace on the UTxO. This way, content creators get paid for creating content that users
       comment on.`,
     },
     {
       question: `How do I view the application?`,
-      answer: `Cogno is designed to be used locally with yarn but it will be hosted at www.cogno.forum.
-      There are no guarantees www.cogno.forum will exist or be online. The app will be hosted for convenience
+      answer: `Cogno is designed to be used locally with yarn, but it will be hosted at www.cogno.forum.
+      There are no guarantees www.cogno.forum will exist or be online. The app will be hosted for convenience,
       but it is highly suggested that you just use yarn and run it locally.`,
     },
     {
@@ -38,16 +38,16 @@ const FAQ: React.FC = () => {
     {
       question: `Is the project open-sourced?`,
       answer: `Yes, the validators, headless scripts, and application frontend are all open-sourced and
-      available inside the github repository.`,
+      available inside the GitHub repository.`,
     },
     {
       question: `Do you make money from cogno.forum?`,
-      answer: `Nope but donations are highly appreciated.`,
+      answer: `Nope, but donations are highly appreciated.`,
     },
     {
       question: `How can I make suggestions?`,
-      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it then
-      we will probably add it, or you can fork the repo and add the feature yourself. It\’s open-sourced
+      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it, then
+      we will probably add it, or you can fork the repo and add the feature yourself. It’s open-sourced
       for a reason. Contributions and suggestions are more than welcome.`,
     },
     {
@@ -61,16 +61,25 @@ const FAQ: React.FC = () => {
       and no regulation. It is intended only for mature audiences.`,
     },
     {
-      question: `Why does cogno.forum look like zero effort was put into the frontend?`,
-      answer: `Minimum effort was used at every step of the way. Every component is made with AI.
-      cogno.forum is not suppose to be pretty, it is supposed to be decentralized. 
-      If you want it to look pretty, then contribute to the frontend.`,
+      question: `How is content moderated on cogno.forum?`,
+      answer: `Content moderation on cogno.forum is decentralized and controlled by users. You can block or
+      censor content by setting your on-chain moderation data inside your cogno profile.`,
+    },
+    {
+      question: `What are the community guidelines for cogno.forum?`,
+      answer: `While cogno.forum is decentralized and uncensored, we encourage users to follow common-sense 
+      community guidelines such as respecting others, avoiding spam, and not sharing illegal content. 
+      Content moderation is managed locally and on-chain.`,
+    },
+    {
+      question: `Are there any planned future features for cogno.forum?`,
+      answer: `Yes, we are continually working to improve cogno.forum. Keep an eye on our GitHub repository for updates.`,
     },
     {
       question: `Why did my comment or thread deletion not hit the chain?`,
       answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no 
       contingency protections at the contract level. This combination makes for some interesting user
-      experiences when many users are trying to be interact with a single thread. If someone spent what
+      experiences when many users are trying to interact with a single thread. If someone spent what
       you are trying to spend, then just try again. You just have to wait a block or two.`,
     },
     {
@@ -81,16 +90,10 @@ const FAQ: React.FC = () => {
     },
     {
       question: `How can I donate to this project?`,
-      answer: `Send ADA to:
-      addr1q8rdcfvj5a27gmp04q5c4nuly385mseam09y777xa8mjn40ax0z9yaxg2mjj3ctg4uj6ggwsc6nja0kj446w2gv5zcvqjk47zh
-      
-      or
-
-      Send XMR to:
-      44DiRiEWVkXghqESJfMkMG6J3YwMSQqzNaRwEYSYQZBkHJwhRbqsAX76g978xP1b1sHAk8BLbmsmWZff8AVpNaNHRP1jYJM`,
+      answer: `Send ADA to: addr1q8rdcfvj5a27gmp04q5c4nuly385mseam09y777xa8mjn40ax0z9yaxg2mjj3ctg4uj6ggwsc6nja0kj446w2gv5zcvqjk47zh or Send XMR to: 44DiRiEWVkXghqESJfMkMG6J3YwMSQqzNaRwEYSYQZBkHJwhRbqsAX76g978xP1b1sHAk8BLbmsmWZff8AVpNaNHRP1jYJM`,
     },
   ];
-  
+
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -103,19 +106,18 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="max-w-96 lg:max-w-full mx-auto">
+    <div className="mx-auto w-full">
       <h1 className='text-3xl text-center my-2 font-extrabold light-text'>FAQ</h1>
       {faqs.map((faq, index) => (
-        <div key={index} className="mb-4">
+        <div key={index} className="mb-4 w-full">
           <div
-            className="flex justify-between items-center p-4 cursor-pointer text-center"
+            className="flex justify-between items-center p-4 cursor-pointer w-full"
             onClick={() => toggleActiveIndex(index)}
           >
-            <p className="text-xl font-extrabold text-center light-text">{faq.question}</p>
+            <p className="text-xl font-extrabold light-text">{faq.question}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`h-6 w-6 transform transition-transform ${activeIndex === index ? 'rotate-180' : ''
-                }`}
+              className={`h-6 w-6 transform transition-transform ${activeIndex === index ? 'rotate-180' : ''}`}
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -127,8 +129,8 @@ const FAQ: React.FC = () => {
             </svg>
           </div>
           {activeIndex === index && (
-            <div className="light-bg py-2 px-4">
-              <p className="dark-text break-words whitespace-pre-wrap">{faq.answer}</p>
+            <div className="light-bg py-2 px-4 w-full">
+              <p className="dark-text break-words w-full text-lg">{faq.answer}</p>
             </div>
           )}
         </div>

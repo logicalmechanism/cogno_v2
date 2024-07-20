@@ -16,11 +16,13 @@ const Home: NextPage = () => {
   return (
     <div className="flex items-center justify-center flex-col w-auto light-text">
       <h1 className="pt-7 text-3xl">Welcome to Cogno</h1>
-      <h2 className="pt-7 text-3xl text-center">An on-chain social media platform</h2>
+      <h2 className="pt-7 text-xl text-center">An on-chain social media platform</h2>
       <div className="text-center">
-        <p className="m-7">By clicking <span className="blue-text">Yes</span>, you acknowledge that the information displayed on this website is not controlled by the creator, maintainer, a database or the website in any way, shape, or form, but is sourced directly from data on the Cardano blockchain.</p>
-        <p className="m-7">You also understand that you may encounter content that is offensive and/or illegal and is intended only for mature audiences. It is not suitable for minors. If you are a minor or it is illegal for you to access mature images and language, do not proceed.</p>
-        <p className="m-7">If you agree with these conditions, click <span className="blue-text">Yes</span>; otherwise, click <span className="red-text">No</span>.</p>
+        <div className="m-7 text-wrap text-lg">
+          <p>
+            By clicking <span className="blue-text">Yes</span>, you acknowledge that the information displayed on the forum is <span className="font-bold">not</span> controlled by the creator, maintainer, database, or the website in any way, shape, or form. It is sourced directly from data on the Cardano blockchain. You understand that you may encounter content that is offensive and/or illegal and is intended only for mature audiences. It is not suitable for minors. If you are a minor or it is illegal for you to access mature images and language, do not proceed and click <span className="red-text">No</span>. The website and its creators are not responsible for the accuracy, reliability, or legality of the content sourced from the Cardano blockchain. Users are responsible for their actions and any consequences that may arise from accessing the content on this website. Proceed at your own discretion. By clicking <span className="blue-text">Yes</span>, you agree to abide by these terms and conditions. If you do not agree with these terms, click <span className="red-text">No</span>.
+          </p>
+        </div>
         <button
           onClick={handleAgree}
           className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded mr-4 w-1/6"
@@ -29,7 +31,7 @@ const Home: NextPage = () => {
         </button>
         <button
           onClick={handleNoClick}
-          className="red-bg red-bg-hover dark-text font-bold py-2 px-4 rounded  w-1/6"
+          className="red-bg red-bg-hover dark-text font-bold py-2 px-4 rounded w-1/6"
         >
           No
         </button>

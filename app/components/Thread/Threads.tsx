@@ -19,7 +19,7 @@ export const Threads: React.FC<ThreadsProps> = ({ threads, network, wallet, refr
   return (
     <div className="container flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 w-full my-2">
       {/* Placeholder for ThreadForm component */}
-        <div className='w-full lg:w-1/4 light-bg h-full'>
+        <div className='w-full lg:w-1/4 light-bg h-full rounded'>
           <ThreadForm network={network} wallet={wallet} refreshThread={refreshThreads}/>
         </div>
         {/* Placeholder for ThreadList component */}

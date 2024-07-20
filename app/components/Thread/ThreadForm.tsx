@@ -75,7 +75,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col border rounded w-full">
+    <form onSubmit={handleSubmit} className="flex flex-col border w-full">
       <div className='items-center text-center'>
         {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
       </div>
