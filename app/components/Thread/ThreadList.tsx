@@ -181,7 +181,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
               className="light-bg py-2 dark-text rounded cursor-pointer hover:light-bg w-11/12 text-center flex h-auto"
             >
               {imageField !== '' && (
-                <div className='w-1/6 flex justify-center max-w-full max-h-16'>
+                <div className='ml-4 max-w-16 flex justify-center items-center max-h-16'>
                   <BlurImage imageUrl={imageField} />
                 </div>
               )}

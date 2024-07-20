@@ -97,8 +97,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="border p-2 rounded w-full dark-text"
-          required
+          className="border p-2 rounded w-full dark-text h-32"
           autoComplete="off"
           maxLength={40000}
           disabled={isSubmitting}

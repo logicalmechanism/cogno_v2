@@ -85,7 +85,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="border p-2 rounded dark-text w-full"
+              className="border p-2 rounded dark-text w-full h-32"
               required
               autoComplete="off"
               maxLength={1000}
@@ -105,6 +105,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
       </div>
       <div className="comments-container dark-text">
         <h3 className="text-lg font-bold">Comments</h3>
+        <br/>
         {comments.slice().reverse().map((c, index) => {
           const commentText = hexToString(c.bytes);
           return (
