@@ -15,7 +15,7 @@
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
-    "yarn": "^1.22.22"
+    "yarn": "^4.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -28,5 +28,8 @@
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   },
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.2.2",
+  "engines": {
+    "yarn": "4.x"
+  }
 }
