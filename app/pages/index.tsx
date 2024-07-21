@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   };
 
   const handleNoClick = () => {
-    window.location.href = 'https://eyebleach.me/';
+    window.location.href = 'https://www.google.com/';
   };
 
   return (
