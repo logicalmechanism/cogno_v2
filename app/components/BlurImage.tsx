@@ -9,9 +9,17 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
   const [loadedImageUrl, setLoadedImageUrl] = useState('/default-420x420.png'); // default placeholder for quicker loading times
 
   useEffect(() => {
+    let finalUrl = imageUrl;
+    // catch the prefixes then do proper parsing
+    if (imageUrl.startsWith('ar://')) {
+      finalUrl = `https://arweave.net/${imageUrl.slice(5)}`;
+    } else if (imageUrl.startsWith('ipfs://')) {
+      finalUrl = `https://ipfs.io/ipfs/${imageUrl.slice(7)}`;
+    } // other image url types can go here
+
     if (!isBlurred) {
-      // Load the high-resolution image when unblurring
-      setLoadedImageUrl(imageUrl);
+      // Load the image when unblurring
+      setLoadedImageUrl(finalUrl);
     } else {
       // Revert to the placeholder image when blurring again
       setLoadedImageUrl('/default-420x420.png');
@@ -23,10 +31,10 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative max-w-full max-h-full overflow-hidden">
       <img
         src={loadedImageUrl}
-        alt="Invalid Cogno Profile Image"
+        alt="Invalid Image"
         className={`transition duration-500 max-w-full max-h-full object-cover ${isBlurred ? 'blur-2xl' : 'blur-none'}`}
         onClick={toggleBlur}
         loading='lazy'

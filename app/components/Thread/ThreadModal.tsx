@@ -43,6 +43,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const tokenName = sessionStorage.getItem('cognoTokenName');
   const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
   const hasImage = (parsedDatum.fields[2] as BytesField).bytes;
+  const hasContent = (parsedDatum.fields[1] as BytesField).bytes;
 
   const checkTransaction = (network: number, message: string) => {
     const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -88,7 +89,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
   return (
     <div className="fixed inset-0 bg-opacity-45 flex items-center justify-center z-50">
-      <div className="light-bg p-6 rounded max-w-3xl w-full relative  max-h-[80vh] overflow-y-auto border-4 medium-border" ref={modalRef}>
+      <div className="light-bg p-6 rounded max-w-7xl w-full relative  max-h-[80vh] overflow-y-auto border-4 medium-border" ref={modalRef}>
         {notification && <Notification message={notification} onDismiss={clearNotification} />}
         {/* delete and close button */}
         <div className="flex space-x-4">
@@ -125,17 +126,19 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         <div className='flex space-x-4'>
           {/* Blur Image */}
           {hasImage && (
-            <div className='w-1/3'>
+            <div className={`${hasContent ? 'w-1/3' : 'w-full'}`}>
               <div className='flex justify-center'>
                 <BlurImage imageUrl={hexToString(hasImage)} />
               </div>
             </div>
           )}
-          <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
-            <p className="dark-text overflow-auto">
-              {hexToString((parsedDatum.fields[1] as BytesField).bytes)}
-            </p>
-          </div>
+          {hasContent && (
+            <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
+              <p className="dark-text overflow-auto">
+                {hexToString(hasContent)}
+              </p>
+            </div>
+          )}
         </div>
         {/* Comments here*/}
         <div ref={commentsRef}></div>
