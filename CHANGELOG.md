@@ -2,6 +2,8 @@
 
 ## pre-alpha-Unreleased
 
+*main is now set up for cicd so staging branch will contain new updates*
+
 ### Added
 
 - **cogno-project**: added changelog and contributing markdown files
