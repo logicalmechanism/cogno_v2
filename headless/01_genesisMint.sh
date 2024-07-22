@@ -19,6 +19,7 @@ genesis_policy_id=$(cat ../hashes/genesis_contract.hash)
 starter_address=$(cat wallets/starter-wallet/payment.addr)
 starter_pkh=$(${cli} address key-hash --payment-verification-key-file wallets/starter-wallet/payment.vkey)
 
+# change address for left over lovelace
 change_address=$(jq -r '.change_address' ../config.json)
 
 # collat wallet
@@ -48,7 +49,7 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${starter_address} \033[0m \n";
    exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' tmp/starter_utxo.json)
 starter_tx_in=${TXIN::-8}
 
@@ -90,7 +91,7 @@ if [ "${TXNS}" -eq "0" ]; then
 fi
 collat_utxo=$(jq -r 'keys[0]' tmp/collat_utxo.json)
 
-genesis_ref_utxo=$(${cli} transaction txid --tx-file tmp/utxo-genesis_contract.plutus.signed )
+genesis_ref_utxo=$(${cli} transaction txid --tx-file tmp/utxo-genesis_contract.plutus.signed)
 
 echo -e "\033[0;36m Building Tx \033[0m"
 FEE=$(${cli} transaction build \

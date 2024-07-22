@@ -40,7 +40,7 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${reference_address} \033[0m \n";
    exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" 'to_entries[] | select(.value.value | length < 2) | .key | . + $alltxin + " --tx-in"' ./tmp/reference_utxo.json)
 ref_tx_in=${TXIN::-8}
 changeAmount=$(jq '[.. | objects | .lovelace] | add' ./tmp/reference_utxo.json)
@@ -50,7 +50,7 @@ counter=0
 echo -e "\033[0;33m\nStart Building Tx Chain \033[0m"
 for contract in $(ls "../contracts"/* | sort -V)
 do
-    echo -e "\033[1;37m --------------------------------------------------------------------------------\033[0m"
+    echo -e "\033[1;37m\n--------------------------------------------------------------------------------\n\033[0m"
     echo -e "\033[1;35m\n${contract}\033[0m" 
     file_name=$(basename "$contract")
     # Increment the counter
@@ -62,10 +62,10 @@ do
     --protocol-params-file ./tmp/protocol.json \
     --tx-out-reference-script-file ${contract} \
     --tx-out="${script_reference_address} + 1000000" | tr -dc '0-9')
+
     # build the utxo
     script_reference_utxo="${script_reference_address} + ${min_utxo}"
     echo -e "\033[0;32m\nCreating ${file_name} Script:\n" ${script_reference_utxo} " \033[0m"
-
 
     ${cli} transaction build-raw \
     --babbage-era \
@@ -107,8 +107,7 @@ do
 
     tx_id=$(${cli} transaction txid --tx-body-file ./tmp/tx.draft)
     ref_tx_in=${tx_id}#0
-    echo 
-    echo -e "\033[0;36m$file_name: $tx_id#1 \033[0m"
+    echo -e "\033[0;36m\n$file_name: $tx_id#1 \033[0m"
 
 done
 
@@ -146,7 +145,7 @@ ${cli} transaction sign \
     --out-file ./tmp/change-tx.signed \
     ${network}
 
-echo -e "\033[1;37m --------------------------------------------------------------------------------\033[0m"
+echo -e "\033[1;37m\n--------------------------------------------------------------------------------\n\033[0m"
 # now submit them in that order
 for contract in $(ls "../contracts"/* | sort -V)
 do
