@@ -78,7 +78,7 @@ export const handleCognoTransaction = async (network: number | null,
     // console.error('Collateral Not Set');
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 

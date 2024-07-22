@@ -79,7 +79,7 @@ export const handleThreadCreation = async (
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 
@@ -270,7 +270,7 @@ export const handleThreadDeletion = async (
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 
@@ -441,7 +441,7 @@ export const handleCommentCreation = async (
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 

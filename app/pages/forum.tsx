@@ -93,13 +93,16 @@ const Forum = () => {
           sessionStorage.setItem('cognoTokenName', tokenName);
           return foundUtxo;
         } else {
+          sessionStorage.setItem('cognoTokenName', "non existent token");
           return null;
         }
       } catch (error) {
+        sessionStorage.setItem('cognoTokenName', "non existent token");
         // something happened during the utxo fetch request
         return null;
       }
     } else {
+      sessionStorage.setItem('cognoTokenName', "non existent token");
       // bad network
       return null;
     }
@@ -170,7 +173,7 @@ const Forum = () => {
     if (network === networkFlag) {
       // this needs to display some alert
       const alertMsg = networkFlag === 1 ? 'Pre-Production' : 'Mainnet';
-      setNotification(`Network Must Be Set To ${alertMsg}!`);
+      setNotification(`network must be set to ${alertMsg}!`);
       const timer = setTimeout(() => {
         disconnect(); // Automatically disconnect
       }, 2718);
