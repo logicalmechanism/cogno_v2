@@ -31,6 +31,7 @@ if [ -n "$exist_check" ]; then
     exit;
 fi
 
+# display the cogno info and generate a new datum
 jq -r '' cogno.json
 python3 -c "import sys, json; sys.path.append('../py/'); from cogno import create_datum; create_datum('cogno.json', '../wallets/user-1-wallet/payment.hash', '../data/cogno/cogno-datum.json');"
 
@@ -52,7 +53,6 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${user_address} \033[0m \n";
    exit;
 fi
-alltxin=""
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_utxo.json)
 user_tx_in=${TXIN::-8}
 
@@ -96,7 +96,6 @@ if [ "${TXNS}" -eq "0" ]; then
 fi
 collat_utxo=$(jq -r 'keys[0]' ../tmp/collat_utxo.json)
 
-
 genesis_policy_id=$(cat ../../hashes/genesis_contract.hash)
 genesis_tx_id=$(jq -r '.genesis_tx_id' ../../config.json)
 genesis_tx_idx=$(jq -r '.genesis_tx_idx' ../../config.json)
@@ -117,13 +116,11 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${reference_script_address} \033[0m \n";
    exit;
 fi
-alltxin=""
 TXIN=$(jq -r --arg alltxin "" --arg policy_id "$genesis_policy_id" --arg token_name "$genesis_tkn" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 reference_script_tx_in=${TXIN::-8}
-
 echo Data Reference UTxO: $reference_script_tx_in
 
-minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-cogno_minter_contract.plutus.signed )
+minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-cogno_minter_contract.plutus.signed)
 
 # Add metadata to this build function for nfts with data
 echo -e "\033[0;36m Building Tx \033[0m"

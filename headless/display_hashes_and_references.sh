@@ -4,6 +4,7 @@ set -e
 # SET UP VARS HERE
 source .env
 
+# This script is only meant to display hashes and and script reference txids for the frontend app
 echo cogno minter
 cat ../hashes/cogno_minter_contract.hash
 ${cli} transaction txid --tx-file ./tmp/utxo-cogno_minter_contract.plutus.signed
