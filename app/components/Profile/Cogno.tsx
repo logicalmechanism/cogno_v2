@@ -58,7 +58,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
 
     maestro.onTxConfirmed(message, async () => {
       refreshCogno();
-      setNotification('Transaction Is On-Chain');
+      setNotification('transaction is on-chain');
       setTitle('');
       setImage('');
       setDetails('');

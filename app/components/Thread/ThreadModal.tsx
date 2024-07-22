@@ -53,7 +53,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
     maestro.onTxConfirmed(message, async () => {
       refreshThread();
-      setNotification('Transaction Is On-Chain');
+      setNotification('transaction is on-chain');
       // reset all the values
       setIsSubmitting(false);
       setSubmittedTxHash('');
@@ -69,7 +69,6 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
     setShowSuccessLink(false);
     const result = await handleThreadDeletion(network, wallet, thread);
     if (result.success === false) {
-      // something failed so notify the user of the error message
       setNotification(result.message);
       setIsSubmitting(false);
 
