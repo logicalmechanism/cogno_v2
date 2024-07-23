@@ -4,6 +4,7 @@ import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
 import { hexToString } from '../utilities';
+import { BytesField } from './transaction';
 
 interface ThreadListProps {
   network: number | null;
@@ -197,7 +198,9 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           const threadToken = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
           const blockThreadListString = sessionStorage.getItem('blockThreadList');
           let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
-          if (blockThreadList.includes(threadToken)) {
+          // if (blockThreadList.some((item: BytesField) => item === threadToken)) {
+            if (blockThreadList.includes(threadToken)) {
+            console.log(blockThreadList, threadToken);
             return null; // Skip rendering this thread
           }
 

@@ -24,7 +24,8 @@
 - **app**: added an Etc category
 - **app**: added default image instead of placeholder
 - **app**: added top threads and my friends thread filter
-- **app**: arweave and ipfs support for blur image
+- **app**: added arweave and ipfs support for blur image
+- **app**: added moderation settings to cogno profile
 
 ### Fixed
 
@@ -47,6 +48,7 @@
 - **app**: changed how the image is displayed if no content is present
 - **app**: changed the thread modal width from 3xl to 5xl
 - **app**: changed the error messages to lowercase
+- **app**: changed the font family to monospaced
 
 ### Removed
 

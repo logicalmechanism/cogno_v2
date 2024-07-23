@@ -9,6 +9,7 @@ import { serializeBech32Address } from '@meshsdk/mesh-csl';
 import NavBar from '../components/NavBar';
 import Notification from '../components/Notification';
 import { Threads } from "../components/Thread";
+import { BytesField } from "@/components/Profile";
 
 export interface OutputAmount {
   unit: string;
@@ -97,6 +98,12 @@ const Forum = () => {
           const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
           // set the cognoTokenName field to the found token name then return the found utxo as the cogno
           sessionStorage.setItem('cognoTokenName', tokenName);
+          const datum = parseDatumCbor(foundUtxo.output.plutusData);
+          const moderation = datum.fields[2]
+          // set the friend list, block user and thread list
+          sessionStorage.setItem('friendList', JSON.stringify(moderation.fields[0].list.map((item: BytesField) => item.bytes)));
+          sessionStorage.setItem('blockUserList', JSON.stringify(moderation.fields[1].list.map((item: BytesField) => item.bytes)));
+          sessionStorage.setItem('blockThreadList', JSON.stringify(moderation.fields[2].list.map((item: BytesField) => item.bytes)));
           return foundUtxo;
         } else {
           return null;

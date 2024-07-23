@@ -8,15 +8,17 @@ import SuccessText from '../SuccessText';
 import { hexToString } from '../utilities';
 import { MaestroProvider } from '@meshsdk/core';
 import { BytesField } from './transaction';
+import Moderation from './Moderation';
 
 interface CognoProps {
   network: number | null;
   wallet: BrowserWallet;
   cogno: UTxO | null;
   refreshCogno: () => void; // Function to refresh Cogno
+  onClose: () => void; // function to close the profile modal
 }
 
-const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) => {
+const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onClose }) => {
   const [editMode, setEditMode] = useState(false);
   // profile info from the cogno utxo
   const [title, setTitle] = useState('');
@@ -196,7 +198,15 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             </div>
           )}
         </div>
-        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Need To Go Below Here</p></div>
+        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Are Saved On-Chain With An Update Only</p></div>
+        <Moderation/>
+        <button
+            type='button'
+            onClick={onClose}
+            className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
+          >
+            Close
+          </button>
       </form>
       {notification && <Notification message={notification} onDismiss={clearNotification} />}
     </div>
