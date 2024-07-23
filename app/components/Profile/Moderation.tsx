@@ -21,8 +21,12 @@ const Moderation: React.FC = () => {
 
   const handleRemove = (listName: string, item: string, setList: React.Dispatch<React.SetStateAction<string[]>>) => {
     const updatedList = (prevList: string[]) => prevList.filter((i) => i !== item);
-    setList(updatedList);
-    sessionStorage.setItem(listName, JSON.stringify(updatedList));
+    setList((prevList) => {
+      const result = updatedList(prevList);
+      // console.log(result); // Log the updated list
+      sessionStorage.setItem(listName, JSON.stringify(result));
+      return result;
+    });
   };
 
   // how to render out each moderation list
@@ -68,8 +72,8 @@ const Moderation: React.FC = () => {
   return (
     <div>
       {renderList('Friend List', friendList, 'friendList', setFriendList, showFriendList, setShowFriendList)}
-      {renderList('Blocked User List', blockedUserList, 'blockedUserList', setBlockedUserList, showBlockedUserList, setShowBlockedUserList)}
-      {renderList('Blocked Thread List', blockedThreadList, 'blockedThreadList', setBlockedThreadList, showBlockedThreadList, setShowBlockedThreadList)}
+      {renderList('Blocked User List', blockedUserList, 'blockUserList', setBlockedUserList, showBlockedUserList, setShowBlockedUserList)}
+      {renderList('Blocked Thread List', blockedThreadList, 'blockThreadList', setBlockedThreadList, showBlockedThreadList, setShowBlockedThreadList)}
     </div>
   );
 };

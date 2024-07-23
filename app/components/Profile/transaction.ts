@@ -190,6 +190,9 @@ export const handleCognoTransaction = async (network: number | null,
       const storedBlockedUserList = JSON.parse(sessionStorage.getItem('blockUserList') || '[]');
       const storedBlockedThreadList = JSON.parse(sessionStorage.getItem('blockThreadList') || '[]');
 
+      console.log(storedBlockedThreadList);
+      
+
       // the cogno datum
       let cognoDatum: Datum = {
         "constructor": 0,

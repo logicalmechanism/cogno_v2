@@ -200,7 +200,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
           // if (blockThreadList.some((item: BytesField) => item === threadToken)) {
             if (blockThreadList.includes(threadToken)) {
-            console.log(blockThreadList, threadToken);
+            // console.log(blockThreadList, threadToken);
             return null; // Skip rendering this thread
           }
 
