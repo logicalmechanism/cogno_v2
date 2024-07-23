@@ -23,7 +23,6 @@ const Moderation: React.FC = () => {
     const updatedList = (prevList: string[]) => prevList.filter((i) => i !== item);
     setList((prevList) => {
       const result = updatedList(prevList);
-      // console.log(result); // Log the updated list
       sessionStorage.setItem(listName, JSON.stringify(result));
       return result;
     });

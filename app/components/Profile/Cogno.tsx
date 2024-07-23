@@ -78,7 +78,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
     setEditMode(false);
     setSubmittedTxHash('');
     setShowSuccessLink(false);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, true);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details}, true);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -96,7 +96,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
     setSubmittedTxHash('');
     setShowSuccessLink(false);
     setIsSubmitting(true);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, false);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details}, false);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -198,7 +198,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             </div>
           )}
         </div>
-        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Are Saved On-Chain With An Update Only</p></div>
+        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Are Saved On-Chain By Updating</p></div>
         <Moderation/>
         <button
             type='button'

@@ -10,9 +10,6 @@ interface CognoData {
   title: string;
   image: string;
   details: string;
-  friendList: string[];
-  restrictedUserList: string[];
-  restrictedThreadList: string[];
 }
 
 export interface BytesField {
@@ -189,8 +186,8 @@ export const handleCognoTransaction = async (network: number | null,
       const storedFriendList = JSON.parse(sessionStorage.getItem('friendList') || '[]');
       const storedBlockedUserList = JSON.parse(sessionStorage.getItem('blockUserList') || '[]');
       const storedBlockedThreadList = JSON.parse(sessionStorage.getItem('blockThreadList') || '[]');
+      // console.log(storedBlockedThreadList);
 
-      console.log(storedBlockedThreadList);
       
 
       // the cogno datum
