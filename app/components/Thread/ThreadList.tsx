@@ -19,6 +19,8 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [searchInput, setSearchInput] = useState('');
   const itemsPerPage = 25; // Number of items per page
   const maxPageButtons = 3; // Maximum number of page buttons to show at a time
+  const cognoTokenName = sessionStorage.getItem('cognoTokenName');
+  
 
   useEffect(() => {
     setFilteredThreads(threads);
@@ -38,10 +40,9 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   };
 
   const handleFilterMyThreads = () => {
-    const tokenName = sessionStorage.getItem('cognoTokenName');
     const filtered = threads.filter(thread => {
       const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-      return parsedDatum.fields[5].bytes === tokenName;
+      return parsedDatum.fields[5].bytes === cognoTokenName;
     });
     setFilteredThreads(filtered);
     setCurrentPage(1);
@@ -59,9 +60,23 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   };
 
   const handleThreadClick = (thread: UTxO) => {
-    const tokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
-    sessionStorage.setItem('threadTokenName', tokenName);
+    const threadTokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+    sessionStorage.setItem('threadTokenName', threadTokenName);
     setSelectedThread(thread);
+  };
+
+  const handleBlockThreadClick = (thread: UTxO) => {
+    const threadTokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+    console.log(threadTokenName)
+    const blockThreadListString = sessionStorage.getItem('blockThreadList');
+    let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
+    console.log(blockThreadList)
+    blockThreadList.push(threadTokenName);
+    sessionStorage.setItem('blockThreadList', JSON.stringify(blockThreadList));
+    setFilteredThreads(filteredThreads.filter(t => {
+      const threadToken = t.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+      return !blockThreadList.includes(threadToken);
+    }));
   };
 
   const closeModal = () => {
@@ -174,10 +189,17 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
         {currentThreads.map((thread, index) => {
           const titleField = hexToString(parseDatumCbor(thread.output.plutusData!).fields[0].bytes);
           const imageField = hexToString(parseDatumCbor(thread.output.plutusData!).fields[2].bytes);
-          const threadCreatorString = parseDatumCbor(thread.output.plutusData!).fields[5].bytes.slice(0, 16);
+          const threadOwner = parseDatumCbor(thread.output.plutusData!).fields[5].bytes
+          const threadCreatorString = threadOwner.slice(0, 16);
           const threadCreator = threadCreatorString.length === 0 ? "Permanent" : threadCreatorString;
           const threadCategory = hexToString(parseDatumCbor(thread.output.plutusData!).fields[3].bytes);
           const numOfComments = parseDatumCbor(thread.output.plutusData!).fields[4].list.length;
+          const threadToken = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
+          const blockThreadListString = sessionStorage.getItem('blockThreadList');
+          let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
+          if (blockThreadList.includes(threadToken)) {
+            return null; // Skip rendering this thread
+          }
 
           return (
             <div
@@ -198,6 +220,14 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
                   <small className='mt-2'>Posted By {threadCreator} To {threadCategory} With {numOfComments} Comments</small>
                 </div>
               </div>
+                {cognoTokenName !== threadOwner && (
+                  <button
+                    className="ml-auto red-bg light-text py-1 px-2 mr-4 rounded red-bg-hover"
+                    onClick={() => { handleBlockThreadClick(thread)}}
+                  >
+                    Block
+                  </button>
+                )}
             </div>
           );
         })}

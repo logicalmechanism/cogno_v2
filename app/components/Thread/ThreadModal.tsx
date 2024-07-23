@@ -41,7 +41,8 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
 
   const tokenName = sessionStorage.getItem('cognoTokenName');
-  const isOwner = tokenName === (parsedDatum.fields[5] as BytesField).bytes;
+  const threadOwner = (parsedDatum.fields[5] as BytesField).bytes
+  const isOwner = tokenName === threadOwner;
   const hasImage = (parsedDatum.fields[2] as BytesField).bytes;
   const hasContent = (parsedDatum.fields[1] as BytesField).bytes;
 
@@ -100,7 +101,13 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
             >
               Delete Thread
             </button>
-          ) : (<></>)}
+          ) : (
+          <>
+            <button className="green-bg green-bg-hover dark-text px-4 py-2 mx-2 rounded h-10">Add Friend</button>
+            <button className="blue-bg blue-bg-hover dark-text px-4 py-2 mx-2 rounded h-10">Block User</button>
+            <button className="red-bg red-bg-hover dark-text px-4 py-2 mx-2 rounded h-10">Block Thread</button>
+          </>
+          )}
           <div className="w-1/4"></div> {/* Empty spacer */}
           <div className="w-1/4"></div> {/* Empty spacer */}
           <button
@@ -112,6 +119,22 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
         </div>
         <div className='flex flex-col text-center items-center'>
           {showSuccessLink && <SuccessText txHash={submittedTxHash} />}
+        </div>
+        {/* */}
+        <div className="flex space-x-4">
+        {isOwner ? (<></>) : (
+          <>
+          <h3 className="text-lg dark-text m-4">
+            <button
+              className='blue-text-hover'
+              onClick={() => {console.log("This needs to lead to their profile")}}
+            >
+              {threadOwner}
+            </button>
+          </h3>
+          </>
+        )}
+          <div className="flex-grow"></div>
         </div>
         {/* title */}
         <div className="flex space-x-4">

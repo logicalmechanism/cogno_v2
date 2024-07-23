@@ -52,6 +52,12 @@ const Forum = () => {
 
   const findCogno = useCallback(async (): Promise<UTxO | null> => {
     if (network !== null) {
+      // initialize it to invalid token name
+      sessionStorage.setItem('cognoTokenName', "non existent token");
+      sessionStorage.setItem('blockThreadList', JSON.stringify([]));
+      sessionStorage.setItem('blockUserList', JSON.stringify([]));
+      sessionStorage.setItem('friendList', JSON.stringify([]));
+
       // this is the cogno script hash
       const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
       // the cogno contract is not staked
@@ -93,16 +99,13 @@ const Forum = () => {
           sessionStorage.setItem('cognoTokenName', tokenName);
           return foundUtxo;
         } else {
-          sessionStorage.setItem('cognoTokenName', "non existent token");
           return null;
         }
       } catch (error) {
-        sessionStorage.setItem('cognoTokenName', "non existent token");
         // something happened during the utxo fetch request
         return null;
       }
     } else {
-      sessionStorage.setItem('cognoTokenName', "non existent token");
       // bad network
       return null;
     }
