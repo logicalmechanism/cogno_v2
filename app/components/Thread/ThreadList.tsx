@@ -68,10 +68,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
 
   const handleBlockThreadClick = (thread: UTxO) => {
     const threadTokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
-    console.log(threadTokenName)
-    const blockThreadListString = sessionStorage.getItem('blockThreadList');
-    let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
-    console.log(blockThreadList)
+    const blockThreadList = JSON.parse(sessionStorage.getItem('blockThreadList') ?? '[]');
     blockThreadList.push(threadTokenName);
     sessionStorage.setItem('blockThreadList', JSON.stringify(blockThreadList));
     setFilteredThreads(filteredThreads.filter(t => {
@@ -196,11 +193,11 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           const threadCategory = hexToString(parseDatumCbor(thread.output.plutusData!).fields[3].bytes);
           const numOfComments = parseDatumCbor(thread.output.plutusData!).fields[4].list.length;
           const threadToken = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
-          const blockThreadListString = sessionStorage.getItem('blockThreadList');
-          let blockThreadList = blockThreadListString ? JSON.parse(blockThreadListString) : [];
-          // if (blockThreadList.some((item: BytesField) => item === threadToken)) {
-            if (blockThreadList.includes(threadToken)) {
-            // console.log(blockThreadList, threadToken);
+
+          const blockThreadList = JSON.parse(sessionStorage.getItem('blockThreadList') ?? '[]');
+          const blockUserList = JSON.parse(sessionStorage.getItem('blockUserList') ?? '[]');
+
+          if (blockThreadList.includes(threadToken) || blockUserList.includes(threadOwner)) {
             return null; // Skip rendering this thread
           }
 

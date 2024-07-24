@@ -26,6 +26,8 @@
 - **app**: added top threads and my friends thread filter
 - **app**: added arweave and ipfs support for blur image
 - **app**: added moderation settings to cogno profile
+- **app**: added mini profile to threads
+- **app**: added ability to add and block users
 
 ### Fixed
 

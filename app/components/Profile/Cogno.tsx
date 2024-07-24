@@ -24,10 +24,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [details, setDetails] = useState('');
-  // moderation info from the cogno utxo
-  const [friendList, setFriendList] = useState<string[]>([]);
-  const [restrictedUserList, setRestrictedUserList] = useState<string[]>([]);
-  const [restrictedThreadList, setRestrictedThreadList] = useState<string[]>([]);
   // states for updating and dispalying
   const [notification, setNotification] = useState<string>('');
   const [showSuccessLink, setShowSuccessLink] = useState(false);
@@ -42,9 +38,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');
-      setFriendList(datum.fields[2].fields[0].list.map((element: BytesField) => {hexToString(element.bytes)}));
-      setRestrictedUserList(datum.fields[2].fields[1].list.map((element: BytesField) => {hexToString(element.bytes)}));
-      setRestrictedThreadList(datum.fields[2].fields[2].list.map((element: BytesField) => {hexToString(element.bytes)}));
     }
   }, [cogno]);
 
@@ -64,9 +57,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
       setTitle('');
       setImage('');
       setDetails('');
-      setFriendList([]);
-      setRestrictedUserList([]);
-      setRestrictedThreadList([]);
       setSubmittedTxHash('');
       setShowSuccessLink(false);
       setIsSubmitting(false);
