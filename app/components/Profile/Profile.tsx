@@ -29,7 +29,7 @@ export const Profile: FC<ProfileProps> = ({ cogno, network, wallet, onClose, ref
         <div className="mt-3 text-center">
           <h3 className="text-3xl font-medium dark-text">Cogno Profile</h3>
           <div >
-            <Cogno network={network} wallet={wallet} cogno={cogno} refreshCogno={refreshCogno} />
+            <Cogno network={network} wallet={wallet} cogno={cogno} refreshCogno={refreshCogno} onClose={onClose} />
           </div>
         </div>
       </div>

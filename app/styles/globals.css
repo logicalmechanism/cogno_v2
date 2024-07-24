@@ -24,6 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family: 'Courier New', 'Courier', 'Lucida Console', 'Liberation Mono', 'Monaco', 'DejaVu Sans Mono', 'Andale Mono', 'Consolas', monospace;
 }
 
 @layer utilities {

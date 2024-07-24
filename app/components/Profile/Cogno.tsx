@@ -8,24 +8,22 @@ import SuccessText from '../SuccessText';
 import { hexToString } from '../utilities';
 import { MaestroProvider } from '@meshsdk/core';
 import { BytesField } from './transaction';
+import Moderation from './Moderation';
 
 interface CognoProps {
   network: number | null;
   wallet: BrowserWallet;
   cogno: UTxO | null;
   refreshCogno: () => void; // Function to refresh Cogno
+  onClose: () => void; // function to close the profile modal
 }
 
-const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) => {
+const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onClose }) => {
   const [editMode, setEditMode] = useState(false);
   // profile info from the cogno utxo
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [details, setDetails] = useState('');
-  // moderation info from the cogno utxo
-  const [friendList, setFriendList] = useState<string[]>([]);
-  const [restrictedUserList, setRestrictedUserList] = useState<string[]>([]);
-  const [restrictedThreadList, setRestrictedThreadList] = useState<string[]>([]);
   // states for updating and dispalying
   const [notification, setNotification] = useState<string>('');
   const [showSuccessLink, setShowSuccessLink] = useState(false);
@@ -40,9 +38,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');
-      setFriendList(datum.fields[2].fields[0].list.map((element: BytesField) => {hexToString(element.bytes)}));
-      setRestrictedUserList(datum.fields[2].fields[1].list.map((element: BytesField) => {hexToString(element.bytes)}));
-      setRestrictedThreadList(datum.fields[2].fields[2].list.map((element: BytesField) => {hexToString(element.bytes)}));
     }
   }, [cogno]);
 
@@ -62,9 +57,6 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
       setTitle('');
       setImage('');
       setDetails('');
-      setFriendList([]);
-      setRestrictedUserList([]);
-      setRestrictedThreadList([]);
       setSubmittedTxHash('');
       setShowSuccessLink(false);
       setIsSubmitting(false);
@@ -76,7 +68,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
     setEditMode(false);
     setSubmittedTxHash('');
     setShowSuccessLink(false);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, true);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details}, true);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -94,7 +86,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
     setSubmittedTxHash('');
     setShowSuccessLink(false);
     setIsSubmitting(true);
-    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details, friendList, restrictedUserList, restrictedThreadList }, false);
+    const result = await handleCognoTransaction(network, wallet, cogno, { title, image, details}, false);
     if (result.success === false) {
       // something failed so notify the user of the error message
       setNotification(result.message);
@@ -196,7 +188,15 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno }) =
             </div>
           )}
         </div>
-        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Need To Go Below Here</p></div>
+        <div><p className='mt-2 dark-text flex flex-col items-center justify-between'>Moderation Settings Are Saved On-Chain By Updating</p></div>
+        <Moderation/>
+        <button
+            type='button'
+            onClick={onClose}
+            className="blue-bg blue-bg-hover dark-text font-bold py-2 px-4 rounded"
+          >
+            Close
+          </button>
       </form>
       {notification && <Notification message={notification} onDismiss={clearNotification} />}
     </div>
