@@ -34,7 +34,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
 
     maestro.onTxConfirmed(message, async () => {
       refreshThread();
-      setNotification('Transaction Is On-Chain');
+      setNotification('transaction is on-chain');
       // reset all the values
       setTitle('');
       setContent('');

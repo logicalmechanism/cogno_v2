@@ -4,6 +4,7 @@ set -e
 # SET UP VARS HERE
 source ../.env
 
+# display a cogno by the token name else use the data token name from creation
 if [ "$#" -eq 1 ]; then
     token_name="$1"
 elif [ "$#" -eq 0 ]; then
@@ -37,6 +38,7 @@ if [ -z "$exist_check" ]; then
     exit;
 fi
 
+# get the datum and deconstruct
 current_datum=$(jq -r --arg policy_id "$policy_id" --arg token_name "$token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .value.inlineDatum' ../tmp/script_utxo.json)
 
 image_url=$(echo $current_datum | jq -r '.fields[1].fields[1].bytes' | xxd -p -r)
@@ -46,6 +48,7 @@ echo -e "\033[0;36mName: $(echo $current_datum | jq -r '.fields[1].fields[0].byt
 echo -e "\033[0;34mImage: ${image_url}\n\033[0m"
 echo -e "\033[0;37mDetails: $(echo $current_datum | jq -r '.fields[1].fields[2].bytes' | xxd -p -r)\033[0m"
 
+#if feh is on path and an image exists then display the image with feh
 if ! command -v feh &> /dev/null
 then
     echo "Please Install feh to directly view profile image."

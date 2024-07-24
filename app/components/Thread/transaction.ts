@@ -79,7 +79,7 @@ export const handleThreadCreation = async (
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 
@@ -259,18 +259,18 @@ export const handleThreadDeletion = async (
 
   // the change address is from the login
   const changeAddress = sessionStorage.getItem('changeAddress');
-  console.log('Change Address: ', changeAddress);
+  // console.log('Change Address: ', changeAddress);
 
   const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
-  console.log('Wallet Key Hashes:', walletKeyHashes);
+  // console.log('Wallet Key Hashes:', walletKeyHashes);
 
   // if the collateral is not set then we need to inform the user
   const collateralUTxOs = await wallet.getCollateral();
-  console.log('Collateral: ', collateralUTxOs);
+  // console.log('Collateral: ', collateralUTxOs);
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 
@@ -283,7 +283,7 @@ export const handleThreadDeletion = async (
 
   // keepRelevant should account for 
   const selectedUtxos = keepRelevant(assetMap, utxos);
-  console.log('Selected Wallet UTxOs: ', selectedUtxos)
+  // console.log('Selected Wallet UTxOs: ', selectedUtxos)
 
   // this is where the actual sc interaction will be
   const networkName = network === 0 ? 'Preprod' : 'Mainnet';
@@ -295,7 +295,7 @@ export const handleThreadDeletion = async (
   });
   // the cogno token name
   const cognoTokenName = sessionStorage.getItem('cognoTokenName');
-  console.log('Cogno Token Name:', cognoTokenName);
+  // console.log('Cogno Token Name:', cognoTokenName);
 
 
   // script address for cogno
@@ -315,7 +315,7 @@ export const handleThreadDeletion = async (
     return false;
   });
 
-  console.log('found cogno utxo', cogno)
+  // console.log('found cogno utxo', cogno)
 
   // delete redeemer
   let deleteRedeemer: Redeemer = {
@@ -333,9 +333,9 @@ export const handleThreadDeletion = async (
 
   // this token name
   const thisUnit = thread.output.amount.find(asset => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!));
-  console.log('unit:', thisUnit)
+  // console.log('unit:', thisUnit)
   const threadTokenName = thisUnit?.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
-  console.log('Thread Token Name:', threadTokenName);
+  // console.log('Thread Token Name:', threadTokenName);
 
   mesh
     .changeAddress(changeAddress!)
@@ -345,7 +345,7 @@ export const handleThreadDeletion = async (
   selectedUtxos.forEach(item => {
     mesh.txIn(item.input.txHash, item.input.outputIndex)
   });
-  console.log('reference', process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
+  // console.log('reference', process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
   // add the change address and teh collateral
   mesh
     .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
@@ -441,7 +441,7 @@ export const handleCommentCreation = async (
   if (collateralUTxOs.length === 0) {
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 

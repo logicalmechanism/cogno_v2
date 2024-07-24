@@ -9,6 +9,7 @@ import { serializeBech32Address } from '@meshsdk/mesh-csl';
 import NavBar from '../components/NavBar';
 import Notification from '../components/Notification';
 import { Threads } from "../components/Thread";
+import { BytesField } from "@/components/Profile";
 
 export interface OutputAmount {
   unit: string;
@@ -52,6 +53,12 @@ const Forum = () => {
 
   const findCogno = useCallback(async (): Promise<UTxO | null> => {
     if (network !== null) {
+      // initialize it to invalid token name
+      sessionStorage.setItem('cognoTokenName', "non existent token");
+      sessionStorage.setItem('blockThreadList', JSON.stringify([]));
+      sessionStorage.setItem('blockUserList', JSON.stringify([]));
+      sessionStorage.setItem('friendList', JSON.stringify([]));
+
       // this is the cogno script hash
       const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;
       // the cogno contract is not staked
@@ -91,6 +98,12 @@ const Forum = () => {
           const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
           // set the cognoTokenName field to the found token name then return the found utxo as the cogno
           sessionStorage.setItem('cognoTokenName', tokenName);
+          const datum = parseDatumCbor(foundUtxo.output.plutusData);
+          const moderation = datum.fields[2]
+          // set the friend list, block user and thread list
+          sessionStorage.setItem('friendList', JSON.stringify(moderation.fields[0].list.map((item: BytesField) => item.bytes)));
+          sessionStorage.setItem('blockUserList', JSON.stringify(moderation.fields[1].list.map((item: BytesField) => item.bytes)));
+          sessionStorage.setItem('blockThreadList', JSON.stringify(moderation.fields[2].list.map((item: BytesField) => item.bytes)));
           return foundUtxo;
         } else {
           return null;
@@ -170,7 +183,7 @@ const Forum = () => {
     if (network === networkFlag) {
       // this needs to display some alert
       const alertMsg = networkFlag === 1 ? 'Pre-Production' : 'Mainnet';
-      setNotification(`Network Must Be Set To ${alertMsg}!`);
+      setNotification(`network must be set to ${alertMsg}!`);
       const timer = setTimeout(() => {
         disconnect(); // Automatically disconnect
       }, 2718);

@@ -7,7 +7,7 @@ source ../.env
 # get params
 ${cli} query protocol-parameters ${network} --out-file ../tmp/protocol.json
 
-#
+# user address
 user_address=$(cat ../wallets/user-1-wallet/payment.addr)
 user_pkh=$(${cli} address key-hash --payment-verification-key-file ../wallets/user-1-wallet/payment.vkey)
 
@@ -66,7 +66,7 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${user_address} \033[0m \n";
    exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' ../tmp/user_utxo.json)
 user_tx_in=${TXIN::-8}
 
@@ -99,7 +99,7 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${cogno_script_address} \033[0m \n";
 .   exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" --arg policy_id "$cogno_policy_id" --arg token_name "$cogno_token_name" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 cogno_tx_in=${TXIN::-8}
 
@@ -137,14 +137,13 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${reference_script_address} \033[0m \n";
    exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" --arg policy_id "$genesis_policy_id" --arg token_name "$genesis_tkn" 'to_entries[] | select(.value.value[$policy_id][$token_name] == 1) | .key | . + $alltxin + " --tx-in"' ../tmp/script_utxo.json)
 reference_script_tx_in=${TXIN::-8}
-
 echo Data Reference UTxO: $reference_script_tx_in
 
-thread_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_contract.plutus.signed )
-minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_minter_contract.plutus.signed )
+thread_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_contract.plutus.signed)
+minter_ref_utxo=$(${cli} transaction txid --tx-file ../tmp/utxo-thread_minter_contract.plutus.signed)
 
 # Add metadata to this build function for nfts with data
 echo -e "\033[0;36m Building Tx \033[0m"

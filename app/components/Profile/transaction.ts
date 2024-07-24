@@ -10,9 +10,6 @@ interface CognoData {
   title: string;
   image: string;
   details: string;
-  friendList: string[];
-  restrictedUserList: string[];
-  restrictedThreadList: string[];
 }
 
 export interface BytesField {
@@ -78,7 +75,7 @@ export const handleCognoTransaction = async (network: number | null,
     // console.error('Collateral Not Set');
     return {
       success: false,
-      message: 'Collateral Not Set'
+      message: 'collateral not set'
     };
   }
 
@@ -186,6 +183,12 @@ export const handleCognoTransaction = async (network: number | null,
         "fields": []
       };
       // console.log('Update Redeemer: ', updateRedeemer);
+      const storedFriendList = JSON.parse(sessionStorage.getItem('friendList') || '[]');
+      const storedBlockedUserList = JSON.parse(sessionStorage.getItem('blockUserList') || '[]');
+      const storedBlockedThreadList = JSON.parse(sessionStorage.getItem('blockThreadList') || '[]');
+      // console.log(storedBlockedThreadList);
+
+      
 
       // the cogno datum
       let cognoDatum: Datum = {
@@ -220,13 +223,13 @@ export const handleCognoTransaction = async (network: number | null,
             "constructor": 0,
             "fields": [
               {
-                "list": data.friendList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+                "list": storedFriendList.map((element: string): BytesField => ({"bytes": element}))
               },
               {
-                "list": data.restrictedUserList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+                "list": storedBlockedUserList.map((element: string): BytesField => ({"bytes": element}))
               },
               {
-                "list": data.restrictedThreadList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+                "list": storedBlockedThreadList.map((element: string): BytesField => ({"bytes": element}))
               }
             ]
           }
@@ -300,13 +303,13 @@ export const handleCognoTransaction = async (network: number | null,
           "constructor": 0,
           "fields": [
             {
-              "list": data.friendList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              "list": []
             },
             {
-              "list": data.restrictedUserList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              "list": []
             },
             {
-              "list": data.restrictedThreadList.map((element: string): BytesField => ({"bytes": stringToHex(element)}))
+              "list": []
             }
           ]
         }

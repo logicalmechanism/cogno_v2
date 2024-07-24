@@ -2,6 +2,8 @@
 
 ## pre-alpha-Unreleased
 
+*main is now set up for cicd so staging branch will contain new updates*
+
 ### Added
 
 - **cogno-project**: added changelog and contributing markdown files
@@ -22,13 +24,17 @@
 - **app**: added an Etc category
 - **app**: added default image instead of placeholder
 - **app**: added top threads and my friends thread filter
-- **app**: arweave and ipfs support for blur image
+- **app**: added arweave and ipfs support for blur image
+- **app**: added moderation settings to cogno profile
+- **app**: added mini profile to threads
+- **app**: added ability to add and block users
 
 ### Fixed
 
 - **headless**: fixed the newline error occuring when making comments on threads
 - **app**: fixed the image size for threads both at the preview and modal
 - **app**: fixed text on buttons for the threadlist for dynamic screen sizes
+- **app**: fixed the cogno token not be reset when changing accounts
 
 
 ### Changed
@@ -43,6 +49,8 @@
 - **app**: changed cogno app is now just the forum
 - **app**: changed how the image is displayed if no content is present
 - **app**: changed the thread modal width from 3xl to 5xl
+- **app**: changed the error messages to lowercase
+- **app**: changed the font family to monospaced
 
 ### Removed
 

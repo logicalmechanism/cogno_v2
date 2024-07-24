@@ -41,7 +41,7 @@ if [ "${TXNS}" -eq "0" ]; then
    echo -e "\n \033[0;31m NO UTxOs Found At ${sender_address} \033[0m \n";
    exit;
 fi
-alltxin=""
+
 TXIN=$(jq -r --arg alltxin "" 'keys[] | . + $alltxin + " --tx-in"' tmp/sender_utxo.json)
 sender_tx_in=${TXIN::-8}
 

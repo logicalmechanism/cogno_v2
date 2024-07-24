@@ -36,7 +36,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
 
     maestro.onTxConfirmed(message, async () => {
       refreshThread();
-      setNotification('Transaction Is On-Chain');
+      setNotification('transaction is on-chain');
       // reset all the values
       setIsSubmitting(false);
       setComment('');
