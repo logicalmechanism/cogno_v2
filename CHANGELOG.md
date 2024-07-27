@@ -1,6 +1,18 @@
 # Changelog
 
-## pre-alpha-Unreleased
+## alpha-unreleased
+
+### Added
+
+- **app**: added wire frame folder to hold penpot design wire frames
+
+### Fixed
+
+### Changed
+
+### Removed
+
+## alpha-23-07-24
 
 *main is now set up for cicd so staging branch will contain new updates*
 
@@ -35,7 +47,6 @@
 - **app**: fixed the image size for threads both at the preview and modal
 - **app**: fixed text on buttons for the threadlist for dynamic screen sizes
 - **app**: fixed the cogno token not be reset when changing accounts
-
 
 ### Changed
 
