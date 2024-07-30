@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface BlurImageProps {
   imageUrl: string;
 }
 
+const parseImageUrl = (url: string): string => {
+  if (url.startsWith('ar://')) {
+    return `https://arweave.net/${url.slice(5)}`;
+  } else if (url.startsWith('ipfs://')) {
+    return `https://ipfs.io/ipfs/${url.slice(7)}`;
+  }
+  // Add more URL parsing logic here if needed
+  return url;
+};
+
 const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
   const [isBlurred, setIsBlurred] = useState(true);
   const [loadedImageUrl, setLoadedImageUrl] = useState('/default-420x420.png'); // default placeholder for quicker loading times
+  const [isLoading, setIsLoading] = useState(false); // show a loading text when the image being lazy loaded
 
   useEffect(() => {
-    let finalUrl = imageUrl;
-    // catch the prefixes then do proper parsing
-    if (imageUrl.startsWith('ar://')) {
-      finalUrl = `https://arweave.net/${imageUrl.slice(5)}`;
-    } else if (imageUrl.startsWith('ipfs://')) {
-      finalUrl = `https://ipfs.io/ipfs/${imageUrl.slice(7)}`;
-    } // other image url types can go here
+    setIsLoading(true);
+
+    const finalUrl = parseImageUrl(imageUrl);
 
     if (!isBlurred) {
       // Load the image when unblurring
@@ -26,9 +33,13 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
     }
   }, [isBlurred, imageUrl]);
 
-  const toggleBlur = () => {
-    setIsBlurred(!isBlurred);
+  const handleImageLoad = () => {
+    setIsLoading(false);
   };
+
+  const toggleBlur = useCallback(() => {
+    setIsBlurred(prev => !prev);
+  }, []);
 
   return (
     <div className="relative max-w-full max-h-full overflow-hidden">
@@ -37,10 +48,25 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
         alt="Invalid Image"
         className={`transition duration-500 max-w-full max-h-full object-cover ${isBlurred ? 'blur-2xl' : 'blur-none'}`}
         onClick={toggleBlur}
+        onLoad={handleImageLoad}
         loading='lazy'
       />
-      {isBlurred && (
-        <div className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text cursor-pointer" onClick={toggleBlur}>
+
+      {/* If the image is loading then show the loading text */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text">
+          Loading...
+        </div>
+      )}
+
+      {/* if blurred and not loading then show the click to unblur text */}
+      {isBlurred && !isLoading && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text cursor-pointer" 
+          onClick={toggleBlur}
+          role="button"
+          aria-label="Click to unblur the image"
+        >
           Click To Unblur
         </div>
       )}

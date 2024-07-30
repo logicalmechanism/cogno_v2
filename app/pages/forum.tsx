@@ -182,15 +182,9 @@ const Forum = () => {
     const networkFlag = parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!);
     if (network === networkFlag) {
       // this needs to display some alert
-      const alertMsg = networkFlag === 1 ? 'Pre-Production' : 'Mainnet';
-      setNotification(`network must be set to ${alertMsg}!`);
-      const timer = setTimeout(() => {
-        disconnect(); // Automatically disconnect
-      }, 2718);
-
-      return () => {
-        clearTimeout(timer); // Cleanup the timeout if the component unmounts early
-      }
+      const alertMsg = networkFlag === 1 ? 'pre-production' : 'mainnet';
+      setNotification(`network must be set to ${alertMsg}`);
+      disconnect(); // Automatically disconnect
     }
   }, [network, disconnect]);
 
