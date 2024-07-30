@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CardanoWallet } from '../components/CardanoWallet';
 import { Profile } from '../components/Profile';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
@@ -18,6 +18,18 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const toggleProfileModal = useCallback(() => setProfileModalOpen(prev => !prev), []);
 
+  useEffect(() => {
+    if (isProfileModalOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup function to remove the class if the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isProfileModalOpen]);
 
   return (
     <nav className="light-bg py-1 w-full">

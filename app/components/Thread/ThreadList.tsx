@@ -18,9 +18,22 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
-  const itemsPerPage = 25; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const maxPageButtons = 3; // Maximum number of page buttons to show at a time
   const cognoTokenName = sessionStorage.getItem('cognoTokenName');
+
+  useEffect(() => {
+    if (selectedThread) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup function to remove the class if the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [selectedThread]);
   
 
   useEffect(() => {
