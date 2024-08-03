@@ -13,12 +13,15 @@
 - **app**: fixed the background scrolling issue for open modals
 - **app**: fixed blurred images not being centered and jumping in size
 - **cogno-project**: fixed cogno.forum readme link
+- **app**: fixed blurred images auto going into loading.. when refreshing the forum
 
 ### Changed
 
 - **app**: changed medium-text to dark-text
 - **app**: changed the blues around in the colors
 - **app**: changed the roundedness of the wallet connect button
+- **app**: changed inputs to disable grammerly automatically
+- **app**: changed help text to be always on the right hand side of the help icon
 
 ### Removed
 
