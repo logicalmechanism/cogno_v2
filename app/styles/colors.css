@@ -7,19 +7,19 @@
 /* blue stuff */
 
 .blue-bg {
-    @apply bg-blue-200;
+    @apply bg-sky-200;
 }
 
 .blue-bg-hover {
-    @apply hover:bg-sky-400;
+    @apply hover:bg-blue-400;
 }
 
 .blue-text {
-    @apply text-blue-200;
+    @apply text-sky-200;
 }
 
 .blue-text-hover {
-    @apply hover:text-sky-400;
+    @apply hover:text-blue-400;
 }
 
 /* red stuff */
@@ -44,7 +44,7 @@
 }
 
 .green-bg-hover {
-    @apply hover:bg-teal-400;
+    @apply hover:bg-emerald-400;
 }
 
 /* gray stuff */
@@ -54,29 +54,21 @@
 }
 
 .dark-bg {
-    @apply bg-gray-800;
+    @apply bg-gray-900;
 }
 
 .light-text {
-    @apply text-gray-200;
-}
-
-.medium-text {
-    @apply text-gray-500;
+    @apply text-gray-100;
 }
 
 .dark-text {
-    @apply text-gray-800;
+    @apply text-gray-900;
 }
 
 .light-border {
-    @apply border-gray-200;
-}
-
-.medium-border {
-    @apply border-gray-500;
+    @apply border-gray-100;
 }
 
 .dark-border {
-    @apply border-gray-800;
+    @apply border-gray-900;
 }

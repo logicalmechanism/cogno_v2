@@ -41,7 +41,7 @@ export const CardanoWallet: React.FC<CardanoWalletProps> = ({
     />
   </button>
   <div
-    className={`absolute text-center w-60 ${bgClass} ${hideMenuList ? 'hidden' : ''}`}
+    className={`absolute rounded text-center w-60 ${bgClass} ${hideMenuList ? 'hidden' : ''}`}
   >
     {!connected && wallets.length > 0 ? (
       <>

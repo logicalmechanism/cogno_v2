@@ -15,6 +15,8 @@
 ### Changed
 
 - **app**: changed medium-text to dark-text
+- **app**: changed the blues around in the colors
+- **app**: changed the roundedness of the wallet connect button
 
 ### Removed
 
