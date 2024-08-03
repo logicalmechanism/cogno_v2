@@ -122,7 +122,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
           <label className="block dark-text text-sm font-bold mb-2" htmlFor="image">Image URL</label>
           <input
             id="image"
-            type="text"
+            type="url"
             value={image}
             onChange={(e) => setImage(e.target.value)}
             className="appearance-none border rounded w-full py-2 px-3 dark-text"
