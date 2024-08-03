@@ -10,8 +10,11 @@
 
 - **app**: fixed the background scrolling issue for open modals
 - **app**: fixed blurred images not being centered and jumping in size
+- **cogno-project**: fixed cogno.forum readme link
 
 ### Changed
+
+- **app**: changed medium-text to dark-text
 
 ### Removed
 

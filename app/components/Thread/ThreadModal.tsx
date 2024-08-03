@@ -197,7 +197,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
                     </div>
                     {threadOwnerImage !== '' && (
                       <div className='ml-4 max-w-32 flex justify-center items-center max-h-32'>
-                        <BlurImage imageUrl={threadOwnerImage} />
+                        <BlurImage imageUrl={threadOwnerImage} width={128} height={128}/>
                       </div>
                     )}
                   </div>

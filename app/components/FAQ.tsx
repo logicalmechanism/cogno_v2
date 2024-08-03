@@ -133,7 +133,7 @@ const FAQ: React.FC = () => {
           </div>
           {activeIndex === index && (
             <div id={`faq-content-${index}`} className="light-bg py-2 px-4 w-full">
-              <p className="dark-text break-words w-full text-lg">{faq.answer}</p>
+              <p className="dark-text font-semibold break-words w-full text-lg">{faq.answer}</p>
             </div>
           )}
         </div>

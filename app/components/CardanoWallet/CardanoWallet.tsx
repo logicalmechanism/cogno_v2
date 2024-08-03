@@ -11,7 +11,7 @@ interface CardanoWalletProps {
 }
 
 export const CardanoWallet: React.FC<CardanoWalletProps> = ({
-  label = 'Connect',
+  label = 'Connect Wallet',
   onConnected,
 }) => {
   const wallets = useWalletList();

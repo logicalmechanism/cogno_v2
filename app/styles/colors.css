@@ -50,7 +50,7 @@
 /* gray stuff */
 
 .light-bg {
-    @apply bg-gray-200;
+    @apply bg-gray-100;
 }
 
 .dark-bg {

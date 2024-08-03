@@ -47,7 +47,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
               >
                 Profile
               </button>
-              <div className='medium-text font-bold py-2 px-4 mx-2 h-8 hidden md:block'>
+              <div className='dark-text font-bold py-2 px-4 mx-2 h-8 hidden md:block'>
                 <p>{cogno ? 'Cogno Found' : 'Cogno Not Found'}</p>
               </div>
             </>
