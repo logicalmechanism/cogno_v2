@@ -108,7 +108,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Category
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -122,21 +122,21 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded w-full dark-text"
+          className="border p-2 rounded w-full dark-text light-bg"
           required
           disabled={isSubmitting}
         >
-          <option value="General">General</option>
-          <option value="Blockchain">Blockchain</option>
-          <option value="News">News</option>
-          <option value="Sports">Sports</option>
-          <option value="Technology">Technology</option>
-          <option value="Finance">Finance</option>
-          <option value="Video Games">Video Games</option>
-          <option value="Music">Music</option>
-          <option value="Random">Random</option>
-          <option value="Adult">Adult</option>
-          <option value="Etc">Etc</option>
+          <option className="light-bg blue-bg-hover" value="General">General</option>
+          <option className="light-bg blue-bg-hover" value="Blockchain">Blockchain</option>
+          <option className="light-bg blue-bg-hover" value="News">News</option>
+          <option className="light-bg blue-bg-hover" value="Sports">Sports</option>
+          <option className="light-bg blue-bg-hover" value="Technology">Technology</option>
+          <option className="light-bg blue-bg-hover" value="Finance">Finance</option>
+          <option className="light-bg blue-bg-hover" value="Video Games">Video Games</option>
+          <option className="light-bg blue-bg-hover" value="Music">Music</option>
+          <option className="light-bg blue-bg-hover" value="Random">Random</option>
+          <option className="light-bg blue-bg-hover" value="Adult">Adult</option>
+          <option className="light-bg blue-bg-hover" value="Etc">Etc</option>
         </select>
       </div>
       <div className="m-2">
@@ -144,7 +144,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Image URL (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -177,7 +177,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Permanent (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >

@@ -181,16 +181,16 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
         <button onClick={() => {console.log("Clicked Top Threads")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">Top Threads</button>
         <button onClick={() => {console.log("Clicked My Friends")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">My Friends</button>
         <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="blue-bg blue-bg-hover dark-text border py-1 rounded w-2/12 text-center">
-          <option value="General">General</option>
-          <option value="Blockchain">Blockchain</option>
-          <option value="News">News</option>
-          <option value="Sports">Sports</option>
-          <option value="Technology">Technology</option>
-          <option value="Finance">Finance</option>
-          <option value="Video Games">Video Games</option>
-          <option value="Music">Music</option>
-          <option value="Random">Random</option>
-          <option value="Adult">Adult</option>
+          <option className="light-bg blue-bg-hover" value="General">General</option>
+          <option className="light-bg blue-bg-hover" value="Blockchain">Blockchain</option>
+          <option className="light-bg blue-bg-hover" value="News">News</option>
+          <option className="light-bg blue-bg-hover" value="Sports">Sports</option>
+          <option className="light-bg blue-bg-hover" value="Technology">Technology</option>
+          <option className="light-bg blue-bg-hover" value="Finance">Finance</option>
+          <option className="light-bg blue-bg-hover" value="Video Games">Video Games</option>
+          <option className="light-bg blue-bg-hover" value="Music">Music</option>
+          <option className="light-bg blue-bg-hover" value="Random">Random</option>
+          <option className="light-bg blue-bg-hover" value="Adult">Adult</option>
         </select>
         <div className="w-1/12"></div> {/* Empty spacer */}
       </div>
@@ -235,7 +235,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
               </div>
                 {cognoTokenName !== threadOwner && (
                   <button
-                    className="ml-auto red-bg light-text py-1 px-2 mr-4 rounded red-bg-hover"
+                    className="ml-auto red-bg dark-text py-1 px-2 mr-4 rounded red-bg-hover"
                     onClick={() => { handleBlockThreadClick(thread)}}
                   >
                     Block
