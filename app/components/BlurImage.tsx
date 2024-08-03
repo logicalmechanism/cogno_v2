@@ -21,14 +21,13 @@ const parseImageUrl = (url: string): string => {
 const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 420 }) => {
   const [isBlurred, setIsBlurred] = useState(true);
   const [loadedImageUrl, setLoadedImageUrl] = useState('/default-420x420.png'); // default placeholder for quicker loading times
-  const [isLoading, setIsLoading] = useState(false); // show a loading text when the image being lazy loaded
+  const [isLoadingImage, setisLoadingImage] = useState(false); // show a loading text when the image being lazy loaded
+
 
   useEffect(() => {
-    setIsLoading(true);
-
     const finalUrl = parseImageUrl(imageUrl);
-
     if (!isBlurred) {
+      setisLoadingImage(true);
       // Load the image when unblurring
       setLoadedImageUrl(finalUrl);
     } else {
@@ -38,11 +37,11 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 4
   }, [isBlurred, imageUrl]);
 
   const handleImageLoad = () => {
-    setIsLoading(false);
+    setisLoadingImage(false);
   };
 
   const handleImageError = () => {
-    setIsLoading(false);
+    setisLoadingImage(false);
     setLoadedImageUrl('/error-420x420.png');
   };
 
@@ -68,14 +67,14 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 4
       </div>
 
       {/* If the image is loading then show the loading text */}
-      {isLoading && (
+      {isLoadingImage && (
         <div className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text">
           Loading...
         </div>
       )}
 
       {/* if blurred and not loading then show the click to unblur text */}
-      {isBlurred && !isLoading && (
+      {isBlurred && !isLoadingImage && (
         <div 
           className="absolute inset-0 flex items-center justify-center dark-bg bg-opacity-50 light-text cursor-pointer" 
           onClick={toggleBlur}

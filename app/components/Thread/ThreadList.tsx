@@ -173,6 +173,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
           onChange={handleSearchInputChange}
           className="border rounded dark-text py-2 ml-1 text-center w-4/12"
           autoComplete="off"
+          data-gramm="false"
         />
         <div className="w-1/12"></div> {/* Empty spacer */}
       </div>

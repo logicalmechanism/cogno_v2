@@ -116,6 +116,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             autoComplete="off"
             maxLength={300}
             required
+            data-gramm="false"
           />
         </div>
         <div className="mb-2">
@@ -129,6 +130,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={2048}
+            data-gramm="false"
           />
           {cogno && image !== '' &&
             (
@@ -148,6 +150,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={40000}
+            data-gramm="false"
           />
         </div>
         <div className="flex flex-col items-center justify-between">

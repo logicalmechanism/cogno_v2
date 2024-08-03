@@ -90,6 +90,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={300}
           disabled={isSubmitting}
+          data-gramm="false"
         />
       </div>
       <div className="m-2">
@@ -101,6 +102,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={40000}
           disabled={isSubmitting}
+          data-gramm="false"
         ></textarea>
       </div>
       <div className="m-2">
@@ -114,7 +116,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
               Categories help users filter threads.
             </div>
           </span>
@@ -150,8 +152,8 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
-              A image to be attached to the content of a thread.
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
+              The image attached to the content of a thread.
             </div>
           </span>
         </label>
@@ -163,6 +165,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={2000}
           disabled={isSubmitting}
+          data-gramm="false"
         />
       </div>
       <div className="m-2 flex items-center">
@@ -183,8 +186,8 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
-              Permanent threads can not be deleted and will be locked forever.
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
+              Permanent threads cannot be deleted and will be locked forever.
             </div>
           </span>
         </label>
