@@ -8,6 +8,9 @@
 
 ### Fixed
 
+- **app**: fixed the background scrolling issue for open modals
+- **app**: fixed blurred images not being centered and jumping in size
+
 ### Changed
 
 ### Removed
