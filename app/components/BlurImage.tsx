@@ -2,9 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 interface BlurImageProps {
   imageUrl: string;
+  // the width and height of the image
+  width?: number;
+  height?: number;
 }
 
 const parseImageUrl = (url: string): string => {
+  // Support for Arweave and IPFS for now
   if (url.startsWith('ar://')) {
     return `https://arweave.net/${url.slice(5)}`;
   } else if (url.startsWith('ipfs://')) {
@@ -14,7 +18,7 @@ const parseImageUrl = (url: string): string => {
   return url;
 };
 
-const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
+const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 420 }) => {
   const [isBlurred, setIsBlurred] = useState(true);
   const [loadedImageUrl, setLoadedImageUrl] = useState('/default-420x420.png'); // default placeholder for quicker loading times
   const [isLoading, setIsLoading] = useState(false); // show a loading text when the image being lazy loaded
@@ -42,15 +46,20 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl }) => {
   }, []);
 
   return (
-    <div className="relative max-w-full max-h-full overflow-hidden">
-      <img
-        src={loadedImageUrl}
-        alt="Invalid Image"
-        className={`transition duration-500 max-w-full max-h-full object-cover ${isBlurred ? 'blur-2xl' : 'blur-none'}`}
-        onClick={toggleBlur}
-        onLoad={handleImageLoad}
-        loading='lazy'
-      />
+    <div 
+      className="relative overflow-hidden"
+      style={{ width: `${width}px`, height: `${height}px` }}
+    >
+      <div className="relative w-full h-full flex items-center justify-center">
+        <img
+          src={loadedImageUrl}
+          alt="Invalid Image"
+          className={`transition duration-500 max-w-full max-h-full object-contain ${isBlurred ? 'blur-2xl' : 'blur-none'}`}
+          onClick={toggleBlur}
+          onLoad={handleImageLoad}
+          loading='lazy'
+        />
+      </div>
 
       {/* If the image is loading then show the loading text */}
       {isLoading && (
