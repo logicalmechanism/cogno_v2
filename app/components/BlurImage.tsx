@@ -41,6 +41,11 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 4
     setIsLoading(false);
   };
 
+  const handleImageError = () => {
+    setIsLoading(false);
+    setLoadedImageUrl('/error-420x420.png');
+  };
+
   const toggleBlur = useCallback(() => {
     setIsBlurred(prev => !prev);
   }, []);
@@ -57,6 +62,7 @@ const BlurImage: React.FC<BlurImageProps> = ({ imageUrl, width = 420, height = 4
           className={`transition duration-500 max-w-full max-h-full object-contain ${isBlurred ? 'blur-2xl' : 'blur-none'}`}
           onClick={toggleBlur}
           onLoad={handleImageLoad}
+          onError={handleImageError}
           loading='lazy'
         />
       </div>

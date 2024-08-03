@@ -5,6 +5,8 @@
 ### Added
 
 - **app**: added wire frame folder to hold penpot design wire frames
+- **app**: added default image gimp file
+- **app**: added error image for images that do not load properly
 
 ### Fixed
 
@@ -19,6 +21,8 @@
 - **app**: changed the roundedness of the wallet connect button
 
 ### Removed
+
+- **app**: removed medium colors
 
 ## alpha-23-07-24
 
