@@ -4,7 +4,7 @@ import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
 import { hexToString } from '../utilities';
-import { BytesField } from './transaction';
+import { handleFilterAll } from './filters';
 
 interface ThreadListProps {
   network: number | null;
@@ -46,12 +46,6 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
     // is this needed?
     setCurrentPage(1);
   }, [threads]);
-
-  const handleFilterAll = () => {
-    setFilteredThreads(threads);
-    setCurrentPage(1);
-    setSearchInput('');
-  };
 
   const handleFilterMyThreads = () => {
     const filtered = threads.filter(thread => {
@@ -163,7 +157,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
         <div className="w-1/12"></div> {/* Empty spacer */}
-        <button onClick={handleFilterAll} className="blue-bg blue-bg-hover dark-text py-2 mr-1 rounded w-2/12 font-bold">All Threads</button>
+        <button onClick={() => handleFilterAll(threads, setFilteredThreads, setCurrentPage, setSearchInput)} className="blue-bg blue-bg-hover dark-text py-2 mr-1 rounded w-2/12 font-bold">All Threads</button>
         <button onClick={handleFilterMyThreads} className="blue-bg blue-bg-hover dark-text py-2 rounded w-2/12 font-bold">My Threads</button>
         <div className="w-2/12"></div> {/* Empty spacer */}
         <input
