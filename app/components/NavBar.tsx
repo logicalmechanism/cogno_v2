@@ -10,11 +10,12 @@ interface NavBarProps {
   network: number | null;
   wallet: BrowserWallet;
   refreshCogno: () => void; // Function to update cogno
+  refreshCognoAndThreads: () => void; // function to update everything
 }
 
 const networkFlag: number = parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG || '-1')
 
-const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refreshCogno }) => {
+const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refreshCogno, refreshCognoAndThreads }) => {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const toggleProfileModal = useCallback(() => setProfileModalOpen(prev => !prev), []);
 
@@ -54,6 +55,19 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
           )}
         </div>
 
+        <div className="flex-grow"></div>
+        <div className="w-auto">
+        {connected && network !== networkFlag && (
+          <button
+            className="px-5 py-2 green-bg dark-text text-base font-medium rounded green-bg-hover"
+            type="button"
+            onClick={refreshCognoAndThreads}
+          >
+            Refresh Cogno
+          </button>
+        )}
+
+        </div>
         <div className="flex-grow"></div>
 
         {/* Links */}
