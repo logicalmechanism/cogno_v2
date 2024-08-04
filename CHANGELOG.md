@@ -22,6 +22,7 @@
 - **app**: changed the roundedness of the wallet connect button
 - **app**: changed inputs to disable grammerly automatically
 - **app**: changed help text to be always on the right hand side of the help icon
+- **app**: changed refresh cogno button location to the navbar, refresh cogno -> refresh
 
 ### Removed
 

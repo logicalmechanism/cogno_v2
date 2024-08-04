@@ -59,11 +59,11 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
         <div className="w-auto">
         {connected && network !== networkFlag && (
           <button
-            className="px-5 py-2 green-bg dark-text text-base font-medium rounded green-bg-hover"
+            className="px-5 py-2 green-bg dark-text text-base font-bold rounded green-bg-hover"
             type="button"
             onClick={refreshCognoAndThreads}
           >
-            Refresh Cogno
+            Refresh
           </button>
         )}
 
