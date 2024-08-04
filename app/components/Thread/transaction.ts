@@ -432,7 +432,7 @@ export const handleCommentCreation = async (
   const changeAddress = sessionStorage.getItem('changeAddress');
   // console.log('Change Address: ', changeAddress);
 
-  const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
+  // const walletKeyHashes = JSON.parse(sessionStorage.getItem('walletKeyHashes')!);
   // console.log('Wallet Key Hashes:', walletKeyHashes);
 
   // if the collateral is not set then we need to inform the user

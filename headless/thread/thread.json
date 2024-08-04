@@ -1,6 +1,6 @@
 {
-  "title": "Test Thread Don't Comment",
-  "content": "This is a test string inside the test thread.",
-  "image": "https://i.imgur.com/JOKsNeT.jpeg",
+  "title": "Headless Thread Test",
+  "content": "This thread is created with the headless application.",
+  "image": "https://i.imgur.com/KbiDjfw.jpeg",
   "category": "General"
 }
