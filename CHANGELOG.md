@@ -1,6 +1,47 @@
 # Changelog
 
-## pre-alpha-Unreleased
+## alpha-unreleased
+
+### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+## alpha-06-08-24
+
+### Added
+
+- **app**: added wire frame folder to hold penpot design wire frames
+- **app**: added default image gimp file
+- **app**: added error image for images that do not load properly
+- **app**: added filter.ts file to hold all the thread filters
+- **app**: added my friends and top threads filters
+
+### Fixed
+
+- **app**: fixed the background scrolling issue for open modals
+- **app**: fixed blurred images not being centered and jumping in size
+- **cogno-project**: fixed cogno.forum readme link
+- **app**: fixed blurred images auto going into loading.. when refreshing the forum
+
+### Changed
+
+- **app**: changed medium-text to dark-text
+- **app**: changed the blues around in the colors
+- **app**: changed the roundedness of the wallet connect button
+- **app**: changed inputs to disable grammerly automatically
+- **app**: changed help text to be always on the right hand side of the help icon
+- **app**: changed refresh cogno button location to the navbar, refresh cogno -> refresh
+- **app**: changed what is being searched inside the thread list
+
+### Removed
+
+- **app**: removed medium colors
+
+## alpha-23-07-24
 
 *main is now set up for cicd so staging branch will contain new updates*
 
@@ -35,7 +76,6 @@
 - **app**: fixed the image size for threads both at the preview and modal
 - **app**: fixed text on buttons for the threadlist for dynamic screen sizes
 - **app**: fixed the cogno token not be reset when changing accounts
-
 
 ### Changed
 

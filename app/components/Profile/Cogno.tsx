@@ -116,19 +116,21 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             autoComplete="off"
             maxLength={300}
             required
+            data-gramm="false"
           />
         </div>
         <div className="mb-2">
           <label className="block dark-text text-sm font-bold mb-2" htmlFor="image">Image URL</label>
           <input
             id="image"
-            type="text"
+            type="url"
             value={image}
             onChange={(e) => setImage(e.target.value)}
             className="appearance-none border rounded w-full py-2 px-3 dark-text"
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={2048}
+            data-gramm="false"
           />
           {cogno && image !== '' &&
             (
@@ -148,6 +150,7 @@ const Cogno: React.FC<CognoProps> = ({ network, wallet, cogno, refreshCogno, onC
             disabled={(!editMode && cogno !== null) || isSubmitting}
             autoComplete="off"
             maxLength={40000}
+            data-gramm="false"
           />
         </div>
         <div className="flex flex-col items-center justify-between">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const FAQ: React.FC = () => {
   const faqs = [
@@ -94,25 +94,28 @@ const FAQ: React.FC = () => {
     },
   ];
 
-
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const toggleActiveIndex = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
+  const toggleActiveIndex = useCallback((index: number) => {
+    setActiveIndex(prevIndex => (prevIndex === index ? null : index));
+  }, []);
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="mx-auto w-full">
+    <section className="mx-auto w-full">
       <h1 className='text-3xl text-center my-2 font-extrabold light-text'>FAQ</h1>
+
+      {/* loop all the faq and display them */}
       {faqs.map((faq, index) => (
         <div key={index} className="mb-4 w-full">
           <div
             className="flex justify-between items-center p-4 cursor-pointer w-full"
             onClick={() => toggleActiveIndex(index)}
+            aria-expanded={activeIndex === index}
+            aria-controls={`faq-content-${index}`}
           >
             <p className="text-xl font-extrabold light-text">{faq.question}</p>
             <svg
@@ -129,8 +132,8 @@ const FAQ: React.FC = () => {
             </svg>
           </div>
           {activeIndex === index && (
-            <div className="light-bg py-2 px-4 w-full">
-              <p className="dark-text break-words w-full text-lg">{faq.answer}</p>
+            <div id={`faq-content-${index}`} className="light-bg py-2 px-4 w-full">
+              <p className="dark-text font-semibold break-words w-full text-lg">{faq.answer}</p>
             </div>
           )}
         </div>
@@ -141,7 +144,7 @@ const FAQ: React.FC = () => {
       >
         Back to Top
       </button>
-    </div>
+    </section>
   );
 };
 

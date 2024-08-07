@@ -90,6 +90,7 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
               autoComplete="off"
               maxLength={1000}
               disabled={isSubmitting}
+              data-gramm="false"
             ></textarea>
           </div>
           <button

@@ -90,6 +90,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={300}
           disabled={isSubmitting}
+          data-gramm="false"
         />
       </div>
       <div className="m-2">
@@ -101,6 +102,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={40000}
           disabled={isSubmitting}
+          data-gramm="false"
         ></textarea>
       </div>
       <div className="m-2">
@@ -108,13 +110,13 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Category
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
               Categories help users filter threads.
             </div>
           </span>
@@ -122,21 +124,21 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded w-full dark-text"
+          className="border p-2 rounded w-full dark-text light-bg"
           required
           disabled={isSubmitting}
         >
-          <option value="General">General</option>
-          <option value="Blockchain">Blockchain</option>
-          <option value="News">News</option>
-          <option value="Sports">Sports</option>
-          <option value="Technology">Technology</option>
-          <option value="Finance">Finance</option>
-          <option value="Video Games">Video Games</option>
-          <option value="Music">Music</option>
-          <option value="Random">Random</option>
-          <option value="Adult">Adult</option>
-          <option value="Etc">Etc</option>
+          <option className="light-bg blue-bg-hover" value="General">General</option>
+          <option className="light-bg blue-bg-hover" value="Blockchain">Blockchain</option>
+          <option className="light-bg blue-bg-hover" value="News">News</option>
+          <option className="light-bg blue-bg-hover" value="Sports">Sports</option>
+          <option className="light-bg blue-bg-hover" value="Technology">Technology</option>
+          <option className="light-bg blue-bg-hover" value="Finance">Finance</option>
+          <option className="light-bg blue-bg-hover" value="Video Games">Video Games</option>
+          <option className="light-bg blue-bg-hover" value="Music">Music</option>
+          <option className="light-bg blue-bg-hover" value="Random">Random</option>
+          <option className="light-bg blue-bg-hover" value="Adult">Adult</option>
+          <option className="light-bg blue-bg-hover" value="Etc">Etc</option>
         </select>
       </div>
       <div className="m-2">
@@ -144,14 +146,14 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Image URL (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
-              A image to be attached to the content of a thread.
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
+              The image attached to the content of a thread.
             </div>
           </span>
         </label>
@@ -163,6 +165,7 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           autoComplete="off"
           maxLength={2000}
           disabled={isSubmitting}
+          data-gramm="false"
         />
       </div>
       <div className="m-2 flex items-center">
@@ -177,14 +180,14 @@ export const ThreadForm: React.FC<ThreadFormProps> = ({ network, wallet, refresh
           Permanent (optional)
           <span className="relative group">
             <svg
-              className="w-4 h-4 inline-block ml-2 medium-text cursor-pointer"
+              className="w-4 h-4 inline-block ml-2 dark-text cursor-pointer"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.93 12.36h-1.85v-1.85h1.85v1.85zm0-4.71h-1.85v-4.71h1.85v4.71z" />
             </svg>
-            <div className="absolute bottom-0 left-0 transform translate-y-full light-bg dark-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-max">
-              Permanent threads can not be deleted and will be locked forever.
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 dark-bg light-text text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 w-max">
+              Permanent threads cannot be deleted and will be locked forever.
             </div>
           </span>
         </label>

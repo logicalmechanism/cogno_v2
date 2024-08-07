@@ -24,7 +24,7 @@ const Forum = () => {
   const [notification, setNotification] = useState<string>('');
   const [cogno, setCogno] = useState<null | UTxO>(null);
   const [threads, setThreads] = useState<UTxO[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingData, setisLoadingData] = useState(false);
 
   // Function to clear notification
   const clearNotification = () => setNotification('');
@@ -120,7 +120,7 @@ const Forum = () => {
 
   const getNetworkId = useCallback(async () => {
     if (wallet) {
-      setIsLoading(true);
+      setisLoadingData(true);
       // get the network and change address from the connected wallet
       const _network = await wallet.getNetworkId();
       const changeAddress = await wallet.getChangeAddress();
@@ -128,18 +128,18 @@ const Forum = () => {
       sessionStorage.setItem('changeAddress', changeAddress);
       sessionStorage.setItem('walletKeyHashes', JSON.stringify(serializeBech32Address(changeAddress)));
       setNetwork(_network);
-      setIsLoading(false);
+      setisLoadingData(false);
     }
   }, [wallet]);
 
   const refreshCognoAndThreads = async () => {
     // allows the threads and cognos to manually be updated
-    setIsLoading(true);
+    setisLoadingData(true);
     const _cogno = await findCogno();
     setCogno(_cogno);
     const _threads = await findThreads();
     setThreads(_threads);
-    setIsLoading(false);
+    setisLoadingData(false);
   };
 
   const refreshCogno = async () => {
@@ -182,39 +182,24 @@ const Forum = () => {
     const networkFlag = parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!);
     if (network === networkFlag) {
       // this needs to display some alert
-      const alertMsg = networkFlag === 1 ? 'Pre-Production' : 'Mainnet';
-      setNotification(`network must be set to ${alertMsg}!`);
-      const timer = setTimeout(() => {
-        disconnect(); // Automatically disconnect
-      }, 2718);
-
-      return () => {
-        clearTimeout(timer); // Cleanup the timeout if the component unmounts early
-      }
+      const alertMsg = networkFlag === 1 ? 'pre-production' : 'mainnet';
+      setNotification(`network must be set to ${alertMsg}`);
+      disconnect(); // Automatically disconnect
     }
   }, [network, disconnect]);
 
   return (
     <div className="flex flex-col lg:w-full min-w-max">
-      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} />
+      <NavBar cogno={cogno} connected={connected} network={network} wallet={wallet} refreshCogno={refreshCogno} refreshCognoAndThreads={refreshCognoAndThreads}/>
       {connected ? (
         network !== parseInt(process.env.NEXT_PUBLIC_NETWORK_FLAG!) ? (
           <div>
-            {isLoading ? (
+            {isLoadingData ? (
               <div className="flex items-center justify-center h-screen">
                 <p className="text-lg font-semibold light-text">Loading Cogno and Thread Data...</p>
               </div>
             ) : (
               <div className="flex flex-col w-full items-center justify-center">
-                <div className="w-auto">
-                  <button
-                    className="px-4 py-2 my-2 green-bg dark-text text-base font-medium rounded green-bg-hover"
-                    type="button"
-                    onClick={refreshCognoAndThreads}
-                  >
-                    Refresh Cogno
-                  </button>
-                </div>
                 <Threads threads={threads} network={network} wallet={wallet} refreshThreads={refreshThreads} />
               </div>)
             }

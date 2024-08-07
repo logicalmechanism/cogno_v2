@@ -4,7 +4,7 @@ import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { ThreadModal } from './ThreadModal';
 import BlurImage from '../BlurImage';
 import { hexToString } from '../utilities';
-import { BytesField } from './transaction';
+import { createFilterFunctions } from './filters';
 
 interface ThreadListProps {
   network: number | null;
@@ -18,9 +18,34 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
   const [selectedThread, setSelectedThread] = useState<UTxO | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
-  const itemsPerPage = 25; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const maxPageButtons = 3; // Maximum number of page buttons to show at a time
   const cognoTokenName = sessionStorage.getItem('cognoTokenName');
+
+  // destruc the filter functions
+  const { handleFilterMyThreads, 
+          handleFilterByCategory, 
+          handleFilterMyFriends, 
+          handleFilterTopThreads,
+          handleFilterBySearch
+  } = createFilterFunctions(
+    setFilteredThreads,
+    setCurrentPage,
+    setSearchInput,
+    threads
+  );
+
+  useEffect(() => {
+    if (selectedThread) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    // Cleanup function to remove the class if the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [selectedThread]);
   
 
   useEffect(() => {
@@ -30,35 +55,9 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
       return thread.output.amount.find((asset: Asset) => asset.unit.includes(threadTokenName!));
     });
     setSelectedThread(updatedThread!);
-    // is this needed?
     setCurrentPage(1);
   }, [threads]);
 
-  const handleFilterAll = () => {
-    setFilteredThreads(threads);
-    setCurrentPage(1);
-    setSearchInput('');
-  };
-
-  const handleFilterMyThreads = () => {
-    const filtered = threads.filter(thread => {
-      const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-      return parsedDatum.fields[5].bytes === cognoTokenName;
-    });
-    setFilteredThreads(filtered);
-    setCurrentPage(1);
-    setSearchInput('');
-  };
-
-  const handleFilterByCategory = (category: string) => {
-    const filtered = threads.filter(thread => {
-      const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-      return hexToString(parsedDatum.fields[3].bytes) === category;
-    });
-    setFilteredThreads(filtered);
-    setCurrentPage(1);
-    setSearchInput('');
-  };
 
   const handleThreadClick = (thread: UTxO) => {
     const threadTokenName = thread.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, '');
@@ -102,30 +101,6 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
     setCurrentPage(totalPages);
   };
 
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchInput(value);
-
-    if (value.trim() === '') {
-      setFilteredThreads(threads);
-      setCurrentPage(1);
-      return;
-    }
-
-    const filtered = threads.filter(thread => {
-      const parsedDatum = parseDatumCbor(thread.output.plutusData!);
-      const field0 = hexToString(parsedDatum.fields[0].bytes).toLowerCase();
-      const field1 = hexToString(parsedDatum.fields[1].bytes).toLowerCase();
-      const field5 = parsedDatum.fields[5].bytes.toLowerCase();
-      const searchValue = value.toLowerCase();
-
-      return field0.includes(searchValue) || field1.includes(searchValue) || field5.includes(searchValue);
-    });
-
-    setFilteredThreads(filtered);
-    setCurrentPage(1);
-  };
-
   // Calculate the indices for slicing the filtered threads
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -150,35 +125,42 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
       {/* Filter Buttons */}
       <div className="flex justify-start my-1">
         <div className="w-1/12"></div> {/* Empty spacer */}
-        <button onClick={handleFilterAll} className="blue-bg blue-bg-hover dark-text py-2 mr-1 rounded w-2/12 font-bold">All Threads</button>
+        <select
+          onClick={(e) => {
+            const target = e.target as HTMLSelectElement;
+            handleFilterByCategory(target.value)
+          }}
+          className="blue-bg blue-bg-hover dark-text border py-2 mr-1 rounded w-2/12 text-center font-bold"
+        >
+          <option className="light-bg blue-bg-hover" value="All">All</option>
+          <option className="light-bg blue-bg-hover" value="General">General</option>
+          <option className="light-bg blue-bg-hover" value="Blockchain">Blockchain</option>
+          <option className="light-bg blue-bg-hover" value="News">News</option>
+          <option className="light-bg blue-bg-hover" value="Sports">Sports</option>
+          <option className="light-bg blue-bg-hover" value="Technology">Technology</option>
+          <option className="light-bg blue-bg-hover" value="Finance">Finance</option>
+          <option className="light-bg blue-bg-hover" value="Video Games">Video Games</option>
+          <option className="light-bg blue-bg-hover" value="Music">Music</option>
+          <option className="light-bg blue-bg-hover" value="Random">Random</option>
+          <option className="light-bg blue-bg-hover" value="Adult">Adult</option>
+        </select>
         <button onClick={handleFilterMyThreads} className="blue-bg blue-bg-hover dark-text py-2 rounded w-2/12 font-bold">My Threads</button>
         <div className="w-2/12"></div> {/* Empty spacer */}
         <input
           placeholder='Search'
           type="text"
           value={searchInput}
-          onChange={handleSearchInputChange}
+          onChange={handleFilterBySearch}
           className="border rounded dark-text py-2 ml-1 text-center w-4/12"
           autoComplete="off"
+          data-gramm="false"
         />
         <div className="w-1/12"></div> {/* Empty spacer */}
       </div>
       <div className="flex justify-start my-1">
         <div className="w-1/12"></div> {/* Empty spacer */}
-        <button onClick={() => {console.log("Clicked Top Threads")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">Top Threads</button>
-        <button onClick={() => {console.log("Clicked My Friends")}} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">My Friends</button>
-        <select onChange={(e) => { handleFilterByCategory(e.target.value) }} className="blue-bg blue-bg-hover dark-text border py-1 rounded w-2/12 text-center">
-          <option value="General">General</option>
-          <option value="Blockchain">Blockchain</option>
-          <option value="News">News</option>
-          <option value="Sports">Sports</option>
-          <option value="Technology">Technology</option>
-          <option value="Finance">Finance</option>
-          <option value="Video Games">Video Games</option>
-          <option value="Music">Music</option>
-          <option value="Random">Random</option>
-          <option value="Adult">Adult</option>
-        </select>
+        <button onClick={handleFilterTopThreads} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">Top Threads</button>
+        <button onClick={handleFilterMyFriends} className="blue-bg blue-bg-hover dark-text py-1 rounded mr-1 w-2/12">My Friends</button>
         <div className="w-1/12"></div> {/* Empty spacer */}
       </div>
 
@@ -208,7 +190,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
             >
               {imageField !== '' && (
                 <div className='ml-4 max-w-16 flex justify-center items-center max-h-16'>
-                  <BlurImage imageUrl={imageField} />
+                  <BlurImage imageUrl={imageField} width={64} height={64}/>
                 </div>
               )}
               <div
@@ -222,7 +204,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ network, wallet, threads, refre
               </div>
                 {cognoTokenName !== threadOwner && (
                   <button
-                    className="ml-auto red-bg light-text py-1 px-2 mr-4 rounded red-bg-hover"
+                    className="ml-auto red-bg dark-text py-1 px-2 mr-4 rounded red-bg-hover"
                     onClick={() => { handleBlockThreadClick(thread)}}
                   >
                     Block

@@ -150,7 +150,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
   return (
     <div className="fixed inset-0 bg-opacity-45 flex items-center justify-center z-50">
-      <div className="light-bg p-6 rounded max-w-7xl w-full relative  max-h-[80vh] overflow-y-auto border-4 medium-border" ref={modalRef}>
+      <div className="light-bg p-6 rounded max-w-7xl w-full relative  max-h-[80vh] overflow-y-auto border-4 light-border" ref={modalRef}>
         {notification && <Notification message={notification} onDismiss={clearNotification} />}
         
         {/* delete button and the X close button*/}
@@ -197,7 +197,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
                     </div>
                     {threadOwnerImage !== '' && (
                       <div className='ml-4 max-w-32 flex justify-center items-center max-h-32'>
-                        <BlurImage imageUrl={threadOwnerImage} />
+                        <BlurImage imageUrl={threadOwnerImage} width={128} height={128}/>
                       </div>
                     )}
                   </div>

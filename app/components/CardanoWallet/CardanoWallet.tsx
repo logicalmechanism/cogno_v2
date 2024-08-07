@@ -11,7 +11,7 @@ interface CardanoWalletProps {
 }
 
 export const CardanoWallet: React.FC<CardanoWalletProps> = ({
-  label = 'Connect',
+  label = 'Connect Wallet',
   onConnected,
 }) => {
   const wallets = useWalletList();
@@ -41,7 +41,7 @@ export const CardanoWallet: React.FC<CardanoWalletProps> = ({
     />
   </button>
   <div
-    className={`absolute text-center w-60 ${bgClass} ${hideMenuList ? 'hidden' : ''}`}
+    className={`absolute rounded text-center w-60 ${bgClass} ${hideMenuList ? 'hidden' : ''}`}
   >
     {!connected && wallets.length > 0 ? (
       <>

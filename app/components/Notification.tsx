@@ -13,21 +13,19 @@ const Notification: React.FC<NotificationProps> = ({ message, duration = 2718, o
     setShow(true);
     const timer = setTimeout(() => {
       setShow(false);
+      onDismiss();
     }, duration);
 
     return () => {
       clearTimeout(timer); // Cleanup the timeout if the component unmounts early
-      if (show) {
-        onDismiss(); // Ensure cleanup and state reset if the component unmounts prematurely
-      }
     }
-  }, [message, duration, onDismiss, show]);
+  }, [message, duration, onDismiss]);
 
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-16 right-4 red-bg dark-text py-4 px-4 rounded">
-      {message}
+    <div className="fixed bottom-16 right-4 red-bg dark-text py-4 px-4 rounded" aria-live="assertive">
+      <span>{message}</span>
     </div>
   );
 };
