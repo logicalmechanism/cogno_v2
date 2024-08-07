@@ -7,6 +7,8 @@
 - **app**: added wire frame folder to hold penpot design wire frames
 - **app**: added default image gimp file
 - **app**: added error image for images that do not load properly
+- **app**: added filter.ts file to hold all the thread filters
+- **app**: added my friends and top threads filters
 
 ### Fixed
 
@@ -23,6 +25,7 @@
 - **app**: changed inputs to disable grammerly automatically
 - **app**: changed help text to be always on the right hand side of the help icon
 - **app**: changed refresh cogno button location to the navbar, refresh cogno -> refresh
+- **app**: changed what is being searched inside the thread list
 
 ### Removed
 
