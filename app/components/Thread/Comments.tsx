@@ -15,6 +15,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import 'katex/dist/katex.min.css';
 import BlurImage from '../BlurImage';
+import ExternalLink from '../ExternalLink';
 
 
 interface CommentProps {
@@ -75,11 +76,8 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
 
   useEffect(() => {
     // Update comments when thread changes
-    // console.log(thread)
-    // console.log('b',comments)
     const parsedComments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
     setComments(parsedComments);
-    // console.log('a', comments)
   }, [thread]);
 
   return (
@@ -130,6 +128,9 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
                 components={{
                   img: ({ node, ...props }) => (
                     <BlurImage imageUrl={props.src || ''} />
+                  ),
+                  a: ({ node, ...props }) => (
+                    <ExternalLink {...props} />
                   ),
                 }}
               >

@@ -6,8 +6,15 @@
 
 - **app**: added markdown to comments
 - **app**: added auto blurred images to comments
+  - *```![Alt text](https://example.com/your-image.jpg)```*
+  - *auto converts to lazy loaded blurred image*
+- **app**: added external link component for markdown rendering
+- **app**: added markdown to thread content
+  - *Images are not allowed in thread content, use image url field*
 
 ### Fixed
+
+- **app**: fixed meshjs version
 
 ### Changed
 

@@ -12,6 +12,16 @@ import Notification from '../Notification';
 import type {BytesField, Datum} from './transaction'
 import { findCognoFromThreadOwner } from './findThreadOwner';
 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkBreaks from 'remark-breaks';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import 'katex/dist/katex.min.css';
+import ExternalLink from '../ExternalLink';
+
 interface ThreadModalProps {
   network: number | null;
   wallet: BrowserWallet;
@@ -275,9 +285,19 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           )}
           {hasContent && (
             <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
-              <p className="dark-text overflow-auto">
+              <ReactMarkdown
+                className="prose prose-sm dark:prose-dark"
+                remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]}
+                rehypePlugins={[rehypeKatex, rehypeHighlight, rehypeRaw]}
+                components={{
+                  img: () => null, // images are not allowed in thread contents
+                  a: ({ node, ...props }) => (
+                    <ExternalLink {...props} />
+                  ),
+                }}
+              >
                 {hexToString(hasContent)}
-              </p>
+              </ReactMarkdown>
             </div>
           )}
         </div>
