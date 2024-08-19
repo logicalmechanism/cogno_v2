@@ -4,6 +4,9 @@
 
 ### Added
 
+- **app**: added markdown to comments
+- **app**: added auto blurred images to comments
+
 ### Fixed
 
 ### Changed

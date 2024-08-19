@@ -6,6 +6,15 @@ import { hexToString} from '../utilities';
 import { handleCommentCreation } from './transaction';
 import SuccessText from '../SuccessText';
 import { MaestroProvider } from '@meshsdk/core';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkBreaks from 'remark-breaks';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import 'katex/dist/katex.min.css';
+import BlurImage from '../BlurImage';
 
 
 interface CommentProps {
@@ -114,7 +123,18 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
               key={index}
               className="dark-text border dark-border rounded m-2 p-2 overflow-auto"
             >
-              <pre className='whitespace-pre-wrap'>{commentText}</pre>
+              <ReactMarkdown
+                className="prose prose-sm dark:prose-dark"
+                remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]}
+                rehypePlugins={[rehypeKatex, rehypeHighlight, rehypeRaw]}
+                components={{
+                  img: ({ node, ...props }) => (
+                    <BlurImage imageUrl={props.src || ''} />
+                  ),
+                }}
+              >
+                {commentText}
+              </ReactMarkdown>
               <br/>
             </div>
           );
