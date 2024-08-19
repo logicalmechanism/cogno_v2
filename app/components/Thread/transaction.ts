@@ -485,6 +485,9 @@ export const handleCommentCreation = async (
 
   // the thread datum
   const currentComments: object[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
+  // console.log(comment);
+  // console.log(stringToHex(comment));
+  
   currentComments.unshift(
     {
       "bytes": stringToHex(comment)
@@ -549,7 +552,7 @@ export const handleCommentCreation = async (
   try {
     await mesh.complete();
   } catch (error) {
-    // console.error('Maestro Error: ', error);
+    console.error('Maestro Error: ', error);
     return {
       success: false,
       message: `Maestro Error: ${error}`
