@@ -20,6 +20,7 @@
 
 - **app**: changed success text link to ExternalLink component
 - **app**: changed github link to ExternalLink component
+- **app**: changed profile wireframe to full and mini with labels
 
 ### Removed
 
