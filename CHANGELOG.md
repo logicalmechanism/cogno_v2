@@ -18,7 +18,12 @@
 
 ### Changed
 
+- **app**: changed success text link to ExternalLink component
+- **app**: changed github link to ExternalLink component
+
 ### Removed
+
+- **app**: removed some logs
 
 ## alpha-06-08-24
 
