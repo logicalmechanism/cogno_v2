@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, useCallback, useEffect } from 'react';
 import { CardanoWallet } from '../components/CardanoWallet';
-import { Profile } from '../components/Profile';
+import { ProfileModal } from './FullProfile';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 
 interface NavBarProps {
@@ -83,7 +83,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
 
       {/* Profile modal */}
       {isProfileModalOpen && (
-        <Profile 
+        <ProfileModal 
           cogno={cogno} 
           network={network}
           wallet={wallet} 
