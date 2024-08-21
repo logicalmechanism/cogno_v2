@@ -15,12 +15,14 @@
 ### Fixed
 
 - **app**: fixed meshjs version
+- **app**: fixed and simplified the profile transaction
 
 ### Changed
 
 - **app**: changed success text link to ExternalLink component
 - **app**: changed github link to ExternalLink component
 - **app**: changed profile wireframe to full and mini with labels
+- **app**: changed notification to have a successful flag, red for bad or green for good
 
 ### Removed
 

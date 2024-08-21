@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface ProfileFormProps {
   isSubmitting: boolean;
-  handleSubmit: () => void; // Function to refresh threads
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Function to refresh threads
   title: string;
   setTitle: (value: string) => void;
   imageUrl: string;
