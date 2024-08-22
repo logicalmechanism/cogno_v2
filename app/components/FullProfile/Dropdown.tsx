@@ -16,7 +16,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ title, children }) => {
     <div className="w-1/3 px-2">
       <button
         onClick={toggleDropdown}
-        className="w-full blue-bg dark-text p-4 rounded-lg flex justify-between items-center focus:outline-none"
+        className="w-full blue-bg dark-text p-4 rounded-lg flex justify-between items-start focus:outline-none"
       >
         <span>{title}</span>
         <svg

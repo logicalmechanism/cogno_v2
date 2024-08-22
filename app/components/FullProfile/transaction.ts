@@ -1,45 +1,11 @@
 import { BrowserWallet, UTxO, Asset, Unit, Quantity, keepRelevant, MaestroProvider, MeshTxBuilder } from '@meshsdk/core';
 import { scriptHashToBech32,  } from '@meshsdk/mesh-csl';
-import { stringToHex } from '../utilities';
+import { stringToHex, SuccessMsg, Redeemer, Datum, BytesField } from '../utilities';
 
 interface CognoData {
   title: string;
   image: string;
   details: string;
-}
-
-export interface BytesField {
-  bytes: string;
-}
-
-interface IntField {
-  int: bigint;
-}
-
-export interface ListField {
-  list: BytesField[]
-}
-
-interface ConstructorField {
-  constructor: number;
-  fields: Field[];
-}
-
-type Field = BytesField | IntField | ListField | ConstructorField;
-
-interface Datum {
-  constructor: number;
-  fields: Field[];
-}
-
-interface Redeemer {
-  constructor: number;
-  fields: Field[];
-}
-
-interface SuccessMsg {
-  success: boolean;
-  message: string;
 }
 
 export const handleCreateCogno = async (

@@ -25,6 +25,40 @@ export interface OutputAmount {
   quantity: string;
 }
 
+export interface BytesField {
+  bytes: string;
+}
+
+export interface IntField {
+  int: bigint;
+}
+
+export interface ListField {
+  list: BytesField[]
+}
+
+export interface ConstructorField {
+  constructor: number;
+  fields: Field[];
+}
+
+export type Field = BytesField | IntField | ListField | ConstructorField;
+
+export interface Datum {
+  constructor: number;
+  fields: Field[];
+}
+
+export interface Redeemer {
+  constructor: number;
+  fields: Field[];
+}
+
+export interface SuccessMsg {
+  success: boolean;
+  message: string;
+}
+
 export const findCogno = async (tokenName: string, network: number): Promise<UTxO | null> => {
   // this is the cogno script hash
   const scriptHash = process.env.NEXT_PUBLIC_COGNO_SCRIPT_HASH!;

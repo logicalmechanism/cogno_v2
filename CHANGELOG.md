@@ -11,6 +11,8 @@
 - **app**: added external link component for markdown rendering
 - **app**: added markdown to thread content
   - *Images are not allowed in thread content, use image url field*
+- **app**: added full profile component
+
 
 ### Fixed
 
@@ -27,6 +29,8 @@
 ### Removed
 
 - **app**: removed some logs
+- **app**: removed Profile component
+
 
 ## alpha-06-08-24
 

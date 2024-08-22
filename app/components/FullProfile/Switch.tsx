@@ -20,7 +20,7 @@ export const Switch: FC<SwitchProps> = ({ isOn, onToggle }) => {
           }`}
         />
       </div>
-      <span className="ml-3 text-gray-700">{isOn ? 'Edit On' : 'Edit Off'}</span>
+      <span className="ml-3 dark-text">{isOn ? 'Edit On' : 'Edit Off'}</span>
     </div>
   );
 };

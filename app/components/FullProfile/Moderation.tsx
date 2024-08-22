@@ -42,14 +42,14 @@ export const Moderation: React.FC<ModerationProps> = ({title, isEditing, setCogn
     listName: string,
     setList: React.Dispatch<React.SetStateAction<string[]>>,
   ) => (
-    <div className="border rounded p-2 items-center flex flex-col">
+    <div className="rounded p-2 items-center flex flex-col">
       {list.length === 0 ? (
         <p className="dark-text">No items in this list.</p>
       ) : (
         list.map((item, index) => (
           <div key={index} className="w-full flex justify-between items-center mb-1">
             <span
-              className="dark-text text-nowrap text-ellipsis overflow-hidden"
+              className="dark-text text-nowrap text-ellipsis overflow-hidden cursor-pointer blue-text-hover light-bg p-2"
               onClick={() => handleItemClick(item)}
             >
               {item}
@@ -58,7 +58,7 @@ export const Moderation: React.FC<ModerationProps> = ({title, isEditing, setCogn
               type='button'
               onClick={() => handleRemove(listName, item, setList)}
               disabled={!isEditing}
-              className={`red-bg ${isEditing ? 'red-bg-hover' : ''} dark-text font-bold py-1 px-2 ml-2 rounded`}
+              className={`red-bg ${isEditing ? 'red-bg-hover' : 'cursor-not-allowed'} dark-text font-bold py-1 px-2 ml-2 rounded`}
             >
               Remove
             </button>

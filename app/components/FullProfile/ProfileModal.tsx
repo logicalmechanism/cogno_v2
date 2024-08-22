@@ -161,7 +161,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet
                 <ActionButton
                 isSubmitting={false}
                 onClick={() => {setCogno(thisCogno)}}
-                className={`blue-bg blue-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded`}
+                className={`green-bg green-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded`}
                 type="button"
                 >
                   Back
@@ -172,7 +172,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet
             <ActionButton
               isSubmitting={!isEditing || isSubmitting}
               onClick={() => {}}
-              className={`blue-bg ${isEditing ? 'blue-bg-hover' : ''} dark-text font-bold py-2 px-4 mx-1 rounded`}
+              className={`blue-bg ${isEditing ? 'blue-bg-hover' : 'cursor-not-allowed'} dark-text font-bold py-2 px-4 mx-1 rounded`}
               type="submit"
               form="profile-form"
             >
@@ -185,7 +185,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet
               <ActionButton
                 isSubmitting={isSubmitting}
                 onClick={() => {}}
-                className={`green-bg ${!isSubmitting ? 'green-bg-hover' : ''} dark-text font-bold py-2 px-4 mx-1 rounded`}
+                className={`green-bg ${!isSubmitting ? 'green-bg-hover' : 'cursor-not-allowed'} dark-text font-bold py-2 px-4 mx-1 rounded`}
                 type="submit"
                 form="profile-form"
               >
@@ -197,7 +197,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet
             <ActionButton
               isSubmitting={!isEditing || isSubmitting}
               onClick={handleDelete}
-              className={`red-bg ${isEditing ? 'red-bg-hover' : ''} dark-text font-bold py-2 px-4 mx-1 rounded`}
+              className={`red-bg ${isEditing ? 'red-bg-hover' : 'cursor-not-allowed'} dark-text font-bold py-2 px-4 mx-1 rounded`}
             >
               Delete
             </ActionButton>
@@ -225,7 +225,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet
           />
         </div>
         {isThisYourCogno && 
-          <div className='flex items-center justify-between pt-2'>
+          <div className='flex items-start justify-between pt-2'>
             <Dropdown title='Friends'><Moderation title='friendList' isEditing={isEditing} setCogno={setCogno} network={network}></Moderation></Dropdown>
             <Dropdown title='Blocked Users'><Moderation title='blockUserList' isEditing={isEditing} setCogno={setCogno} network={network}></Moderation></Dropdown>
             <Dropdown title='Blocked Threads'><Moderation title='blockThreadList' isEditing={isEditing}></Moderation></Dropdown>
