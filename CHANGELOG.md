@@ -24,6 +24,7 @@
 - **app**: changed github link to ExternalLink component
 - **app**: changed profile wireframe to full and mini with labels
 - **app**: changed notification to have a successful flag, red for bad or green for good
+- **app**: changed thread modal to use mini profile
 
 ### Removed
 

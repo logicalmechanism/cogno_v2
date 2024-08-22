@@ -79,7 +79,7 @@ export const findCogno = async (tokenName: string, network: number): Promise<UTx
     
     // find the utxo that holds the thread owner token
     return utxos.find(utxo => {
-      return utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(policyId+tokenName));
+      return utxo.output.amount.some((asset: OutputAmount) => asset.unit === (policyId+tokenName));
     });
   } catch (error) {
     // something happened during the utxo fetch request
