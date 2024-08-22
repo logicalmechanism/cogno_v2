@@ -84,7 +84,7 @@ const NavBar: React.FC<NavBarProps> = ({ cogno, connected, network, wallet, refr
       {/* Profile modal */}
       {isProfileModalOpen && (
         <ProfileModal 
-          cogno={cogno} 
+          thisCogno={cogno} 
           network={network}
           wallet={wallet} 
           onClose={toggleProfileModal} 

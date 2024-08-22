@@ -1,25 +1,33 @@
 import React, { useEffect, useState, FC } from 'react';
 import { BrowserWallet, UTxO, MaestroProvider } from '@meshsdk/core';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
-import { hexToString } from '../utilities';
+import { hexToString, OutputAmount } from '../utilities';
+//
 import { CloseButton } from "./CloseButton";
 import { ActionButton } from "./ActionButton";
 import { Switch } from './Switch';
 import { ProfileForm } from './ProfileForm';
+import { Dropdown } from './Dropdown';
+import { Moderation } from './Moderation';
+// 
 import SuccessText from '../SuccessText';
 import Notification from '../Notification';
 import BlurImage from '../BlurImage';
 import { handleCreateCogno, handleDeleteCogno, handleUpdateCogno } from './transaction';
 
 interface ProfileModalProps {
-  cogno: UTxO | null;
+  thisCogno: UTxO | null;
   network: number | null;
   wallet: BrowserWallet;
   onClose: () => void;
   refreshCogno: () => void;
 }
 
-export const ProfileModal: FC<ProfileModalProps> = ({ cogno, network, wallet, onClose, refreshCogno }) => {
+
+
+export const ProfileModal: FC<ProfileModalProps> = ({ thisCogno, network, wallet, onClose, refreshCogno }) => {
+  const [cogno, setCogno] = useState<UTxO | null>(thisCogno)
+  const [isThisYourCogno, setIsThisYourCogno] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
@@ -28,6 +36,12 @@ export const ProfileModal: FC<ProfileModalProps> = ({ cogno, network, wallet, on
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [details, setDetails] = useState('');
+
+  const policyId = process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!;
+  const cognoOwner = sessionStorage.getItem('cognoTokenName');
+
+  console.log(isThisYourCogno);
+  
 
   const clearNotification = () => {
     setIsSuccessful(false);
@@ -117,20 +131,44 @@ export const ProfileModal: FC<ProfileModalProps> = ({ cogno, network, wallet, on
       setTitle(hexToString(datum.fields[1].fields[0].bytes) || '');
       setImage(hexToString(datum.fields[1].fields[1].bytes) || '');
       setDetails(hexToString(datum.fields[1].fields[2].bytes) || '');
+      // this is true if you are looking at this cogno
+      setIsThisYourCogno(cogno!.output.amount.some((asset: OutputAmount) => asset.unit.includes(policyId+cognoOwner)));
     }
   }, [cogno]);
 
+  useEffect(() => {
+    // Update cogno state whenever thisCogno changes
+    setCogno(thisCogno);
+    if (thisCogno) {
+      setIsThisYourCogno(thisCogno!.output.amount.some((asset: OutputAmount) => asset.unit.includes(policyId+cognoOwner)));
+    } else {
+      setIsThisYourCogno(false);
+    }
+
+  }, [thisCogno]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto">
       {/* Full-screen overlay to block interactions */}
       <div className="fixed inset-0 dark-bg opacity-50 z-40"></div>
-
       {/* Modal content with a high z-index to ensure it's above everything */}
-      <div className="relative light-bg p-5 border rounded-md light-bg lg:max-w-screen-lg w-full z-50">
+      <div className="relative light-bg p-5 border rounded-md light-bg lg:max-w-screen-lg w-full z-50 max-h-[90vh] overflow-y-auto">
         <div className='flex items-center justify-between space-x-4'>
           <h3 className="text-3xl font-medium dark-text text-nowrap text-ellipsis overflow-hidden">{title}</h3>
-          {cogno && <Switch isOn={isEditing} onToggle={setIsEditing} />}
-          {cogno ? (
+          {isThisYourCogno && cogno ? (
+            <Switch isOn={isEditing} onToggle={setIsEditing} />) : (
+              cogno ? (
+                <ActionButton
+                isSubmitting={false}
+                onClick={() => {setCogno(thisCogno)}}
+                className={`blue-bg blue-bg-hover dark-text font-bold py-2 px-4 mx-1 rounded`}
+                type="button"
+                >
+                  Back
+                </ActionButton>
+              ): null
+            )}
+          {isThisYourCogno && cogno ? (
             <ActionButton
               isSubmitting={!isEditing || isSubmitting}
               onClick={() => {}}
@@ -141,17 +179,21 @@ export const ProfileModal: FC<ProfileModalProps> = ({ cogno, network, wallet, on
               Update
             </ActionButton>
           ) : (
-            <ActionButton
-              isSubmitting={isSubmitting}
-              onClick={() => {}}
-              className={`green-bg ${!isSubmitting ? 'green-bg-hover' : ''} dark-text font-bold py-2 px-4 mx-1 rounded`}
-              type="submit"
-              form="profile-form"
-            >
-              Create
-            </ActionButton>
+            !isThisYourCogno &&  cogno  ? (
+              null
+            ) : (
+              <ActionButton
+                isSubmitting={isSubmitting}
+                onClick={() => {}}
+                className={`green-bg ${!isSubmitting ? 'green-bg-hover' : ''} dark-text font-bold py-2 px-4 mx-1 rounded`}
+                type="submit"
+                form="profile-form"
+              >
+                Create
+              </ActionButton>
+            )
           )}
-          {cogno && (
+          {isThisYourCogno && cogno && (
             <ActionButton
               isSubmitting={!isEditing || isSubmitting}
               onClick={handleDelete}
@@ -182,7 +224,13 @@ export const ProfileModal: FC<ProfileModalProps> = ({ cogno, network, wallet, on
             setDetails={setDetails}
           />
         </div>
-        <div></div>
+        {isThisYourCogno && 
+          <div className='flex items-center justify-between pt-2'>
+            <Dropdown title='Friends'><Moderation title='friendList' isEditing={isEditing} setCogno={setCogno} network={network}></Moderation></Dropdown>
+            <Dropdown title='Blocked Users'><Moderation title='blockUserList' isEditing={isEditing} setCogno={setCogno} network={network}></Moderation></Dropdown>
+            <Dropdown title='Blocked Threads'><Moderation title='blockThreadList' isEditing={isEditing}></Moderation></Dropdown>
+          </div>
+        }
         <div className="flex items-center justify-center pt-2">
           <ActionButton
             isSubmitting={false}

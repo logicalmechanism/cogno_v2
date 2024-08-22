@@ -22,7 +22,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   setDetails, 
 }) => {
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col border w-full" id="profile-form">
+    <form onSubmit={handleSubmit} className="flex flex-col w-full" id="profile-form">
       <div className="m-2">
         <label className="block dark-text text-sm font-bold mb-2">Title</label>
         <input
