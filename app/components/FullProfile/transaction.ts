@@ -135,7 +135,7 @@ export const handleCreateCogno = async (
     .txOutInlineDatumValue(cognoDatum, "JSON")
     .mintPlutusScriptV2()
     .mint("1", process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, tokenName)
-    .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
+    .mintRedeemerValue(mintRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
 
@@ -261,11 +261,11 @@ export const handleDeleteCogno = async (
     .spendingPlutusScriptV2()
     .txIn(cogno!.input.txHash!, cogno!.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(removeRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(removeRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_UTXO!, 1)
     .mintPlutusScriptV2()
     .mint("-1", process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, tokenName!)
-    .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
+    .mintRedeemerValue(burnRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
 
@@ -448,16 +448,17 @@ export const handleUpdateCogno = async (
     .spendingPlutusScriptV2()
     .txIn(cogno!.input.txHash!, cogno!.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(updateRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(updateRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
     .txOutInlineDatumValue(cognoDatum, "JSON")
     .requiredSignerHash(walletKeyHashes.pubKeyHash);
 
-  // use awaits here as a test
+  // complete tx
   try {
     await mesh.complete();
   } catch (error) {
+    console.error('mesh.complete Error: ', error);
     return {
       success: false,
       message: `Maestro Error: ${error}`
@@ -469,7 +470,7 @@ export const handleUpdateCogno = async (
     // Complete the signing process
     unsignedTx = mesh.completeSigning();
   } catch (error) {
-    console.error('Complete Error: ', error);
+    console.error('mesh.completeSigning Error: ', error);
     return {
       success: false,
       message: `Complete Error: ${error}`

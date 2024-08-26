@@ -78,9 +78,10 @@ export const findCogno = async (tokenName: string, network: number): Promise<UTx
     const utxos = await maestro.fetchAddressUTxOs(scriptAddress);
     
     // find the utxo that holds the thread owner token
-    return utxos.find(utxo => {
+    const result = utxos.find(utxo => {
       return utxo.output.amount.some((asset: OutputAmount) => asset.unit === (policyId+tokenName));
     });
+    return result || null; // Return null if result is undefined
   } catch (error) {
     // something happened during the utxo fetch request
     return null;

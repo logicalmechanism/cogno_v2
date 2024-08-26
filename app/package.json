@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@meshsdk/core": "1.5.17",
+    "@meshsdk/core": "^1.5.17",
     "@meshsdk/mesh-csl": "^0.0.5",
     "@meshsdk/react": "^1.1.12",
     "@tailwindcss/typography": "^0.5.14",

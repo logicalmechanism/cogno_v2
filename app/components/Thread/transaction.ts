@@ -6,7 +6,7 @@ import type { UTxO, Asset } from "@meshsdk/core";
 import { MaestroProvider } from '@meshsdk/core';
 import type { Unit, Quantity } from '@meshsdk/core';
 
-import type { OutputAmount } from '../../pages/forum'
+import type { OutputAmount } from '../utilities';
 
 export interface BytesField {
   bytes: string;
@@ -189,7 +189,7 @@ export const handleThreadCreation = async (
   mesh
     .mintPlutusScriptV2()
     .mint("1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, tokenName)
-    .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
+    .mintRedeemerValue(mintRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
 
   // use awaits here as a test
@@ -349,16 +349,16 @@ export const handleThreadDeletion = async (
   // add the change address and teh collateral
   mesh
     .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
-    .readOnlyTxInReference(cogno.input.txHash!, cogno.input.outputIndex!)
+    .readOnlyTxInReference(cogno!.input.txHash!, cogno!.input.outputIndex!)
     .spendingPlutusScriptV2()
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(deleteRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(deleteRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
     .mintPlutusScriptV2()
     .mint("-1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, threadTokenName!)
-    .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
+    .mintRedeemerValue(burnRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
 
   // use awaits here as a test
@@ -543,7 +543,7 @@ export const handleCommentCreation = async (
     .spendingPlutusScriptV2()
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(commentRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(commentRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
     .txOutInlineDatumValue(threadDatum, "JSON");
