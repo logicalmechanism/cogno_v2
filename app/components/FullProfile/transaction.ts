@@ -452,7 +452,8 @@ export const handleUpdateCogno = async (
     .spendingTxInReference(process.env.NEXT_PUBLIC_COGNO_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
     .txOutInlineDatumValue(cognoDatum, "JSON")
-    .requiredSignerHash(walletKeyHashes.pubKeyHash);
+    .requiredSignerHash(walletKeyHashes.pubKeyHash)
+    .setNetwork("preprod");
 
   // complete tx
   try {
