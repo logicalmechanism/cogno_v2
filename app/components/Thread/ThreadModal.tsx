@@ -11,6 +11,18 @@ import { MaestroProvider } from '@meshsdk/core';
 import Notification from '../Notification';
 import type {BytesField, Datum} from './transaction'
 import { findCognoFromThreadOwner } from './findThreadOwner';
+import { ProfileDropdown } from '../MiniProfile';
+import { findCogno } from '../utilities';
+
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkBreaks from 'remark-breaks';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import 'katex/dist/katex.min.css';
+import ExternalLink from '../ExternalLink';
 
 interface ThreadModalProps {
   network: number | null;
@@ -28,7 +40,11 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const [notification, setNotification] = useState<string>('');
   const [parsedDatum, setParsedDatum] = useState<Datum>(parseDatumCbor(thread.output.plutusData!));
   const commentsRef = useRef<HTMLDivElement>(null);
+  
+  const [cogno, setCogno] = useState<UTxO | null>(null)
+  
   const [showThreadOwnerInfo, setShowThreadOwnerInfo] = useState(false);
+
   const [threadOwnerTitle, setThreadOwnerTitle] = useState('');
   const [threadOwnerImage, setThreadOwnerImage] = useState('');
   const [threadOwnerDetails, setThreadOwnerDetails] = useState('');
@@ -76,8 +92,24 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
   const tokenName = sessionStorage.getItem('cognoTokenName');
   // this is the cogno of the thread owner
   const threadOwner = (parsedDatum.fields[5] as BytesField).bytes
+  console.log('threadOwner', threadOwner);
+  
   const isOwner = tokenName === threadOwner;
 
+  useEffect(() => {
+    if (!isOwner) {
+      findCogno(threadOwner, network!).then((threadOwnerCognoUTxO: UTxO | null) => {
+        console.log('threadOwnerCognoUTxO',threadOwnerCognoUTxO);
+        
+        if (threadOwnerCognoUTxO) {
+          setCogno(threadOwnerCognoUTxO);
+        } else {
+          setCogno(null);
+        }
+      });
+    }
+  }, [isOwner, threadOwner, network]);
+    
   const hasTitle = (parsedDatum.fields[0] as BytesField).bytes;
   const hasContent = (parsedDatum.fields[1] as BytesField).bytes;
   const hasImage = (parsedDatum.fields[2] as BytesField).bytes;
@@ -174,79 +206,7 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
 
         {/* Shown Add or Block Friend Button from thread owner if not the signed in cogno */}
         <div className="flex space-x-4">
-          {isOwner ? (<></>) : (
-            <div>
-            <h3 className="text-lg dark-text m-4">
-              <button
-                className='blue-text-hover'
-                onClick={handleShowThreadOwnerInfo}
-              >
-                {threadOwner}
-              </button>
-            </h3>
-              {showThreadOwnerInfo && (
-                <div className='border dark-border p-2'>
-                  <div className='flex space-x-4'>
-                    <div className='flex flex-col flex-1 dark-text'>
-                      <div>
-                        Name: <span className='font-bold'>{threadOwnerTitle}</span>
-                      </div>
-                      <div>
-                        Details: <span className='font-bold'>{threadOwnerDetails}</span>
-                      </div>
-                    </div>
-                    {threadOwnerImage !== '' && (
-                      <div className='ml-4 max-w-32 flex justify-center items-center max-h-32'>
-                        <BlurImage imageUrl={threadOwnerImage} width={128} height={128}/>
-                      </div>
-                    )}
-                  </div>
-                  <div className='dark-text'>
-                    {/*If friend or blocked then inverse needs to be here too*/}
-                    <div>
-                    {!isFriend && !isBlocked ? (
-                      <div>
-                        {/* Content for not a friend and not blocked */}
-                        <button
-                          onClick={handleAddFriend}
-                          className="green-bg green-bg-hover px-4 py-2 mx-2 rounded h-10"
-                        >
-                          Add Friend
-                        </button>
-                        <button
-                          onClick={handleBlockUser}
-                          className="blue-bg blue-bg-hover px-4 py-2 mx-2 rounded h-10"
-                        >
-                          Block User
-                        </button>
-                      </div>
-                    ) : isFriend && !isBlocked ? (
-                      <div>
-                        {/* Content for friend and not blocked */}
-                        <button
-                          onClick={handleRemoveFriend}
-                          className="red-bg red-bg-hover px-4 py-2 mx-2 rounded h-10"
-                        >
-                          Remove Friend
-                        </button>
-                      </div>
-                    ) : !isFriend && isBlocked ? (
-                      <div>
-                        {/* Content for not a friend and blocked */}
-                        <button
-                          onClick={handleUnblockUser}
-                          className="red-bg red-bg-hover px-4 py-2 mx-2 rounded h-10"
-                        >
-                          Unblock User
-                        </button>
-                      </div>
-                    ) : <></>}
-                  </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+          {isOwner ? (<></>) : (<ProfileDropdown cogno={cogno}></ProfileDropdown>)}
         </div>
         
         {/* Success Link Text For Transaction View*/}
@@ -275,9 +235,22 @@ export const ThreadModal: React.FC<ThreadModalProps> = ({network, wallet, thread
           )}
           {hasContent && (
             <div className={`${hasImage ? 'w-2/3' : 'w-full'} flex-grow overflow-auto max-h-96`}>
-              <p className="dark-text overflow-auto">
+              <ReactMarkdown
+                className="prose prose-sm dark:prose-dark"
+                remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]}
+                rehypePlugins={[rehypeKatex, rehypeHighlight, rehypeRaw]}
+                components={{
+                  img: () => null, // images are not allowed in thread contents
+                  a: ({ node, ...props }) => (
+                    <ExternalLink {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <div {...props} /> // Replacing `<p>` with `<div>`
+                  ),
+                }}
+              >
                 {hexToString(hasContent)}
-              </p>
+              </ReactMarkdown>
             </div>
           )}
         </div>

@@ -6,6 +6,16 @@ import { hexToString} from '../utilities';
 import { handleCommentCreation } from './transaction';
 import SuccessText from '../SuccessText';
 import { MaestroProvider } from '@meshsdk/core';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkBreaks from 'remark-breaks';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import 'katex/dist/katex.min.css';
+import BlurImage from '../BlurImage';
+import ExternalLink from '../ExternalLink';
 
 
 interface CommentProps {
@@ -66,11 +76,8 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
 
   useEffect(() => {
     // Update comments when thread changes
-    // console.log(thread)
-    // console.log('b',comments)
     const parsedComments: BytesField[] = parseDatumCbor(thread.output.plutusData!).fields[4].list;
     setComments(parsedComments);
-    // console.log('a', comments)
   }, [thread]);
 
   return (
@@ -114,7 +121,24 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
               key={index}
               className="dark-text border dark-border rounded m-2 p-2 overflow-auto"
             >
-              <pre className='whitespace-pre-wrap'>{commentText}</pre>
+              <ReactMarkdown
+                className="prose prose-sm dark:prose-dark"
+                remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]}
+                rehypePlugins={[rehypeKatex, rehypeHighlight, rehypeRaw]}
+                components={{
+                  img: ({ node, ...props }) => (
+                    <BlurImage imageUrl={props.src || ''} />
+                  ),
+                  a: ({ node, ...props }) => (
+                    <ExternalLink {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <div {...props} /> // Replacing `<p>` with `<div>` to avoid nesting issues
+                  ),
+                }}
+              >
+                {commentText}
+              </ReactMarkdown>
               <br/>
             </div>
           );
