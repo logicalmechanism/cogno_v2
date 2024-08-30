@@ -6,7 +6,7 @@ import type { UTxO, Asset } from "@meshsdk/core";
 import { MaestroProvider } from '@meshsdk/core';
 import type { Unit, Quantity } from '@meshsdk/core';
 
-import type { OutputAmount } from '../../pages/forum'
+import type { OutputAmount } from '../utilities';
 
 export interface BytesField {
   bytes: string;
@@ -189,8 +189,9 @@ export const handleThreadCreation = async (
   mesh
     .mintPlutusScriptV2()
     .mint("1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, tokenName)
-    .mintRedeemerValue(mintRedeemer, undefined, 'JSON')
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
+    .mintRedeemerValue(mintRedeemer, 'JSON', undefined)
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -349,17 +350,18 @@ export const handleThreadDeletion = async (
   // add the change address and teh collateral
   mesh
     .readOnlyTxInReference(process.env.NEXT_PUBLIC_REFERENCE_DATA_UTXO!, 0)
-    .readOnlyTxInReference(cogno.input.txHash!, cogno.input.outputIndex!)
+    .readOnlyTxInReference(cogno!.input.txHash!, cogno!.input.outputIndex!)
     .spendingPlutusScriptV2()
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(deleteRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(deleteRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
     .mintPlutusScriptV2()
     .mint("-1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, threadTokenName!)
-    .mintRedeemerValue(burnRedeemer, undefined, 'JSON')
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
+    .mintRedeemerValue(burnRedeemer, 'JSON', undefined)
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -543,10 +545,11 @@ export const handleCommentCreation = async (
     .spendingPlutusScriptV2()
     .txIn(thread.input.txHash!, thread.input.outputIndex!)
     .txInInlineDatumPresent()
-    .txInRedeemerValue(commentRedeemer, undefined, 'JSON')
+    .txInRedeemerValue(commentRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
-    .txOutInlineDatumValue(threadDatum, "JSON");
+    .txOutInlineDatumValue(threadDatum, "JSON")
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -565,7 +568,7 @@ export const handleCommentCreation = async (
     unsignedTx = mesh.completeSigning();
     // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
-    // console.error('Complete Error: ', error);
+    console.error('Complete Error: ', error);
     return {
       success: false,
       message: `Complete Error: ${error}`
@@ -578,7 +581,7 @@ export const handleCommentCreation = async (
     signedTx = await wallet.signTx(unsignedTx, true);
     // console.log('Signed Tx: ', signedTx);
   } catch (error) {
-    // console.error('Sign Error: ', error);
+    console.error('Sign Error: ', error);
     return {
       success: false,
       message: `Sign Error: ${error}`
@@ -591,7 +594,7 @@ export const handleCommentCreation = async (
     txHash = await wallet.submitTx(signedTx);
     // console.log('Tx Hash: ', txHash);
   } catch (error) {
-    // console.error('Submission Error: ', error);
+    console.error('Submission Error: ', error);
     return {
       success: false,
       message: `Submission Error: ${error}`

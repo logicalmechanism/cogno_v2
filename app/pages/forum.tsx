@@ -5,16 +5,14 @@ import { UTxO, Asset } from '@meshsdk/core';
 import { MaestroProvider } from '@meshsdk/core';
 import { scriptHashToBech32, parseDatumCbor } from '@meshsdk/mesh-csl';
 import { serializeBech32Address } from '@meshsdk/mesh-csl';
+import { OutputAmount } from "@/components/utilities";
 // components
 import NavBar from '../components/NavBar';
 import Notification from '../components/Notification';
 import { Threads } from "../components/Thread";
-import { BytesField } from "@/components/Profile";
+import {BytesField } from '../components/utilities';
 
-export interface OutputAmount {
-  unit: string;
-  quantity: string;
-}
+
 
 const Forum = () => {
   const router = useRouter();

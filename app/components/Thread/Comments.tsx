@@ -132,6 +132,9 @@ export const Comments: React.FC<CommentProps> = ({ thread, network, wallet, refr
                   a: ({ node, ...props }) => (
                     <ExternalLink {...props} />
                   ),
+                  p: ({ node, ...props }) => (
+                    <div {...props} /> // Replacing `<p>` with `<div>` to avoid nesting issues
+                  ),
                 }}
               >
                 {commentText}

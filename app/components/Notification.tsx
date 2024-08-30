@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 interface NotificationProps {
   message: string;
-  duration?: number; // in milliseconds
   onDismiss: () => void; // Function to call on dismiss
+  duration?: number; // in milliseconds
+  successful?: boolean
 }
 
-const Notification: React.FC<NotificationProps> = ({ message, duration = 2718, onDismiss }) => {
+const Notification: React.FC<NotificationProps> = ({ message, onDismiss, duration = 2718, successful = false  }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const Notification: React.FC<NotificationProps> = ({ message, duration = 2718, o
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-16 right-4 red-bg dark-text py-4 px-4 rounded" aria-live="assertive">
+    <div className={`fixed bottom-16 right-4 ${successful ? 'green-bg' : 'red-bg'} dark-text py-4 px-4 rounded`} aria-live="assertive">
       <span>{message}</span>
     </div>
   );

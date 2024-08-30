@@ -11,20 +11,28 @@
 - **app**: added external link component for markdown rendering
 - **app**: added markdown to thread content
   - *Images are not allowed in thread content, use image url field*
+- **app**: added full profile component
+- **app**: added mini profile component
 
 ### Fixed
 
 - **app**: fixed meshjs version
+- **app**: fixed and simplified the profile transaction
+- **app**: fixed cost model issues being different between networks
 
 ### Changed
 
 - **app**: changed success text link to ExternalLink component
 - **app**: changed github link to ExternalLink component
 - **app**: changed profile wireframe to full and mini with labels
+- **app**: changed notification to have a successful flag, red for bad or green for good
+- **app**: changed thread modal to use mini profile
+- **app**: changed profile title to profile name
 
 ### Removed
 
 - **app**: removed some logs
+- **app**: removed Profile component
 
 ## alpha-06-08-24
 
