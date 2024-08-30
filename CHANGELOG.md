@@ -19,6 +19,7 @@
 - **app**: fixed meshjs version
 - **app**: fixed and simplified the profile transaction
 - **app**: fixed cost model issues being different between networks
+- **app**: fixed some formatting
 
 ### Changed
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserWallet, UTxO } from '@meshsdk/core';
 import { ThreadForm } from './ThreadForm';
 import ThreadList from './ThreadList';

@@ -4,32 +4,23 @@ const FAQ: React.FC = () => {
   const faqs = [
     {
       question: `What is cogno.forum?`,
-      answer: `cogno.forum is all of your favorite social media sites in one decentralized application.
-      It's a forum, image board, aggregator, and social network all in one.
-      The only difference here is that no one can control it, censor it, or turn it off.
-      It lives forever on the Cardano blockchain.`,
+      answer: `cogno.forum is all of your favorite social media sites in one decentralized application. It's a forum, image board, aggregator, and social network all in one. The only difference here is that no one can control it, censor it, or turn it off. It lives forever on the Cardano blockchain.`,
     },
     {
       question: `How do I use cogno.forum?`,
-      answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet,
-      create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That's it!`,
+      answer: `Get a CIP-30 friendly Cardano web wallet, set it to single address mode, fund the wallet, create a collateral UTxO, connect to the dapp, create a cogno, and start posting. That's it!`,
     },
     {
       question: `Why does it cost money to use cogno.forum?`,
-      answer: `Cogno.forum is fully on-chain. This means to create a cogno profile, threads, and comments,
-      you need Lovelace to pay for the required UTxO minimum value and the transaction fees.`,
+      answer: `Cogno.forum is fully on-chain. This means to create a cogno profile, threads, and comments, you need Lovelace to pay for the required UTxO minimum value and the transaction fees.`,
     },
     {
       question: `Do I get my Lovelace back when I post comments?`,
-      answer: `No, they go onto the UTxO to hold the data. If a thread is deleted, the content creator 
-      gets all the Lovelace on the UTxO. This way, content creators get paid for creating content that users
-      comment on.`,
+      answer: `No, they go onto the UTxO to hold the data. If a thread is deleted, the content creator gets all the Lovelace on the UTxO. This way, content creators get paid for creating content that users comment on.`,
     },
     {
       question: `How do I view the application?`,
-      answer: `Cogno is designed to be used locally with yarn, but it will be hosted at www.cogno.forum.
-      There are no guarantees www.cogno.forum will exist or be online. The app will be hosted for convenience,
-      but it is highly suggested that you just use yarn and run it locally.`,
+      answer: `Cogno is designed to be used locally with yarn, but it will be hosted at www.cogno.forum. There are no guarantees www.cogno.forum will exist or be online. The app will be hosted for convenience, but it is highly suggested that you just use yarn and run it locally.`,
     },
     {
       question: `Is everything on cogno.forum public?`,
@@ -37,8 +28,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: `Is the project open-sourced?`,
-      answer: `Yes, the validators, headless scripts, and application frontend are all open-sourced and
-      available inside the GitHub repository.`,
+      answer: `Yes, the validators, headless scripts, and application frontend are all open-sourced and available inside the GitHub repository.`,
     },
     {
       question: `Do you make money from cogno.forum?`,
@@ -46,30 +36,23 @@ const FAQ: React.FC = () => {
     },
     {
       question: `How can I make suggestions?`,
-      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it, then
-      we will probably add it, or you can fork the repo and add the feature yourself. It’s open-sourced
-      for a reason. Contributions and suggestions are more than welcome.`,
+      answer: `Please put your suggestion inside an issue on the repo. If the suggestion is worth it, then we will probably add it, or you can fork the repo and add the feature yourself. It’s open-sourced for a reason. Contributions and suggestions are more than welcome.`,
     },
     {
       question: `How do I report illegal content?`,
-      answer: `Reporting threads to the proper authorities is controlled by you, the user. Content can 
-      only be blocked or censored by setting your on-chain moderation data inside your cogno profile.`,
+      answer: `Reporting threads to the proper authorities is controlled by you, the user. Content can only be blocked or censored by setting your on-chain moderation data inside your cogno profile.`,
     },
     {
       question: `How can I blame cogno.forum for something?`,
-      answer: `You, as the user, accept the risk of using cogno.forum. There are no promises, no protection,
-      and no regulation. It is intended only for mature audiences.`,
+      answer: `You, as the user, accept the risk of using cogno.forum. There are no promises, no protection, and no regulation. It is intended only for mature audiences.`,
     },
     {
       question: `How is content moderated on cogno.forum?`,
-      answer: `Content moderation on cogno.forum is decentralized and controlled by users. You can block or
-      censor content by setting your on-chain moderation data inside your cogno profile.`,
+      answer: `Content moderation on cogno.forum is decentralized and controlled by users. You can block or censor content by setting your on-chain moderation data inside your cogno profile.`,
     },
     {
       question: `What are the community guidelines for cogno.forum?`,
-      answer: `While cogno.forum is decentralized and uncensored, we encourage users to follow common-sense 
-      community guidelines such as respecting others, avoiding spam, and not sharing illegal content. 
-      Content moderation is managed locally and on-chain.`,
+      answer: `While cogno.forum is decentralized and uncensored, we encourage users to follow common-sense community guidelines such as respecting others, avoiding spam, and not sharing illegal content. Content moderation is managed locally and on-chain.`,
     },
     {
       question: `Are there any planned future features for cogno.forum?`,
@@ -77,16 +60,11 @@ const FAQ: React.FC = () => {
     },
     {
       question: `Why did my comment or thread deletion not hit the chain?`,
-      answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no 
-      contingency protections at the contract level. This combination makes for some interesting user
-      experiences when many users are trying to interact with a single thread. If someone spent what
-      you are trying to spend, then just try again. You just have to wait a block or two.`,
+      answer: `cogno.forum uses Maestro to query the Cardano blockchain. Additionally, there are no contingency protections at the contract level. This combination makes for some interesting userexperiences when many users are trying to interact with a single thread. If someone spent whatyou are trying to spend, then just try again. You just have to wait a block or two.`,
     },
     {
       question: `How should I track my transaction?`,
-      answer: `Use the "view transaction" link after a successful transaction. It will open a new tab to
-      CardanoScan. Use this to manually track the transaction. You can also check your wallet for the 
-      status of your pending transaction.`,
+      answer: `Use the "view transaction" link after a successful transaction. It will open a new tab to CardanoScan. Use this to manually track the transaction. You can also check your wallet for the status of your pending transaction.`,
     },
     {
       question: `How can I donate to this project?`,
