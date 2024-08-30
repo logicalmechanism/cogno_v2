@@ -1,7 +1,7 @@
 import type { UTxO} from "@meshsdk/core";
 import { MaestroProvider } from '@meshsdk/core';
 import { scriptHashToBech32, parseDatumCbor } from '@meshsdk/mesh-csl';
-import type { OutputAmount } from '../../pages/forum'
+import type { OutputAmount } from '../utilities';
 
 export const findCognoFromThreadOwner = async (threadOwner: string, network: number): Promise<UTxO | null> => {
   // this is the cogno script hash
@@ -22,9 +22,10 @@ export const findCognoFromThreadOwner = async (threadOwner: string, network: num
     const utxos = await maestro.fetchAddressUTxOs(scriptAddress);
     
     // find the utxo that holds the thread owner token
-    return utxos.find(utxo => {
+    const result = utxos.find(utxo => {
       return utxo.output.amount.some((asset: OutputAmount) => asset.unit.includes(policyId+threadOwner));
     });
+    return result || null; // Return null if result is undefined
   } catch (error) {
     // something happened during the utxo fetch request
     return null;
