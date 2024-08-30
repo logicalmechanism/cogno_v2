@@ -1,6 +1,6 @@
 import type { UTxO} from "@meshsdk/core";
 import { MaestroProvider } from '@meshsdk/core';
-import { scriptHashToBech32, parseDatumCbor } from '@meshsdk/mesh-csl';
+import { scriptHashToBech32 } from '@meshsdk/mesh-csl';
 import type { OutputAmount } from '../utilities';
 
 export const findCognoFromThreadOwner = async (threadOwner: string, network: number): Promise<UTxO | null> => {

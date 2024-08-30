@@ -1,5 +1,6 @@
 import React from "react";
 import ExternalLink from "./ExternalLink";
+
 interface SuccessTextProps {
   txHash: string | null;
 }

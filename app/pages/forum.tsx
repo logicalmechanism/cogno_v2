@@ -79,7 +79,7 @@ const Forum = () => {
         // find the utxo that has the datum wallet type that equals the wallet key hashes
         const foundUtxo = utxos.find(utxo => {
           // this is the cogno datum type
-          const datum = parseDatumCbor(utxo.output.plutusData);
+          const datum = parseDatumCbor(utxo.output.plutusData!);
           // this is the asset wallet type
           const walletType = datum.fields[0];
           // find the first occurrence of a cogno wallet type that matches the key hashes
@@ -93,10 +93,10 @@ const Forum = () => {
 
         // if we did find the cogno utxo then lets get the cogno token name as its the pointer to locate a cogno easily
         if (foundUtxo) {
-          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!)).unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
+          const tokenName = foundUtxo.output.amount.find((asset: Asset) => asset.unit.includes(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!))!.unit.replace(process.env.NEXT_PUBLIC_COGNO_MINTER_SCRIPT_HASH!, '');
           // set the cognoTokenName field to the found token name then return the found utxo as the cogno
           sessionStorage.setItem('cognoTokenName', tokenName);
-          const datum = parseDatumCbor(foundUtxo.output.plutusData);
+          const datum = parseDatumCbor(foundUtxo.output.plutusData!);
           const moderation = datum.fields[2]
           // set the friend list, block user and thread list
           sessionStorage.setItem('friendList', JSON.stringify(moderation.fields[0].list.map((item: BytesField) => item.bytes)));

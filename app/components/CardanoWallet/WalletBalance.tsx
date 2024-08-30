@@ -1,5 +1,5 @@
 import { useLovelace, useWalletList } from '@meshsdk/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface WalletBalanceProps {
   connected: boolean;
