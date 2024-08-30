@@ -1,69 +1,56 @@
 import React from 'react';
 
-interface ProfileFormProps {
-  isSubmitting: boolean;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Function to refresh threads
+interface ProfileInfoProps {
   title: string;
-  setTitle: (value: string) => void;
   imageUrl: string;
-  setImageUrl: (value: string) => void;
   details: string;
-  setDetails: (value: string) => void;
 }
 
-export const ProfileForm: React.FC<ProfileFormProps> = ({ 
-  isSubmitting,
-  handleSubmit, 
+export const ProfileInfo: React.FC<ProfileInfoProps> = ({ 
   title,
-  setTitle,
   imageUrl,
-  setImageUrl,
   details,
-  setDetails, 
 }) => {
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-full" id="profile-form">
+    <div className="flex flex-col w-full">
       <div className="m-2">
         <label className="block dark-text text-sm font-bold mb-2">Username</label>
         <input
           type="text"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
           className="border p-2 rounded w-full dark-text"
           required
           autoComplete="off"
           maxLength={300}
-          disabled={isSubmitting}
+          disabled={true}
           data-gramm="false"
         />
       </div>
       <div className="m-2">
         <label className="block dark-text text-sm font-bold mb-2">
-          Image URL (Optional)
+          Image URL
         </label>
         <input
           type="url"
           value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
           className="border p-2 rounded w-full dark-text"
           autoComplete="off"
           maxLength={2000}
-          disabled={isSubmitting}
+          disabled={true}
           data-gramm="false"
         />
       </div>
       <div className="m-2">
-        <label className="block dark-text text-sm font-bold mb-2">Details (Optional)</label>
+        <label className="block dark-text text-sm font-bold mb-2">Details</label>
         <textarea
           value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          className="border p-2 rounded w-full dark-text h-32"
+          className="border p-2 rounded w-full dark-text"
           autoComplete="off"
           maxLength={40000}
-          disabled={isSubmitting}
+          disabled={true}
           data-gramm="false"
         ></textarea>
       </div>
-    </form>
+    </div>
   );
 };

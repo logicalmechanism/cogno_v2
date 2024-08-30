@@ -2,6 +2,8 @@ import { UTxO, Asset } from '@meshsdk/core';
 import React, { useState, useEffect } from 'react';
 import { parseDatumCbor } from '@meshsdk/mesh-csl';
 import { hexToString } from '../utilities';
+import BlurImage from '../BlurImage';
+import { ProfileInfo } from './ProfileInfo';
 
 interface ProfileDropdownProps {
   cogno: UTxO | null;
@@ -36,7 +38,7 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({cogno}) => {
   };
 
   return (
-    <div className="w-3/4 px-2">
+    <div className="w-full px-2">
       <button
         onClick={toggleDropdown}
         className={`w-full light-bg dark-text p-4 rounded-lg flex justify-start items-start focus:outline-none ${threadOwnerToken ? 'cursor-pointer' : ''}`}
@@ -60,7 +62,14 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({cogno}) => {
       </button>
       <div className={`mt-2 overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-screen' : 'max-h-0'}`}>
         <div className="p-4 light-bg rounded-lg dark-text">
-          SOMETHING HERE
+        <div className="flex pt-2">
+          {threadOwnerImage.trim() !== '' && (
+            <div className="w-auto">
+              <BlurImage imageUrl={threadOwnerImage} width={280} height={280}/>
+            </div>
+          )}
+          <ProfileInfo title={threadOwnerTitle} imageUrl={threadOwnerImage} details={threadOwnerDetails}></ProfileInfo>
+        </div>
         </div>
       </div>
     </div>

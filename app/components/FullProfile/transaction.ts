@@ -138,6 +138,7 @@ export const handleCreateCogno = async (
     .mintRedeemerValue(mintRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
     // use awaits here as a test
   try {
@@ -268,6 +269,7 @@ export const handleDeleteCogno = async (
     .mintRedeemerValue(burnRedeemer, 'JSON', undefined)
     .mintTxInReference(process.env.NEXT_PUBLIC_COGNO_MINTER_REF_UTXO!, 1)
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -453,7 +455,7 @@ export const handleUpdateCogno = async (
     .txOut(scriptAddress!, assets)
     .txOutInlineDatumValue(cognoDatum, "JSON")
     .requiredSignerHash(walletKeyHashes.pubKeyHash)
-    .setNetwork("preprod");
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // complete tx
   try {

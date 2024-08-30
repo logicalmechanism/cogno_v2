@@ -190,7 +190,8 @@ export const handleThreadCreation = async (
     .mintPlutusScriptV2()
     .mint("1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, tokenName)
     .mintRedeemerValue(mintRedeemer, 'JSON', undefined)
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -359,7 +360,8 @@ export const handleThreadDeletion = async (
     .mintPlutusScriptV2()
     .mint("-1", process.env.NEXT_PUBLIC_THREAD_MINTER_SCRIPT_HASH!, threadTokenName!)
     .mintRedeemerValue(burnRedeemer, 'JSON', undefined)
-    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1);
+    .mintTxInReference(process.env.NEXT_PUBLIC_THREAD_MINTER_REF_UTXO!, 1)
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -546,7 +548,8 @@ export const handleCommentCreation = async (
     .txInRedeemerValue(commentRedeemer, 'JSON', undefined)
     .spendingTxInReference(process.env.NEXT_PUBLIC_THREAD_REF_UTXO!, 1)
     .txOut(scriptAddress!, assets)
-    .txOutInlineDatumValue(threadDatum, "JSON");
+    .txOutInlineDatumValue(threadDatum, "JSON")
+    .setNetwork(network === 0 ? 'preprod' : 'mainnet');
 
   // use awaits here as a test
   try {
@@ -565,7 +568,7 @@ export const handleCommentCreation = async (
     unsignedTx = mesh.completeSigning();
     // console.log('Unsigned Tx: ', unsignedTx);
   } catch (error) {
-    // console.error('Complete Error: ', error);
+    console.error('Complete Error: ', error);
     return {
       success: false,
       message: `Complete Error: ${error}`
@@ -578,7 +581,7 @@ export const handleCommentCreation = async (
     signedTx = await wallet.signTx(unsignedTx, true);
     // console.log('Signed Tx: ', signedTx);
   } catch (error) {
-    // console.error('Sign Error: ', error);
+    console.error('Sign Error: ', error);
     return {
       success: false,
       message: `Sign Error: ${error}`
@@ -591,7 +594,7 @@ export const handleCommentCreation = async (
     txHash = await wallet.submitTx(signedTx);
     // console.log('Tx Hash: ', txHash);
   } catch (error) {
-    // console.error('Submission Error: ', error);
+    console.error('Submission Error: ', error);
     return {
       success: false,
       message: `Submission Error: ${error}`
